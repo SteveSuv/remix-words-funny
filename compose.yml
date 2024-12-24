@@ -1,0 +1,28 @@
+services:
+  wordsfunny:
+    build: .
+    image: wordsfunny
+    container_name: wordsfunny
+    hostname: wordsfunny
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    hostname: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: wordsfunny
+
+volumes:
+  postgres_data:
