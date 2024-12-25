@@ -1,6 +1,6 @@
 # remix-words-funny
 
-English words study website built with [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
+A fullstack English words study website built with [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
 
 # features
 
@@ -26,6 +26,7 @@ English words study website built with [remix-t3-stack](https://github.com/Steve
 - drizzle
 - postgresql
 - jwt
+- jotai
 - pnpm
 - react-hook-form
 - react-query
@@ -52,7 +53,7 @@ pnpm i
 3. init database
 
 - install [docker](https://www.docker.com/get-started/) and start docker service
-- first run command below to create a local postgres container:
+- first run command below to create a local postgres container (you can replace the POSTGRES_PASSWORD_EXAMPLE):
 
 ```sh
 docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/data -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=POSTGRES_PASSWORD_EXAMPLE -e POSTGRES_DB=wordsfunny postgres:16-alpine
@@ -61,7 +62,7 @@ docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/
 - run command `pnpm db:push` to sync db structs and drizzle schema
 - download csv data file: https://mypikpak.com/s/VOEs95bTB0KGAg75t0Nrs-oOo1
 - use your favorite db tool like [TablePlus](https://tableplus.com/) to connect the postgres db
-- import db data by upload csv files
+- insert db data by import csv files to tables. Notice! you should first import `Book`, then `Word`, then others, because tables have some relations.
 - run `pnpm db:task`, if print `total words count: 152543` means the postgres db is running ok
 
 4. run dev server
