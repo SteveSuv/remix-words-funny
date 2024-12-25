@@ -30,7 +30,6 @@
     "dayjs": "^1.11.13",
     "drizzle-orm": "^0.38.2",
     "framer-motion": "^11.15.0",
-    "got": "^14.4.5",
     "isbot": "^5.1.18",
     "jotai": "^2.11.0",
     "jsonwebtoken": "^9.0.2",

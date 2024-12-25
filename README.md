@@ -65,13 +65,19 @@ docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/
 - insert db data by import csv files to tables. Notice! you should first import `Book`, then `Word`, then others, because tables have some relations.
 - run `pnpm db:task`, if print `total words count: 152543` means the postgres db is running ok
 
-4. run dev server
+4. init email server
+
+- when you dev local, you can just print the verify code simply
+- when you deploy to prod, you can use some email server saas like [resend](https://resend.com/)
+- or you can enable some email server's SMTP, then add `EMAIL_SERVER_ADDRESS` and `EMAIL_SERVER_PASS` to .env file, like [Netease Email](https://mail.163.com/) or [QQ Email](https://mail.qq.com/)
+
+5. run dev server
 
 ```
 pnpm dev
 ```
 
-5. build and preview
+6. build and preview
 
 ```
 pnpm build
@@ -81,7 +87,7 @@ pnpm start
 # how to deploy
 
 ```
-pnpm deploy
+pnpm run deploy
 ```
 
 # notice

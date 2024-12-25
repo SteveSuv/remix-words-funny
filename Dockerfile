@@ -7,5 +7,5 @@ ADD package.json package.json
 ADD node_modules node_modules
 ADD .env .env
 
-EXPOSE 3000
+EXPOSE 3001
 CMD ["npm", "start"]

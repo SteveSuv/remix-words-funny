@@ -6,6 +6,7 @@ import { db } from "~/.server/db";
 import { Verify } from "~/.server/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { sendVerifyCodeToEmail } from "~/.server/mail";
+import { IS_PROD } from "~/common/constants";
 
 const prepare = db
   .select()
@@ -38,6 +39,10 @@ export const sendVerifyCode = p.unAuth
         .insert(Verify)
         .values({ email, code: verifyCode })
         .returning({ updateAt: Verify.updatedAt });
+    }
+
+    if (!IS_PROD) {
+      console.log(`verify code is ${verifyCode}`);
     }
 
     await sendVerifyCodeToEmail({ email, verifyCode });
