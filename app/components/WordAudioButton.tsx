@@ -14,7 +14,7 @@ export const WordAudioButton = ({ word }: { word: string }) => {
         disabled={isPlaying}
         variant="flat"
         size="sm"
-        onClick={() => {
+        onPress={() => {
           audioRef.current?.play();
         }}
       >

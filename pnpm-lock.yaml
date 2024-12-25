@@ -26,11 +26,11 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.2)
       "@tanstack/react-query":
-        specifier: ^5.62.9
-        version: 5.62.9(react@19.0.0)
+        specifier: ^5.62.10
+        version: 5.62.10(react@19.0.0)
       "@tanstack/react-query-devtools":
-        specifier: ^5.62.9
-        version: 5.62.9(@tanstack/react-query@5.62.9(react@19.0.0))(react@19.0.0)
+        specifier: ^5.62.10
+        version: 5.62.10(@tanstack/react-query@5.62.10(react@19.0.0))(react@19.0.0)
       "@trpc/client":
         specifier: ^10.45.2
         version: 10.45.2(@trpc/server@10.45.2)
@@ -46,6 +46,9 @@ importers:
       cookie:
         specifier: ^1.0.2
         version: 1.0.2
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -3074,19 +3077,19 @@ packages:
         integrity: sha512-b1NZzDLVf6laJsB1Cfm3ieuYzM+WqoO8qpm9v+3Etwd+Ph4zkhUMiT+wcWj5AhEPsXiRodKYiiW048VDNdBxNg==,
       }
 
-  "@tanstack/react-query-devtools@5.62.9":
+  "@tanstack/react-query-devtools@5.62.10":
     resolution:
       {
-        integrity: sha512-5fYAjZiG2PEVsrG7wz4ea0268iS23ng0PbXS1KfAzCcai/QOkKtUQ/OKRoVE6LHBFLdQX6R+0ho7c5hLD23CAQ==,
+        integrity: sha512-TnFcvfEnOvH9j8iYKRl8Qn/U2P0NijdQ6nilhHobpdAcF4DLUwlKKufJZAlc759+1HBZ/jEvCqWo2g3mO9Ttvg==,
       }
     peerDependencies:
-      "@tanstack/react-query": ^5.62.9
+      "@tanstack/react-query": ^5.62.10
       react: ^18 || ^19
 
-  "@tanstack/react-query@5.62.9":
+  "@tanstack/react-query@5.62.10":
     resolution:
       {
-        integrity: sha512-jFUH9pOsOyN2ugGIR8tjz2+bRC0PEp25LvpNvYIgiEegP5Xbfi9phuNOMnjFugyg3GM0WI/HfUEE7eM2vmcbxg==,
+        integrity: sha512-1e1WpHM5oGf27nWM/NWLY62/X9pbMBWa6ErWYmeuK0OqB9/g9UzA59ogiWbxCmS2wtAFQRhOdHhfSofrkhPl2g==,
       }
     peerDependencies:
       react: ^18 || ^19
@@ -3529,6 +3532,14 @@ packages:
       {
         integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==,
       }
+
+  cross-env@7.0.3:
+    resolution:
+      {
+        integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==,
+      }
+    engines: { node: ">=10.14", npm: ">=6", yarn: ">=1" }
+    hasBin: true
 
   cross-spawn@7.0.6:
     resolution:
@@ -8398,13 +8409,13 @@ snapshots:
 
   "@tanstack/query-devtools@5.62.9": {}
 
-  "@tanstack/react-query-devtools@5.62.9(@tanstack/react-query@5.62.9(react@19.0.0))(react@19.0.0)":
+  "@tanstack/react-query-devtools@5.62.10(@tanstack/react-query@5.62.10(react@19.0.0))(react@19.0.0)":
     dependencies:
       "@tanstack/query-devtools": 5.62.9
-      "@tanstack/react-query": 5.62.9(react@19.0.0)
+      "@tanstack/react-query": 5.62.10(react@19.0.0)
       react: 19.0.0
 
-  "@tanstack/react-query@5.62.9(react@19.0.0)":
+  "@tanstack/react-query@5.62.10(react@19.0.0)":
     dependencies:
       "@tanstack/query-core": 5.62.9
       react: 19.0.0
@@ -8659,6 +8670,10 @@ snapshots:
       is-what: 4.1.16
 
   core-util-is@1.0.3: {}
+
+  cross-env@7.0.3:
+    dependencies:
+      cross-spawn: 7.0.6
 
   cross-spawn@7.0.6:
     dependencies:

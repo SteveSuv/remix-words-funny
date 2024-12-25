@@ -20,7 +20,7 @@ export const PasswordInput = forwardRef(
             variant="light"
             size="sm"
             isIconOnly
-            onClick={() => {
+            onPress={() => {
               setShowPassword(!showPassword);
             }}
           >

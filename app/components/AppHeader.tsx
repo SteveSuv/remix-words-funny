@@ -4,9 +4,14 @@ import { SignInButton } from "./SignInButton";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { useSetAtom } from "jotai";
 import { isProfileModalOpenAtom } from "./ProfileModal";
+import { Button } from "@nextui-org/react";
+import { LuIcon } from "./LuIcon";
+import { Moon, Sun } from "lucide-react";
+import { useAppTheme } from "~/hooks/useAppTheme";
 
 export const AppHeader = () => {
   const { myUserInfo } = useMyUserInfo();
+  const { isDarkMode, toggleTheme } = useAppTheme();
 
   const setIsProfileModalOpen = useSetAtom(isProfileModalOpenAtom);
 
@@ -31,8 +36,11 @@ export const AppHeader = () => {
           <SettingButton />
         </div>
       ) : (
-        <div className="flex h-full items-center justify-center">
+        <div className="flex h-full items-center justify-between">
           <SignInButton />
+          <Button variant="light" isIconOnly onPress={toggleTheme}>
+            <LuIcon icon={isDarkMode ? Moon : Sun} />
+          </Button>
         </div>
       )}
     </div>

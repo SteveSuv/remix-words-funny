@@ -68,9 +68,7 @@ export const SignUpModal = () => {
                       variant="light"
                       size="sm"
                       isIconOnly
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                      onPress={() => {
                         form.setValue("name", Chance().name(), {
                           shouldValidate: true,
                           shouldDirty: true,

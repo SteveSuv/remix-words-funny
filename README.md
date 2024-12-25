@@ -9,7 +9,7 @@ English words study website built with [remix-t3-stack](https://github.com/Steve
 - type safe form with `zod` by `useZodForm`
 - no need to export `action` in routes, just call `trpcClient.action` to mutate anywhere
 - request with permission controll by `trpc middlewares`
-- deploy by `docker compose`
+- deploy by `docker`
 - support dark mode by `useAppTheme`
 - use `drizzle` to keep type safe with `postgresql` db
 - toast request error automatically
@@ -32,7 +32,7 @@ English words study website built with [remix-t3-stack](https://github.com/Steve
 - next-themes
 - lucide-icons
 - zod
-- docker compose
+- docker
 
 # how to dev
 
@@ -52,12 +52,17 @@ pnpm i
 3. init database
 
 - install [docker](https://www.docker.com/get-started/) and start docker service
-- first run `docker compose up -d` to create a postgres container
-- sync db structs by command `pnpm db:push`
+- first run command below to create a local postgres container:
+
+```sh
+docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/data -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=POSTGRES_PASSWORD_EXAMPLE -e POSTGRES_DB=wordsfunny postgres:16-alpine
+```
+
+- run command `pnpm db:push` to sync db structs and drizzle schema
 - download csv data file: https://mypikpak.com/s/VOEs95bTB0KGAg75t0Nrs-oOo1
 - use your favorite db tool like [TablePlus](https://tableplus.com/) to connect the postgres db
 - import db data by upload csv files
-- then run `pnpm deploy` it will open the website automatically
+- run `pnpm db:task`, if print `total words count: 152543` means the postgres db is running ok
 
 4. run dev server
 
@@ -80,6 +85,6 @@ pnpm deploy
 
 # notice
 
-- when you dev local, you should run `docker compose down` first to stop docker container to avoid port occupation
+- when you dev local, you should run `docker stop wordsfunny` first to stop container to avoid port occupation
 - words resource [repo](https://github.com/kajweb/dict)
 - more features will be added gradually

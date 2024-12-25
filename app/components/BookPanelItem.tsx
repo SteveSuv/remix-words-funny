@@ -76,9 +76,7 @@ export const BookPanelItem = ({ item }: { item: IBookItem }) => {
                 starBookMutation.isPending ||
                 unStarBookMutation.isPending
               }
-              onClick={async (e) => {
-                e.stopPropagation();
-                e.preventDefault();
+              onPress={async () => {
                 if (isBookStar) {
                   await unStarBookMutation.mutateAsync();
                 } else {
