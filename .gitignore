@@ -4,6 +4,7 @@
 build
 node_modules
 *.tsbuildinfo
+.local
 
 # Uncomment .env when deploy to production
 # .env

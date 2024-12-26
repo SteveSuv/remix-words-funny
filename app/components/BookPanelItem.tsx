@@ -53,7 +53,11 @@ export const BookPanelItem = ({ item }: { item: IBookItem }) => {
           }}
         >
           <div className="flex items-center gap-4">
-            <Image src={item.cover} height={60} width={60 * ratio} />
+            <Image
+              src={`/books/${item.slug}.jpg`}
+              height={60}
+              width={60 * ratio}
+            />
             <div className="flex flex-col">
               <div
                 className={clsx(

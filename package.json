@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "cross-env NODE_ENV=production react-router build",
+    "build": "pnpm typecheck && cross-env NODE_ENV=production react-router build",
     "start": "cross-env NODE_ENV=production PORT=3001 react-router-serve ./build/server/index.js",
     "db:push": "drizzle-kit push --config app/.server/db/config.ts",
     "db:task": "tsx --env-file=.env app/.server/db/task.ts",
