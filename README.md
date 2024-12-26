@@ -2,6 +2,8 @@
 
 A fullstack English words study website built with [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
 
+![image](https://github.com/user-attachments/assets/6e57831f-9915-4f6f-9c2f-93040b0dcede)
+
 # features
 
 - end-to-end type safe by `trpc`
