@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "cross-env NODE_ENV=production react-router build",
-    "start": "cross-env NODE_ENV=production react-router-serve ./build/server/index.js",
+    "start": "cross-env NODE_ENV=production PORT=3001 react-router-serve ./build/server/index.js",
     "db:push": "drizzle-kit push --config app/.server/db/config.ts",
     "db:task": "tsx --env-file=.env app/.server/db/task.ts",
     "fmt": "prettier -w .",
@@ -28,7 +28,7 @@
     "cookie": "^1.0.2",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.13",
-    "drizzle-orm": "^0.38.2",
+    "drizzle-orm": "^0.38.3",
     "framer-motion": "^11.15.0",
     "isbot": "^5.1.18",
     "jotai": "^2.11.0",
@@ -65,7 +65,7 @@
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "vite": "^6.0.5",
+    "vite": "^6.0.6",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "prettier": {
