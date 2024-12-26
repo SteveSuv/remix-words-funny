@@ -55,7 +55,7 @@ pnpm i
 3. init database
 
 - install [docker](https://www.docker.com/get-started/) and start docker service
-- first run command below to create a local postgres container (you can replace the POSTGRES_PASSWORD_EXAMPLE):
+- first run command below to create a local postgres container (you can replace the `POSTGRES_PASSWORD_EXAMPLE`):
 
 ```sh
 docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/data -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=POSTGRES_PASSWORD_EXAMPLE -e POSTGRES_DB=wordsfunny postgres:16-alpine
@@ -97,4 +97,4 @@ pnpm run deploy
 - when you dev local, you should run `docker stop wordsfunny-app` first to stop container to avoid port 3001 occupation
 - words resource [repo](https://github.com/kajweb/dict)
 - more features will be added gradually
-- a more smiply `remix-t3-stack` project for beginners is here: [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
+- a more simply `remix-t3-stack` project for beginners is here: [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
