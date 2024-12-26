@@ -67,7 +67,7 @@ docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/
 - insert db data by import csv files to tables. Notice! you should first import `Book`, then `Word`, then others, because tables have some relations.
 - run `pnpm db:task`, if print `total words count: 152543` means the postgres db is running ok
 
-4. init email server
+4. init email server (optional, if you don't want to send login verify code)
 
 - when you dev local, you can just print the verify code simply
 - when you deploy to prod, you can use some email server saas like [resend](https://resend.com/)
@@ -94,6 +94,7 @@ pnpm run deploy
 
 # notice
 
-- when you dev local, you should run `docker stop wordsfunny` first to stop container to avoid port occupation
+- when you dev local, you should run `docker stop wordsfunny-app` first to stop container to avoid port 3001 occupation
 - words resource [repo](https://github.com/kajweb/dict)
 - more features will be added gradually
+- a more smiply `remix-t3-stack` project for beginners is here: [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
