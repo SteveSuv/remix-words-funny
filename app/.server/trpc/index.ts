@@ -14,8 +14,8 @@ export const t = initTRPC.context<Context>().create({
   transformer: SuperJSON,
 });
 
-const isAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.myUserInfo) {
+const isAuthed = t.middleware(({ ctx: { myUserInfo }, next }) => {
+  if (!myUserInfo) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "please login first",
@@ -24,8 +24,8 @@ const isAuthed = t.middleware(({ ctx, next }) => {
   return next();
 });
 
-const isUnAuthed = t.middleware(({ ctx, next }) => {
-  if (!!ctx.myUserInfo) {
+const isUnAuthed = t.middleware(({ ctx: { myUserInfo }, next }) => {
+  if (!!myUserInfo) {
     throw new TRPCError({ code: "FORBIDDEN", message: "you are logged in" });
   }
   return next();

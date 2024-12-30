@@ -18,33 +18,35 @@ const prepare = db
 
 export const signIn = p.unAuth
   .input(signInForm)
-  .mutation(async ({ ctx, input: { email, password, keepAlive } }) => {
-    const [user] = await prepare.execute({ email });
+  .mutation(
+    async ({ ctx: { resHeaders }, input: { email, password, keepAlive } }) => {
+      const [user] = await prepare.execute({ email });
 
-    // if user not exist, throw error
-    if (!user) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "用户不存在",
+      // if user not exist, throw error
+      if (!user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "用户不存在",
+        });
+      }
+
+      // if user's password is not correct, throw error
+      if (user.password !== encrypt(password)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "密码错误",
+        });
+      }
+
+      // if user exist, sign jwt token to cookie
+      const userId = user.id;
+
+      const maxAge = COOKIE_MAX_AGE / (keepAlive ? 1 : 7);
+
+      const jwtToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: maxAge,
       });
-    }
 
-    // if user's password is not correct, throw error
-    if (user.password !== encrypt(password)) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "密码错误",
-      });
-    }
-
-    // if user exist, sign jwt token to cookie
-    const userId = user.id;
-
-    const maxAge = COOKIE_MAX_AGE / (keepAlive ? 1 : 7);
-
-    const jwtToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: maxAge,
-    });
-
-    Cookies.set(ctx.resHeaders, JWT_KEY, jwtToken, { maxAge });
-  });
+      Cookies.set(resHeaders, JWT_KEY, jwtToken, { maxAge });
+    },
+  );

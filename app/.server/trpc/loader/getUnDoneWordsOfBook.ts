@@ -14,7 +14,7 @@ const prepare = db
         db
           .select({ wordSlug: UsersToWords.wordSlug })
           .from(UsersToWords)
-          .where(and(eq(UsersToWords.userId, sql.placeholder("userId")))),
+          .where(eq(UsersToWords.userId, sql.placeholder("userId"))),
       ),
       eq(Word.bookSlug, sql.placeholder("bookSlug")),
     ),

@@ -31,18 +31,18 @@ const prepareGetVerifyByEmail = db
 export const signUp = p.unAuth
   .input(signUpForm)
   .mutation(async ({ input: { email, name, password, verifyCode } }) => {
-    let user = (await prepareGetUserByEmail.execute({ email }))[0];
+    const [userByEmail] = await prepareGetUserByEmail.execute({ email });
 
-    if (user) {
+    if (userByEmail) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "邮箱已被使用",
       });
     }
 
-    user = (await prepareGetUserByName.execute({ name }))[0];
+    const [userByName] = await prepareGetUserByName.execute({ name });
 
-    if (user) {
+    if (userByName) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "昵称已被使用",
