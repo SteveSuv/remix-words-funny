@@ -27,7 +27,7 @@ export const AppLayout = ({
         </div>
       </div>
 
-      {children}
+      <div className="flex flex-1">{children}</div>
 
       <div className="h-screen w-[400px] overflow-y-scroll bg-foreground-50 shadow-small">
         <WordDetailPanel />

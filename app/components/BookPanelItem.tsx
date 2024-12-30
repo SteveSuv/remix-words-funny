@@ -59,14 +59,7 @@ export const BookPanelItem = ({ item }: { item: IBookItem }) => {
               width={60 * ratio}
             />
             <div className="flex flex-col">
-              <div
-                className={clsx(
-                  "w-[200px] truncate",
-                  isBookStar && "text-warning",
-                )}
-              >
-                {item.name}
-              </div>
+              <div className="w-[200px] truncate">{item.name}</div>
               <small className="text-primary">{item.wordsCount}个单词</small>
             </div>
           </div>
@@ -75,11 +68,6 @@ export const BookPanelItem = ({ item }: { item: IBookItem }) => {
               isIconOnly
               size="sm"
               variant="light"
-              isLoading={
-                getIsBookStarQuery.isLoading ||
-                starBookMutation.isPending ||
-                unStarBookMutation.isPending
-              }
               onPress={async () => {
                 if (isBookStar) {
                   await unStarBookMutation.mutateAsync();

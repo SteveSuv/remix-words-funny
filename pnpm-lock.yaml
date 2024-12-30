@@ -8,8 +8,8 @@ importers:
   .:
     dependencies:
       "@fontsource/merriweather":
-        specifier: ^5.1.0
-        version: 5.1.0
+        specifier: ^5.1.1
+        version: 5.1.1
       "@hookform/resolvers":
         specifier: ^3.9.1
         version: 3.9.1(react-hook-form@7.54.2(react@19.0.0))
@@ -26,11 +26,11 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.2)
       "@tanstack/react-query":
-        specifier: ^5.62.10
-        version: 5.62.10(react@19.0.0)
+        specifier: ^5.62.11
+        version: 5.62.11(react@19.0.0)
       "@tanstack/react-query-devtools":
-        specifier: ^5.62.10
-        version: 5.62.10(@tanstack/react-query@5.62.10(react@19.0.0))(react@19.0.0)
+        specifier: ^5.62.11
+        version: 5.62.11(@tanstack/react-query@5.62.11(react@19.0.0))(react@19.0.0)
       "@trpc/client":
         specifier: ^10.45.2
         version: 10.45.2(@trpc/server@10.45.2)
@@ -59,8 +59,8 @@ importers:
         specifier: ^11.15.0
         version: 11.15.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       isbot:
-        specifier: ^5.1.18
-        version: 5.1.18
+        specifier: ^5.1.19
+        version: 5.1.19
       jotai:
         specifier: ^2.11.0
         version: 2.11.0(@types/react@19.0.2)(react@19.0.0)
@@ -1275,10 +1275,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  "@fontsource/merriweather@5.1.0":
+  "@fontsource/merriweather@5.1.1":
     resolution:
       {
-        integrity: sha512-CliXFoCACKkrx8G93xGw6cD7RYCOytuY/Afe1W/htsRRlaSyGA6HGNQzQJc6NKzjs9XenBH2CcMQsONyppd+uQ==,
+        integrity: sha512-GaO8ZHDCQAuoPJh0yiLK+NzL03OnGs64uFGKFRSouinZ1CtoEtO+3DHr4LZokFW+Au5MvWr4Am2MOhjdyvIRyA==,
       }
 
   "@formatjs/ecma402-abstract@2.2.4":
@@ -3063,19 +3063,19 @@ packages:
         integrity: sha512-b1NZzDLVf6laJsB1Cfm3ieuYzM+WqoO8qpm9v+3Etwd+Ph4zkhUMiT+wcWj5AhEPsXiRodKYiiW048VDNdBxNg==,
       }
 
-  "@tanstack/react-query-devtools@5.62.10":
+  "@tanstack/react-query-devtools@5.62.11":
     resolution:
       {
-        integrity: sha512-TnFcvfEnOvH9j8iYKRl8Qn/U2P0NijdQ6nilhHobpdAcF4DLUwlKKufJZAlc759+1HBZ/jEvCqWo2g3mO9Ttvg==,
+        integrity: sha512-i0vKgdM4ORRzqduz7UeUF52UhLrvRp4sNY/DnLsd5NqNyiKct3a0bLQMWE2fqjF5tEExQ0d0xY60ILXW/T62xA==,
       }
     peerDependencies:
-      "@tanstack/react-query": ^5.62.10
+      "@tanstack/react-query": ^5.62.11
       react: ^18 || ^19
 
-  "@tanstack/react-query@5.62.10":
+  "@tanstack/react-query@5.62.11":
     resolution:
       {
-        integrity: sha512-1e1WpHM5oGf27nWM/NWLY62/X9pbMBWa6ErWYmeuK0OqB9/g9UzA59ogiWbxCmS2wtAFQRhOdHhfSofrkhPl2g==,
+        integrity: sha512-Xb1nw0cYMdtFmwkvH9+y5yYFhXvLRCnXoqlzSw7UkqtCVFq3cG8q+rHZ2Yz1XrC+/ysUaTqbLKJqk95mCgC1oQ==,
       }
     peerDependencies:
       react: ^18 || ^19
@@ -4228,10 +4228,10 @@ packages:
         integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==,
       }
 
-  isbot@5.1.18:
+  isbot@5.1.19:
     resolution:
       {
-        integrity: sha512-df9RdChv1DheItzN5pNKtblc9/otzJYmxjf9GhCZG/f0TCcGCbQFmtM3e+SD0e8EI3/O2tIXPYVaG4FUaIIa6Q==,
+        integrity: sha512-8krWJBGKC3lVymkncvmBTpIEWMD5kKmjAvkM3/Xh6veE0bAydwgSNrI5h493DGrG2UNJCy0HuHpNPSKRy0dBJA==,
       }
     engines: { node: ">=18" }
 
@@ -6234,7 +6234,7 @@ snapshots:
   "@esbuild/win32-x64@0.24.2":
     optional: true
 
-  "@fontsource/merriweather@5.1.0": {}
+  "@fontsource/merriweather@5.1.1": {}
 
   "@formatjs/ecma402-abstract@2.2.4":
     dependencies:
@@ -8241,13 +8241,13 @@ snapshots:
 
   "@tanstack/query-devtools@5.62.9": {}
 
-  "@tanstack/react-query-devtools@5.62.10(@tanstack/react-query@5.62.10(react@19.0.0))(react@19.0.0)":
+  "@tanstack/react-query-devtools@5.62.11(@tanstack/react-query@5.62.11(react@19.0.0))(react@19.0.0)":
     dependencies:
       "@tanstack/query-devtools": 5.62.9
-      "@tanstack/react-query": 5.62.10(react@19.0.0)
+      "@tanstack/react-query": 5.62.11(react@19.0.0)
       react: 19.0.0
 
-  "@tanstack/react-query@5.62.10(react@19.0.0)":
+  "@tanstack/react-query@5.62.11(react@19.0.0)":
     dependencies:
       "@tanstack/query-core": 5.62.9
       react: 19.0.0
@@ -8939,7 +8939,7 @@ snapshots:
 
   isarray@1.0.0: {}
 
-  isbot@5.1.18: {}
+  isbot@5.1.19: {}
 
   isexe@2.0.0: {}
 

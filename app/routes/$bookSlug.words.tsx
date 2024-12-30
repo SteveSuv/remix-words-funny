@@ -7,13 +7,6 @@ import { ListTabs } from "~/components/ListTabs";
 export default function PageWords() {
   const { searchWord } = usedebounceSearchWord();
 
-  const renderList = () => {
-    if (searchWord) {
-      return <SearchWordsList />;
-    }
-    return <BookWordsList />;
-  };
-
   return (
     <div className="flex flex-col">
       <div className="sticky left-0 top-0 z-10 p-4">
@@ -22,7 +15,7 @@ export default function PageWords() {
           <SearchBar />
         </div>
       </div>
-      {renderList()}
+      {searchWord ? <SearchWordsList /> : <BookWordsList />}
     </div>
   );
 }

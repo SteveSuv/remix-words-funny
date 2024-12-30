@@ -57,6 +57,7 @@ export const SignUpModal = () => {
               <ModalBody>
                 <Input
                   {...form.register("name")}
+                  value={form.watch("name")}
                   autoFocus
                   minLength={3}
                   maxLength={16}
@@ -68,11 +69,15 @@ export const SignUpModal = () => {
                       variant="light"
                       size="sm"
                       isIconOnly
-                      onPress={() => {
-                        form.setValue("name", Chance().name(), {
-                          shouldValidate: true,
-                          shouldDirty: true,
-                        });
+                      onPress={(e) => {
+                        form.setValue(
+                          "name",
+                          Chance().name().replace(/\s/g, ""),
+                          {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                          },
+                        );
                       }}
                     >
                       <LuIcon icon={Dices} />
