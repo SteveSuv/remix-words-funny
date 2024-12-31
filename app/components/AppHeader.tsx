@@ -28,6 +28,7 @@ export const AppHeader = () => {
             <UserAvatar />
             <div className="flex flex-col justify-center gap-1">
               <div className="font-bold">{myUserInfo.name}</div>
+              {/* TODO: change mock data to real db data */}
               <div className="text-xs text-foreground-400">
                 LV 6 - 今日已学习0小时
               </div>

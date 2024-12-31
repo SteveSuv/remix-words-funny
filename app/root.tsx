@@ -25,7 +25,11 @@ export const loader = async (args: Route.LoaderArgs) => {
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="bg-background text-foreground">
+    <html
+      lang="en"
+      className="bg-background text-foreground"
+      suppressHydrationWarning
+    >
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

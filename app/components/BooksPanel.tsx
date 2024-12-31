@@ -1,4 +1,5 @@
-import { BookPanelItem, IBookItem } from "./BookPanelItem";
+import { IBookItem } from "~/common/types";
+import { BookPanelItem } from "./BookPanelItem";
 
 export const BooksPanel = ({ allBooks }: { allBooks: IBookItem[] }) => {
   return (

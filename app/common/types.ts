@@ -8,3 +8,11 @@ export type IUserInfo =
       updatedAt: Date;
     }
   | undefined;
+
+export type IBookItem = {
+  id: number;
+  slug: string;
+  cover: string;
+  name: string;
+  wordsCount: number;
+};

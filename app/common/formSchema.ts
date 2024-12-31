@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// basic fields
 export const email = z.string().email("无效的邮箱格式");
 
 export const password = z
@@ -16,8 +17,6 @@ export const name = z
   .min(3, "名字长度不能少于3位")
   .max(16, "名字长度不能多于16位");
 
-export const signInForm = z.object({ email, password, keepAlive });
-
 const updatePasswordFormFields = {
   email,
   password,
@@ -27,6 +26,10 @@ const updatePasswordFormFields = {
 
 const signUpFormFields = { ...updatePasswordFormFields, name };
 
+// signInForm
+export const signInForm = z.object({ email, password, keepAlive });
+
+// signUpForm
 export const signUpForm = z
   .object(signUpFormFields)
   .refine((data) => data.password === data.password2, {
@@ -34,6 +37,7 @@ export const signUpForm = z
     path: ["password2"],
   });
 
+// updatePasswordForm
 export const updatePasswordForm = z
   .object(updatePasswordFormFields)
   .refine((data) => data.password === data.password2, {

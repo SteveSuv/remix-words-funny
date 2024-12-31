@@ -10,14 +10,7 @@ import { useGetIsBookStarQuery } from "~/hooks/request/query/useGetIsBookStarQue
 import { useStarBookMutation } from "~/hooks/request/mutation/useStarBookMutation";
 import { useUnStarBookMutation } from "~/hooks/request/mutation/useUnStarBookMutation";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-
-export type IBookItem = {
-  id: number;
-  slug: string;
-  cover: string;
-  name: string;
-  wordsCount: number;
-};
+import { IBookItem } from "~/common/types";
 
 const ratio = 251 / 388;
 

@@ -2,20 +2,13 @@ import { ReactNode } from "react";
 import { BooksPanel } from "./BooksPanel";
 import { WordDetailPanel } from "./WordDetailPanel";
 import { AppHeader } from "./AppHeader";
-
-type IAllBooks = {
-  id: number;
-  slug: string;
-  cover: string;
-  name: string;
-  wordsCount: number;
-}[];
+import { IBookItem } from "~/common/types";
 
 export const AppLayout = ({
   allBooks,
   children,
 }: {
-  allBooks: IAllBooks;
+  allBooks: IBookItem[];
   children: ReactNode;
 }) => {
   return (

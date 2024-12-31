@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { IS_PROD } from "~/common/constants";
 
+// you can change to your custom SMTP config
 const transporter = nodemailer.createTransport({
   host: "smtp.163.com",
   port: IS_PROD ? 465 : 25,
