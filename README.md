@@ -10,7 +10,7 @@ A fullstack English words study website built with [remix-t3-stack](https://gith
 - get `myUserInfo` anywhere by `useMyUserInfo`
 - type safe form with `zod` by `useZodForm`
 - no need to export `action` in routes, just call `trpcClient.action` to mutate anywhere
-- request with permission controll by `trpc middlewares`
+- request with permission control by `trpc middlewares`
 - deploy by `docker`
 - support dark mode by `useAppTheme`
 - use `drizzle` to keep type safe with `postgresql` db
