@@ -17,6 +17,11 @@ export const name = z
   .min(3, "名字长度不能少于3位")
   .max(16, "名字长度不能多于16位");
 
+export const comment = z
+  .string()
+  .min(3, "评论长度不能少于3位")
+  .max(1000, "评论长度不能多于1000位");
+
 const updatePasswordFormFields = {
   email,
   password,
@@ -24,14 +29,12 @@ const updatePasswordFormFields = {
   verifyCode,
 };
 
-const signUpFormFields = { ...updatePasswordFormFields, name };
-
 // signInForm
 export const signInForm = z.object({ email, password, keepAlive });
 
 // signUpForm
 export const signUpForm = z
-  .object(signUpFormFields)
+  .object({ ...updatePasswordFormFields, name })
   .refine((data) => data.password === data.password2, {
     message: "两次密码输入不一致",
     path: ["password2"],
@@ -44,3 +47,6 @@ export const updatePasswordForm = z
     message: "两次密码输入不一致",
     path: ["password2"],
   });
+
+// commentForm
+export const commentForm = z.object({ comment });

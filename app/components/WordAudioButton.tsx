@@ -11,7 +11,7 @@ export const WordAudioButton = ({ word }: { word: string }) => {
     <>
       <Button
         isIconOnly
-        disabled={isPlaying}
+        isDisabled={isPlaying}
         variant="flat"
         size="sm"
         onPress={() => {

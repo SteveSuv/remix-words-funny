@@ -11,6 +11,8 @@ import { useGetWordDetailQuery } from "~/hooks/request/query/useGetWordDetailQue
 import { Link } from "react-router";
 import { searchWordAtom } from "./SearchBar";
 import { WordAudioButton } from "./WordAudioButton";
+import { WordCommentForm } from "./WordCommentForm";
+import { WordCommentsList } from "./WordCommentsList";
 
 export const wordDetailSlugAtom = atom("");
 
@@ -85,6 +87,8 @@ export const WordDetailPanel = () => {
       <WordSentences />
       <WordSynonyms />
       <WordCognates />
+      <WordCommentForm />
+      <WordCommentsList />
     </div>
   );
 };

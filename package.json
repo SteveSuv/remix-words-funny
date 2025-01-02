@@ -6,6 +6,7 @@
     "build": "pnpm typecheck && cross-env NODE_ENV=production react-router build",
     "start": "cross-env NODE_ENV=production PORT=3001 react-router-serve ./build/server/index.js",
     "db:push": "drizzle-kit push --config app/.server/db/config.ts",
+    "db:gen": "drizzle-kit generate --config app/.server/db/config.ts",
     "db:task": "tsx --env-file=.env app/.server/db/task.ts",
     "fmt": "prettier -w .",
     "typecheck": "react-router typegen && tsc",

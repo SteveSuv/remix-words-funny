@@ -6,6 +6,8 @@ import {
   serial,
   timestamp,
   varchar,
+  text,
+  AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 // tables
@@ -15,6 +17,22 @@ export const User = pgTable("User", {
   email: varchar("email").notNull().unique(),
   password: varchar("password").notNull(),
   avatar: varchar("avatar"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt")
+    .notNull()
+    .$onUpdateFn(() => new Date()),
+});
+
+export const Post = pgTable("Post", {
+  id: serial("id").primaryKey(),
+  content: text("content").notNull(),
+  userId: integer("userId")
+    .notNull()
+    .references(() => User.id),
+  wordSlug: varchar("wordSlug")
+    .notNull()
+    .references(() => Word.slug),
+  parentPostId: integer("parentPostId").references((): AnyPgColumn => Post.id),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt")
     .notNull()
@@ -169,6 +187,13 @@ export const UsersToWords = pgTable(
 export const UserRelations = relations(User, ({ many }) => ({
   UsersToBooks: many(UsersToBooks),
   UsersToWords: many(UsersToWords),
+  Posts: many(Post),
+}));
+
+export const PostRelations = relations(Post, ({ one, many }) => ({
+  User: one(User, { fields: [Post.userId], references: [User.id] }),
+  Word: one(Word, { fields: [Post.wordSlug], references: [Word.slug] }),
+  Posts: many(Post),
 }));
 
 export const BookRelations = relations(Book, ({ many }) => ({
@@ -187,6 +212,7 @@ export const WordRelations = relations(Word, ({ one, many }) => ({
   Sentences: many(Sentence),
   Synonyms: many(Synonym),
   Translations: many(Translation),
+  Posts: many(Post),
 }));
 
 export const CognateRelations = relations(Cognate, ({ one }) => ({

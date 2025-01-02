@@ -2,14 +2,25 @@ import BoringAvatar from "boring-avatars";
 import { useIsClient } from "usehooks-ts";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 
-export const UserAvatar = () => {
+export const UserAvatar = ({
+  name,
+  size = 50,
+}: {
+  name?: string;
+  size?: number;
+}) => {
   const { myUserInfo } = useMyUserInfo();
 
   const isClient = useIsClient();
 
-  if (myUserInfo && isClient) {
+  if ((myUserInfo || name) && isClient) {
     return (
-      <BoringAvatar square size={50} name={myUserInfo.name} variant="beam" />
+      <BoringAvatar
+        square
+        size={size}
+        name={name || myUserInfo?.name}
+        variant="beam"
+      />
     );
   }
 
