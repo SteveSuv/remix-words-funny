@@ -88,12 +88,23 @@ pnpm start
 
 # how to deploy
 
+deploy by docker
 ```
 pnpm run deploy
 ```
 
+deploy by pm2
+```
+# push files to server
+rsync -avz build node_modules package.json .env IP@HOST:~/remix-words-funny/
+
+# ssh server and run app
+ssh IP@HOST "cd ~/remix-words-funny && pm2 start npm -- start"
+```
+
 # notice
 
+- suggest node version greater than 22
 - when you dev local, you should run `docker stop wordsfunny-app` first to stop container to avoid port 3001 occupation
 - words resource [repo](https://github.com/kajweb/dict)
 - more features will be added gradually
