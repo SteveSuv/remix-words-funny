@@ -14,7 +14,7 @@ const prepare = db
     and(
       eq(UsersToWords.userId, sql.placeholder("userId")),
       gte(UsersToWords.updatedAt, dayjs().subtract(6, "month").toDate()),
-      lte(UsersToWords.updatedAt, dayjs().toDate()),
+      lte(UsersToWords.updatedAt, dayjs().add(1, "day").toDate()),
     ),
   )
   .prepare("prepare");
