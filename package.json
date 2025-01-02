@@ -16,6 +16,7 @@
     "@fontsource/merriweather": "^5.1.1",
     "@hookform/resolvers": "^3.9.1",
     "@nextui-org/react": "^2.6.10",
+    "@nextui-org/theme": "^2.4.4",
     "@react-router/fs-routes": "^7.1.1",
     "@react-router/node": "^7.1.1",
     "@react-router/serve": "^7.1.1",
