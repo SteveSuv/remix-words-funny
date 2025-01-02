@@ -96,10 +96,10 @@ pnpm run deploy
 deploy by pm2
 ```
 # push files to server
-rsync -avz build node_modules package.json .env IP@HOST:~/remix-words-funny/
+rsync -avz build node_modules package.json .env root@HOST:~/remix-words-funny/
 
 # ssh server and run app
-ssh IP@HOST "cd ~/remix-words-funny && pm2 start npm -- start"
+ssh root@HOST "cd ~/remix-words-funny && pm2 start npm -- start"
 ```
 
 # notice
