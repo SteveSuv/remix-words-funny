@@ -89,11 +89,13 @@ pnpm start
 # how to deploy
 
 deploy by docker
+
 ```
 pnpm run deploy
 ```
 
 deploy by pm2
+
 ```
 # push files to server
 rsync -avz build node_modules package.json .env root@HOST:~/remix-words-funny/

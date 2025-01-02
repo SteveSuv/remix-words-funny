@@ -26,6 +26,7 @@ export const ProfileModal = () => {
       isOpen={isProfileModalOpen}
       onOpenChange={setIsProfileModalOpen}
       backdrop="blur"
+      size="lg"
     >
       <ModalContent>
         {(onClose) => {

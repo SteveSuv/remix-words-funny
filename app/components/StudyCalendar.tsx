@@ -1,71 +1,91 @@
 import { Tooltip } from "@nextui-org/react";
-import { ActivityCalendar } from "react-activity-calendar";
+import { useAtomValue } from "jotai";
+import { Activity, ActivityCalendar } from "react-activity-calendar";
+import { useGetStudyCalendarQuery } from "~/hooks/request/query/useGetStudyCalendarQuery";
 import { useAppTheme } from "~/hooks/useAppTheme";
+import { isProfileModalOpenAtom } from "./ProfileModal";
+import dayjs from "dayjs";
+import { useEffect } from "react";
+
+const getCalendarData = (
+  studyCalendar: {
+    wordSlug: string;
+    updatedAt: Date;
+  }[] = [],
+) => {
+  const _studyCalendar = studyCalendar.map((e) => ({
+    ...e,
+    updatedAt: dayjs(e.updatedAt).format("YYYY-MM-DD"),
+  }));
+
+  const start = dayjs().subtract(6, "month");
+  const end = dayjs();
+  const result: Activity[] = [];
+
+  let currentDate = start;
+  while (currentDate.isBefore(end.add(1, "day"))) {
+    const date = currentDate.format("YYYY-MM-DD");
+    const activity: Activity = { date, count: 0, level: 0 };
+    const count = _studyCalendar.filter((e) => e.updatedAt === date).length;
+    if (count > 0) {
+      const level = Math.min(Math.ceil(count / 10), 4);
+      activity.count = count;
+      activity.level = level;
+    }
+    result.push(activity);
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return result;
+};
 
 export const StudyCalendar = () => {
   const { isDarkMode } = useAppTheme();
 
-  //TODO: replace mock data to real db data
-  const data = [
-    {
-      date: "2024-06-23",
-      count: 2,
-      level: 1,
-    },
-    {
-      date: "2024-07-05",
-      count: 3,
-      level: 1,
-    },
-    {
-      date: "2024-08-02",
-      count: 16,
-      level: 4,
-    },
-    {
-      date: "2024-09-01",
-      count: 16,
-      level: 4,
-    },
-    {
-      date: "2024-10-11",
-      count: 12,
-      level: 3,
-    },
-    {
-      date: "2024-11-29",
-      count: 11,
-      level: 3,
-    },
-    {
-      date: "2024-11-30",
-      count: 9,
-      level: 2,
-    },
-    {
-      date: "2024-12-01",
-      count: 11,
-      level: 3,
-    },
-  ];
+  const isProfileModalOpen = useAtomValue(isProfileModalOpenAtom);
+
+  const getStudyCalendarQuery = useGetStudyCalendarQuery({
+    enabled: isProfileModalOpen,
+  });
+
+  const { studyCalendar = [] } = getStudyCalendarQuery.data || {};
+
+  const calendarData = getCalendarData(studyCalendar);
+
+  useEffect(() => {
+    if (isProfileModalOpen) {
+      getStudyCalendarQuery.refetch();
+    }
+  }, [isProfileModalOpen]);
 
   return (
     <ActivityCalendar
       colorScheme={isDarkMode ? "dark" : "light"}
-      data={data}
-      loading={false}
+      data={calendarData}
+      blockRadius={0}
+      loading={getStudyCalendarQuery.isFetching}
       maxLevel={4}
       theme={{
         light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
         dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
       }}
       renderBlock={(block, activity) => (
-        <Tooltip content={`${activity.count} activities on ${activity.date}`}>
+        <Tooltip
+          content={
+            activity.count > 0
+              ? `${activity.date}学习了${activity.count}个单词`
+              : `${activity.date}未学习`
+          }
+        >
           {block}
         </Tooltip>
       )}
+      labels={{
+        totalCount: `近半年共学习 ${studyCalendar.length} 个单词`,
+        legend: { less: "低", more: "高" },
+      }}
       renderColorLegend={(block, level) => (
-        <Tooltip content={`Level: ${level}`}>{block}</Tooltip>
+        <Tooltip content={`Level ${level}`}>{block}</Tooltip>
       )}
     />
   );

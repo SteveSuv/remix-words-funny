@@ -16,6 +16,7 @@ import { getIsWordDone } from "./loader/getIsWordDone";
 import { getIsBookStar } from "./loader/getIsBookStar";
 import { getDoneWordsOfBook } from "./loader/getDoneWordsOfBook";
 import { getUnDoneWordsOfBook } from "./loader/getUnDoneWordsOfBook";
+import { getStudyCalendar } from "./loader/getStudyCalendar";
 
 // actions
 import { doneWord } from "./action/doneWord";
@@ -45,6 +46,7 @@ export const appRouter = t.router({
     getIsBookStar,
     getDoneWordsOfBook,
     getUnDoneWordsOfBook,
+    getStudyCalendar,
   }),
   action: t.router({
     doneWord,
