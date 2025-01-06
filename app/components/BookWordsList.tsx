@@ -10,13 +10,12 @@ import { useEffect, useRef } from "react";
 import { usedebounceSearchWord } from "~/hooks/usedebounceSearchWord";
 import { listTabAtom, ListTabType } from "./ListTabs";
 import { useAtomValue } from "jotai";
-
-type IParams = { bookSlug: string };
+import { IPageWordsParams } from "~/common/types";
 
 const pageSize = 20;
 
 export const BookWordsList = () => {
-  const { bookSlug = "" } = useParams<IParams>();
+  const { bookSlug = "" } = useParams<IPageWordsParams>();
   const { searchWord } = usedebounceSearchWord();
   const listTab = useAtomValue(listTabAtom);
 

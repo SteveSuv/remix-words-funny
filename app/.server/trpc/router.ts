@@ -18,6 +18,8 @@ import { getDoneWordsOfBook } from "./loader/getDoneWordsOfBook";
 import { getUnDoneWordsOfBook } from "./loader/getUnDoneWordsOfBook";
 import { getStudyCalendar } from "./loader/getStudyCalendar";
 import { getWordComments } from "./loader/getWordComments";
+import { getPostVote } from "./loader/getPostVote";
+import { getIsPostVote } from "./loader/getIsPostVote";
 
 // actions
 import { doneWord } from "./action/doneWord";
@@ -30,6 +32,8 @@ import { updatePassword } from "./action/updatePassword";
 import { starBook } from "./action/starBook";
 import { unStarBook } from "./action/unStarBook";
 import { sendComment } from "./action/sendComment";
+import { votePost } from "./action/votePost";
+import { unVotePost } from "./action/unVotePost";
 
 export const appRouter = t.router({
   loader: t.router({
@@ -50,6 +54,8 @@ export const appRouter = t.router({
     getUnDoneWordsOfBook,
     getStudyCalendar,
     getWordComments,
+    getPostVote,
+    getIsPostVote,
   }),
   action: t.router({
     doneWord,
@@ -62,6 +68,8 @@ export const appRouter = t.router({
     starBook,
     unStarBook,
     sendComment,
+    votePost,
+    unVotePost,
   }),
 });
 

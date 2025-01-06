@@ -11,20 +11,16 @@ export const DoneWordButton = ({
   wordSlug: string;
   onPress?: Function;
 }) => {
-  const doneWordMutation = useDoneWordMutation({ wordSlug });
-
   const { isLogin } = useMyUserInfo();
-
-  if (!isLogin) return null;
-
-  const isLoading = doneWordMutation.isPending;
+  const doneWordMutation = useDoneWordMutation({ wordSlug });
 
   return (
     <Button
       variant="light"
       isIconOnly
       size="sm"
-      isLoading={isLoading}
+      isDisabled={!isLogin}
+      isLoading={doneWordMutation.isPending}
       onPress={async () => {
         await doneWordMutation.mutateAsync();
         await onPress?.();

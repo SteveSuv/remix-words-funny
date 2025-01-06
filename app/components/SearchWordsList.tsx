@@ -8,11 +8,10 @@ import { WordListIem } from "~/components/WordListIem";
 import { useEffect, useRef } from "react";
 import { usedebounceSearchWord } from "~/hooks/usedebounceSearchWord";
 import { useParams } from "react-router";
-
-type IParams = { bookSlug: string };
+import { IPageWordsParams } from "~/common/types";
 
 export const SearchWordsList = () => {
-  const { bookSlug = "" } = useParams<IParams>();
+  const { bookSlug = "" } = useParams<IPageWordsParams>();
 
   const { searchWord } = usedebounceSearchWord();
 

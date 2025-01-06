@@ -1,3 +1,5 @@
+import * as schema from "~/.server/db/schema";
+
 export type IUserInfo =
   | {
       id: number;
@@ -15,4 +17,16 @@ export type IBookItem = {
   cover: string;
   name: string;
   wordsCount: number;
+};
+
+export type IPageWordsParams = { bookSlug: string };
+
+export type ICommentItem = {
+  User: typeof schema.User.$inferSelect;
+  Post: typeof schema.Post.$inferSelect;
+};
+
+export type IWordItem = {
+  Book?: typeof schema.Book.$inferSelect;
+  Word: typeof schema.Word.$inferSelect;
 };

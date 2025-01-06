@@ -183,16 +183,37 @@ export const UsersToWords = pgTable(
   }),
 );
 
+export const UsersToPostsVote = pgTable(
+  "UsersToPostsVote",
+  {
+    userId: integer("userId")
+      .notNull()
+      .references(() => User.id),
+    postId: integer("postId")
+      .notNull()
+      .references(() => Post.id),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt")
+      .notNull()
+      .$onUpdateFn(() => new Date()),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.postId] }),
+  }),
+);
+
 // table relations
 export const UserRelations = relations(User, ({ many }) => ({
   UsersToBooks: many(UsersToBooks),
   UsersToWords: many(UsersToWords),
+  UsersToPostsVote: many(UsersToPostsVote),
   Posts: many(Post),
 }));
 
 export const PostRelations = relations(Post, ({ one, many }) => ({
   User: one(User, { fields: [Post.userId], references: [User.id] }),
   Word: one(Word, { fields: [Post.wordSlug], references: [Word.slug] }),
+  UsersToPostsVote: many(UsersToPostsVote),
   Posts: many(Post),
 }));
 
@@ -271,3 +292,17 @@ export const UsersToWordsRelations = relations(UsersToWords, ({ one }) => ({
     references: [User.id],
   }),
 }));
+
+export const UsersToPostsVoteRelations = relations(
+  UsersToPostsVote,
+  ({ one }) => ({
+    post: one(Post, {
+      fields: [UsersToPostsVote.postId],
+      references: [Post.id],
+    }),
+    user: one(User, {
+      fields: [UsersToPostsVote.userId],
+      references: [User.id],
+    }),
+  }),
+);

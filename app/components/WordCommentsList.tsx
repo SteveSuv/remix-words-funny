@@ -1,4 +1,4 @@
-import { Divider, Spinner } from "@nextui-org/react";
+import { Button, Divider, Spinner } from "@nextui-org/react";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { SkeletonBox } from "./SkeletonBox";
@@ -8,7 +8,8 @@ import { UserAvatar } from "./UserAvatar";
 import dayjs from "dayjs";
 import { trpcClient } from "~/common/trpc";
 import { LuIcon } from "./LuIcon";
-import { SearchX, Sofa } from "lucide-react";
+import { SearchX, Sofa, ThumbsUp } from "lucide-react";
+import { WordCommentItem } from "./WordCommentItem";
 
 const pageSize = 20;
 
@@ -66,30 +67,9 @@ export const WordCommentsList = () => {
 
     return (
       <div className="flex flex-col gap-2">
-        {allComments.map(
-          ({ User: { name }, Post: { content, updatedAt } }, index) => {
-            return (
-              <div key={index} className="flex flex-col gap-2">
-                <div className="flex items-start gap-2">
-                  <div className="flex w-full flex-1 flex-col justify-center gap-1">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <UserAvatar name={name} size={20} />
-                        <div className="text-foreground-400">{name}</div>
-                      </div>
-                      <small className="text-foreground-400">
-                        {dayjs(updatedAt).format("YYYY-MM-DD HH:mm")}
-                      </small>
-                    </div>
-
-                    <div className="break-words">{content}</div>
-                    <Divider className="my-2" />
-                  </div>
-                </div>
-              </div>
-            );
-          },
-        )}
+        {allComments.map((comment, index) => {
+          return <WordCommentItem key={index} comment={comment} />;
+        })}
         <div
           ref={sentryRef}
           className="my-4 text-center text-small text-foreground-400"

@@ -11,13 +11,8 @@ export const UnDoneWordButton = ({
   wordSlug: string;
   onPress?: Function;
 }) => {
-  const unDoneWordMutation = useUnDoneWordMutation({ wordSlug });
-
   const { isLogin } = useMyUserInfo();
-
-  if (!isLogin) return null;
-
-  const isLoading = unDoneWordMutation.isPending;
+  const unDoneWordMutation = useUnDoneWordMutation({ wordSlug });
 
   return (
     <Button
@@ -25,7 +20,8 @@ export const UnDoneWordButton = ({
       isIconOnly
       size="sm"
       color="success"
-      isLoading={isLoading}
+      isDisabled={!isLogin}
+      isLoading={unDoneWordMutation.isPending}
       onPress={async () => {
         await unDoneWordMutation.mutateAsync();
         await onPress?.();

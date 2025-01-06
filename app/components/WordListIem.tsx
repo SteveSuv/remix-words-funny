@@ -5,12 +5,7 @@ import { useSetAtom } from "jotai";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { Button } from "@nextui-org/react";
 import { useGetIsWordDoneQuery } from "~/hooks/request/query/useGetIsWordDoneQuery";
-import * as schema from "~/.server/db/schema";
-
-type IWordItem = {
-  Book?: typeof schema.Book.$inferSelect;
-  Word: typeof schema.Word.$inferSelect;
-};
+import { IWordItem } from "~/common/types";
 
 export const WordListIem = ({ item }: { item: IWordItem }) => {
   const setWordDetailSlug = useSetAtom(wordDetailSlugAtom);
