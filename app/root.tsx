@@ -34,6 +34,12 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="study english words so funny" />
+        <meta name="keywords" content="english,words,study" />
+        <meta name="author" content="https://github.com/SteveSuv" />
+        <meta
+          name="repository"
+          content="https://github.com/SteveSuv/remix-words-funny"
+        />
         <Meta />
         <Links />
         <title>WordsFunny</title>

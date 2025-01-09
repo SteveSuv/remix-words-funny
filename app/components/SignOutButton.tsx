@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import { isSettingModalOpenAtom } from "./SettingModal";
 import { useSetAtom } from "jotai";
 import { useSignOutMutation } from "~/hooks/request/mutation/useSignOutMutation";
+import { LuIcon } from "./LuIcon";
+import { LogOut } from "lucide-react";
 
 export const SignOutButton = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -23,9 +25,15 @@ export const SignOutButton = () => {
   return (
     <>
       <Button variant="flat" color="danger" onPress={onOpen}>
+        <LuIcon icon={LogOut} />
         登出账号
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
+      <Modal
+        isOpen={isOpen}
+        placement="bottom"
+        onOpenChange={onOpenChange}
+        backdrop="blur"
+      >
         <ModalContent>
           {(onClose) => {
             return (

@@ -47,6 +47,7 @@ export const BookPanelItem = ({ item }: { item: IBookItem }) => {
         >
           <div className="flex items-center gap-4">
             <Image
+              alt={item.slug}
               src={`/books/${item.slug}.jpg`}
               height={60}
               width={60 * ratio}

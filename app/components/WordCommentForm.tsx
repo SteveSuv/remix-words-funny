@@ -8,6 +8,7 @@ import { commentForm } from "~/common/formSchema";
 import toast from "react-hot-toast";
 import { FormFieldError } from "./FormFieldError";
 import { useQueryClient } from "@tanstack/react-query";
+import { clsx } from "~/common/clsx";
 
 export const WordCommentForm = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
@@ -33,12 +34,17 @@ export const WordCommentForm = () => {
           form.reset();
         })}
       >
-        <div className="flex flex-col gap-2">
+        <div
+          className={clsx(
+            "flex flex-col gap-2",
+            !isLogin && "cursor-not-allowed",
+          )}
+        >
           <Textarea
             {...form.register("comment")}
             isDisabled={!isLogin}
             variant="bordered"
-            placeholder="给同学留个评论"
+            placeholder="留个评论"
           />
           <FormFieldError message={form.formState.errors.comment?.message} />
           <Button

@@ -11,6 +11,7 @@ import {
 import { SignOutButton } from "./SignOutButton";
 import { atom, useAtom } from "jotai";
 import { useAppTheme } from "~/hooks/useAppTheme";
+import { GithubButton } from "./GithubButton";
 
 export const isSettingModalOpenAtom = atom(false);
 
@@ -35,7 +36,10 @@ export const SettingModal = () => {
               <ModalBody>
                 <Listbox aria-label="settings">
                   <ListboxItem
-                    onPress={toggleTheme}
+                    onPress={() => {
+                      toggleTheme();
+                      onClose();
+                    }}
                     key="darkmode"
                     endContent={
                       <Switch
@@ -48,6 +52,7 @@ export const SettingModal = () => {
                   </ListboxItem>
                 </Listbox>
                 <SignOutButton />
+                <GithubButton />
               </ModalBody>
               <ModalFooter />
             </>

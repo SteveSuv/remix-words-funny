@@ -8,6 +8,7 @@ import { Button } from "@nextui-org/react";
 import { LuIcon } from "./LuIcon";
 import { Moon, Sun } from "lucide-react";
 import { useAppTheme } from "~/hooks/useAppTheme";
+import { GithubIconButton } from "./GithubIconButton";
 
 export const AppHeader = () => {
   const { myUserInfo } = useMyUserInfo();
@@ -29,9 +30,7 @@ export const AppHeader = () => {
             <div className="flex flex-col justify-center gap-1">
               <div className="font-bold">{myUserInfo.name}</div>
               {/* TODO: change mock data to real db data */}
-              <div className="text-xs text-foreground-400">
-                LV 6 - 今日已学习0小时
-              </div>
+              <div className="text-xs text-foreground-400">今日已学习0小时</div>
             </div>
           </div>
           <SettingButton />
@@ -39,9 +38,12 @@ export const AppHeader = () => {
       ) : (
         <div className="flex h-full items-center justify-between">
           <SignInButton />
-          <Button variant="light" isIconOnly onPress={toggleTheme}>
-            <LuIcon icon={isDarkMode ? Moon : Sun} />
-          </Button>
+          <div className="flex items-center gap-1">
+            <GithubIconButton />
+            <Button variant="light" isIconOnly onPress={toggleTheme}>
+              <LuIcon icon={isDarkMode ? Moon : Sun} />
+            </Button>
+          </div>
         </div>
       )}
     </div>
