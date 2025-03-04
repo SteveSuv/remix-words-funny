@@ -1,19 +1,14 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import { ReactNode } from "react";
-import { AppLayout } from "./components/AppLayout";
+import { AppLayout } from "~/components/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { trpcServer } from "./common/trpc";
-import { NextUIProvider } from "@nextui-org/react";
-import { GlobalComponents } from "./components/GlobalComponents";
+import { trpcServer } from "~/common/trpc";
+import { HeroUIProvider } from "@heroui/react";
+import { GlobalComponents } from "~/components/GlobalComponents";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { Route } from "./+types/root";
-import globalStyles from "./global.css?url";
-import fontMerriweatherStyles from "@fontsource/merriweather/index.css?url";
-
-export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: globalStyles },
-  { rel: "stylesheet", href: fontMerriweatherStyles },
-];
+import "~/global.css";
+import "@fontsource/merriweather";
 
 export const loader = async (args: Route.LoaderArgs) => {
   const [{ myUserInfo }, { allBooks }] = await Promise.all([
@@ -69,14 +64,14 @@ export default function App({
 }: Route.ComponentProps) {
   return (
     <NextThemesProvider attribute="class" defaultTheme="light">
-      <NextUIProvider>
+      <HeroUIProvider>
         <QueryClientProvider client={queryClient}>
           <AppLayout allBooks={allBooks}>
             <Outlet context={{ myUserInfo, allBooks }} />
           </AppLayout>
           <GlobalComponents />
         </QueryClientProvider>
-      </NextUIProvider>
+      </HeroUIProvider>
     </NextThemesProvider>
   );
 }

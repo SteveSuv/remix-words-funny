@@ -1,4 +1,4 @@
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
 import { Search } from "lucide-react";
 import { atom, useAtom } from "jotai";

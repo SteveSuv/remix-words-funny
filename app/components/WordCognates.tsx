@@ -1,4 +1,4 @@
-import { Divider, Chip } from "@nextui-org/react";
+import { Divider, Chip } from "@heroui/react";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { LinkWord } from "./LinkWord";

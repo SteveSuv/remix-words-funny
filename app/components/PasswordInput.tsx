@@ -1,4 +1,4 @@
-import { Button, Input, InputProps } from "@nextui-org/react";
+import { Button, Input, InputProps } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
 import { forwardRef, Ref, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";

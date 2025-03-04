@@ -1,4 +1,4 @@
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { SearchX } from "lucide-react";
@@ -8,7 +8,7 @@ import { WordCognates } from "./WordCognates";
 import { WordPhrases } from "./WordPhrases";
 import { WordSentences } from "./WordSentences";
 import { useGetWordDetailQuery } from "~/hooks/request/query/useGetWordDetailQuery";
-import { Link } from "react-router";
+import { href, Link } from "react-router";
 import { searchWordAtom } from "./SearchBar";
 import { WordAudioButton } from "./WordAudioButton";
 import { WordCommentForm } from "./WordCommentForm";
@@ -30,7 +30,7 @@ export const WordDetailPanel = () => {
     return (
       <div className="flex h-screen flex-col items-center justify-center">
         <Spinner size="lg" />
-        <div className="mt-4 text-foreground-400">查询中...</div>
+        <div className="text-foreground-400 mt-4 font-light">查询中...</div>
       </div>
     );
   }
@@ -39,7 +39,7 @@ export const WordDetailPanel = () => {
     return (
       <div className="flex h-screen flex-col items-center justify-center">
         <LuIcon size={100} className="text-foreground-300" icon={SearchX} />
-        <div className="mt-2 text-foreground-400">请选择查询词</div>
+        <div className="text-foreground-400 mt-2">请选择查询词</div>
       </div>
     );
 
@@ -54,7 +54,7 @@ export const WordDetailPanel = () => {
         <div className="font-Merriweather text-4xl">{word}</div>
 
         <Link
-          to={`/${bookSlug}/words`}
+          to={href("/:bookSlug/words", { bookSlug })}
           onClick={() => {
             setSearchWord("");
           }}
@@ -71,7 +71,7 @@ export const WordDetailPanel = () => {
         )}
 
         {!!remember && (
-          <div className="box-content border border-primary bg-primary-50 p-2">
+          <div className="border-primary bg-primary-50 box-content border p-2">
             {remember}
           </div>
         )}

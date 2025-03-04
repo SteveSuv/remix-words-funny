@@ -1,4 +1,4 @@
-import { Divider, Textarea, Button } from "@nextui-org/react";
+import { Divider, Textarea, Button } from "@heroui/react";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { useSendCommentMutation } from "~/hooks/request/mutation/useSendCommentMutation";
@@ -39,6 +39,7 @@ export const WordCommentForm = () => {
             "flex flex-col gap-2",
             !isLogin && "cursor-not-allowed",
           )}
+          title={!isLogin ? "请先登录" : ""}
         >
           <Textarea
             {...form.register("comment")}

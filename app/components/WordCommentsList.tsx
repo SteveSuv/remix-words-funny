@@ -1,4 +1,4 @@
-import { Button, Divider, Spinner } from "@nextui-org/react";
+import { Button, Divider, Spinner } from "@heroui/react";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { SkeletonBox } from "./SkeletonBox";
@@ -72,7 +72,7 @@ export const WordCommentsList = () => {
         })}
         <div
           ref={sentryRef}
-          className="my-4 text-center text-small text-foreground-400"
+          className="text-small text-foreground-400 my-4 text-center"
         >
           共 {totalCount} 条评论
         </div>

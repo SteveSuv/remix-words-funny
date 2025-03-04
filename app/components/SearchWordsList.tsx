@@ -1,4 +1,4 @@
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { SearchX } from "lucide-react";
 import { trpcClient } from "~/common/trpc";
 import { LuIcon } from "~/components/LuIcon";
@@ -60,36 +60,37 @@ export const SearchWordsList = () => {
     if (allWords.length === 0) {
       if (getWordsOfKeywordQuery.isFetching) {
         return (
-          <div className="flex h-screen flex-col items-center justify-center">
+          <div className="flex h-full flex-col items-center justify-center">
             <Spinner size="lg" />
-            <div className="mt-4 text-foreground-400">查询中...</div>
+            <div className="text-foreground-400 mt-4 font-light">查询中...</div>
           </div>
         );
       }
 
       return (
-        <div className="flex h-screen flex-col items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center">
           <LuIcon icon={SearchX} size={100} className="text-foreground-300" />
-          <div className="mt-4 text-foreground-400">无结果</div>
+          <div className="text-foreground-400 mt-4">无结果</div>
         </div>
       );
     }
 
     return (
-      <>
+      <div className="flex w-full flex-col">
         {allWords.map((item, index) => {
           return <WordListIem item={item} key={index} />;
         })}
-      </>
+        {renderEnd()}
+      </div>
     );
   };
 
-  const renderEndContent = () => {
+  const renderEnd = () => {
     if (getWordsOfKeywordQuery.isFetchingNextPage) {
       return (
         <div className="my-6 flex flex-col items-center justify-center">
           <Spinner />
-          <div className="mt-2 text-small text-foreground-400">查询中...</div>
+          <div className="text-small text-foreground-400 mt-2">查询中...</div>
         </div>
       );
     }
@@ -97,7 +98,7 @@ export const SearchWordsList = () => {
     return (
       <div
         ref={sentryRef}
-        className="my-6 text-center text-small text-foreground-400"
+        className="text-small text-foreground-400 my-6 text-center"
       >
         共 {totalCount} 个结果
       </div>
@@ -106,14 +107,11 @@ export const SearchWordsList = () => {
 
   return (
     <div
-      className="h-screen w-[calc(100vw-700px)] overflow-y-scroll"
+      className="h-[calc(100vh-75px)] w-[calc(100vw-700px)] overflow-y-scroll"
       ref={rootRef}
     >
       <div ref={topRef} />
-      <div className="flex w-full flex-col">
-        {renderContent()}
-        {renderEndContent()}
-      </div>
+      {renderContent()}
     </div>
   );
 };

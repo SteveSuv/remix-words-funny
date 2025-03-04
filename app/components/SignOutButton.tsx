@@ -6,7 +6,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useRevalidator } from "react-router";
 import toast from "react-hot-toast";
 import { isSettingModalOpenAtom } from "./SettingModal";

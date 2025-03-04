@@ -1,4 +1,4 @@
-import { Link } from "@nextui-org/react";
+import { Link } from "@heroui/react";
 import { UseFormReturn } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useCountdown } from "usehooks-ts";

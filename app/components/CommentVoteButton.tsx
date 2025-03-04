@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { ThumbsUp } from "lucide-react";
 import { LuIcon } from "./LuIcon";
 import { useGetPostVoteQuery } from "~/hooks/request/query/useGetPostVoteQuery";
@@ -31,6 +31,7 @@ export const CommentVoteButton = ({ postId }: { postId: number }) => {
         votePostMutation.isPending
       }
       isDisabled={!isLogin}
+      title={!isLogin ? "请先登录" : ""}
       onPress={async () => {
         if (isPostVote) {
           await unVotePostMutation.mutateAsync();

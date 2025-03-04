@@ -7,7 +7,7 @@ import {
   ModalFooter,
   Button,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { isSignInModalOpenAtom } from "./SignInModal";
 import { useZodForm } from "~/hooks/useZodForm";

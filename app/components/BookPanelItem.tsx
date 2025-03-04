@@ -1,5 +1,5 @@
-import { Button, Image } from "@nextui-org/react";
-import { Link, useParams, useRevalidator } from "react-router";
+import { Button, Image } from "@heroui/react";
+import { href, Link, useParams, useRevalidator } from "react-router";
 import { useSetAtom } from "jotai";
 import { clsx } from "~/common/clsx";
 import { searchWordAtom } from "./SearchBar";
@@ -33,11 +33,11 @@ export const BookPanelItem = ({ item }: { item: IBookItem }) => {
   const unStarBookMutation = useUnStarBookMutation({ bookSlug: item.slug });
 
   return (
-    <Link to={`/${item.slug}/words`}>
+    <Link to={href("/:bookSlug/words", { bookSlug: item.slug })}>
       <li className="list-none">
         <div
           className={clsx(
-            "group flex h-20 items-center justify-between border-b border-foreground-100 px-4 hover:bg-primary-50",
+            "group border-foreground-100 hover:bg-primary-50 flex h-20 items-center justify-between border-b px-4",
             isActive && "border-b-primary bg-primary-50",
           )}
           onClick={() => {

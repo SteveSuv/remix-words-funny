@@ -23,7 +23,7 @@ A fullstack English words study website built with [remix-t3-stack](https://gith
 - vite
 - trpc
 - tailwindcss
-- nextui
+- heroUI
 - typescript
 - drizzle
 - postgresql

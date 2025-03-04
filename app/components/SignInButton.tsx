@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { useSetAtom } from "jotai";
 import { isSignInModalOpenAtom } from "./SignInModal";
 

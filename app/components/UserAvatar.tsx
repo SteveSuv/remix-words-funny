@@ -24,5 +24,5 @@ export const UserAvatar = ({
     );
   }
 
-  return <div className="h-[50px] w-[50px] bg-foreground-300" />;
+  return <div className="bg-foreground-300 h-[50px] w-[50px]" />;
 };

@@ -1,4 +1,4 @@
-import { Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@heroui/react";
 import { useAtomValue } from "jotai";
 import { Activity, ActivityCalendar } from "react-activity-calendar";
 import { useGetStudyCalendarQuery } from "~/hooks/request/query/useGetStudyCalendarQuery";

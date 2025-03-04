@@ -9,7 +9,7 @@ export default function PageWords() {
 
   return (
     <div className="flex flex-col">
-      <div className="sticky left-0 top-0 z-10 p-4">
+      <div className="sticky top-0 left-0 z-10 p-4">
         <div className="flex items-center justify-between">
           <ListTabs />
           <SearchBar />

@@ -13,7 +13,7 @@ export const AppLayout = ({
 }) => {
   return (
     <main className="flex h-screen w-screen overflow-hidden">
-      <div className="h-screen w-[350px] bg-foreground-50 shadow-small">
+      <div className="bg-foreground-50 shadow-small h-screen w-[350px]">
         <AppHeader />
         <div className="h-[calc(100vh-80px)] overflow-y-scroll">
           <BooksPanel allBooks={allBooks} />
@@ -22,7 +22,7 @@ export const AppLayout = ({
 
       <div className="flex flex-1">{children}</div>
 
-      <div className="h-screen w-[400px] overflow-y-scroll bg-foreground-50 shadow-small">
+      <div className="bg-foreground-50 shadow-small h-screen w-[400px] overflow-y-scroll">
         <WordDetailPanel />
       </div>
     </main>

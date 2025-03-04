@@ -9,7 +9,7 @@ export const LinkWord = ({ word }: { word: string }) => {
       {word.split(" ").map((item, index) => {
         return (
           <div
-            className="cursor-pointer text-primary hover:underline"
+            className="text-primary cursor-pointer hover:underline"
             key={index}
             onClick={() => {
               setSearchWord(

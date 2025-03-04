@@ -7,7 +7,7 @@ import {
   ModalFooter,
   Button,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { isSignInModalOpenAtom } from "./SignInModal";
 import { useZodForm } from "~/hooks/useZodForm";
@@ -72,7 +72,7 @@ export const SignUpModal = () => {
                       onPress={(e) => {
                         form.setValue(
                           "name",
-                          Chance().name().replace(/\s/g, ""),
+                          Chance().name().replace(/\s/g, "").slice(0, 16),
                           {
                             shouldValidate: true,
                             shouldDirty: true,

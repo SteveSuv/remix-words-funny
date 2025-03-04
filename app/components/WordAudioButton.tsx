@@ -1,11 +1,18 @@
-import { Button } from "@nextui-org/react";
-import { useRef, useState } from "react";
+import { Button } from "@heroui/react";
+import { useEffect, useRef, useState } from "react";
 import { LuIcon } from "./LuIcon";
 import { PauseCircle, PlayCircle } from "lucide-react";
+import { useAtomValue } from "jotai";
+import { wordDetailSlugAtom } from "./WordDetailPanel";
 
 export const WordAudioButton = ({ word }: { word: string }) => {
+  const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [wordDetailSlug]);
 
   return (
     <>

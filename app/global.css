@@ -1,3 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
+@layer base {
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}

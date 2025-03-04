@@ -4,7 +4,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { atom, useAtom } from "jotai";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { UserAvatar } from "./UserAvatar";

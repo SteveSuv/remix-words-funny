@@ -4,7 +4,7 @@ import { SignInButton } from "./SignInButton";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { useSetAtom } from "jotai";
 import { isProfileModalOpenAtom } from "./ProfileModal";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
 import { Moon, Sun } from "lucide-react";
 import { useAppTheme } from "~/hooks/useAppTheme";
@@ -17,7 +17,7 @@ export const AppHeader = () => {
   const setIsProfileModalOpen = useSetAtom(isProfileModalOpenAtom);
 
   return (
-    <div className="h-[75px] border-b border-foreground-100 px-4">
+    <div className="border-foreground-100 h-[75px] border-b px-4">
       {myUserInfo ? (
         <div className="flex h-full items-center justify-between">
           <div
@@ -30,7 +30,7 @@ export const AppHeader = () => {
             <div className="flex flex-col justify-center gap-1">
               <div className="font-bold">{myUserInfo.name}</div>
               {/* TODO: change mock data to real db data */}
-              <div className="text-xs text-foreground-400">今日已学习0小时</div>
+              <div className="text-foreground-400 text-xs">今日已学习0小时</div>
             </div>
           </div>
           <SettingButton />

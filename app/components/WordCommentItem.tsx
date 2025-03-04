@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { UserAvatar } from "./UserAvatar";
 import { ICommentItem } from "~/common/types";
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 import { CommentVoteButton } from "./CommentVoteButton";
 
 export const WordCommentItem = ({

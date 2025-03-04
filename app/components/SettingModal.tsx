@@ -7,7 +7,7 @@ import {
   ListboxItem,
   Switch,
   ModalFooter,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { SignOutButton } from "./SignOutButton";
 import { atom, useAtom } from "jotai";
 import { useAppTheme } from "~/hooks/useAppTheme";

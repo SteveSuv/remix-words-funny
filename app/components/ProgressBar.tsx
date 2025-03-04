@@ -1,4 +1,4 @@
-import { Progress } from "@nextui-org/react";
+import { Progress } from "@heroui/react";
 import { useNavigation } from "react-router";
 
 export const ProgressBar = () => {

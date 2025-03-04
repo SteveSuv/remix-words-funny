@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { Check } from "lucide-react";
 import { LuIcon } from "./LuIcon";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
@@ -20,6 +20,7 @@ export const DoneWordButton = ({
       isIconOnly
       size="sm"
       isDisabled={!isLogin}
+      title={!isLogin ? "请先登录" : ""}
       isLoading={doneWordMutation.isPending}
       onPress={async () => {
         await doneWordMutation.mutateAsync();

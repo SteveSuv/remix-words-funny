@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
 import { Settings } from "lucide-react";
 import { useSetAtom } from "jotai";

@@ -8,7 +8,7 @@ import {
   ModalFooter,
   Button,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { isSignUpModalOpenAtom } from "./SignUpModal";
 import { isUpdatePasswordModalOpenAtom } from "./UpdatePasswordModal";

@@ -3,7 +3,7 @@ import { UnDoneWordButton } from "./UnDoneWordButton";
 import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { useSetAtom } from "jotai";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { useGetIsWordDoneQuery } from "~/hooks/request/query/useGetIsWordDoneQuery";
 import { IWordItem } from "~/common/types";
 
@@ -59,7 +59,7 @@ export const WordListIem = ({ item }: { item: IWordItem }) => {
 
   return (
     <div
-      className="box-border flex h-20 cursor-pointer items-center justify-between border-b border-foreground-100 px-8 hover:bg-primary-50"
+      className="border-foreground-100 hover:bg-primary-50 box-border flex h-20 cursor-pointer items-center justify-between border-b px-8"
       onClick={() => {
         setWordDetailSlug(wordSlug);
       }}
