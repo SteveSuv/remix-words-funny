@@ -1,4 +1,11 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import {
+  Links,
+  LinksFunction,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "react-router";
 import { ReactNode } from "react";
 import { AppLayout } from "~/components/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -7,8 +14,8 @@ import { HeroUIProvider } from "@heroui/react";
 import { GlobalComponents } from "~/components/GlobalComponents";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { Route } from "./+types/root";
-import "~/global.css";
-import "@fontsource/merriweather";
+import globalStyle from "~/global.css?url";
+import merriweatherStyle from "@fontsource/merriweather/latin-400?url";
 
 export const loader = async (args: Route.LoaderArgs) => {
   const [{ myUserInfo }, { allBooks }] = await Promise.all([
@@ -16,6 +23,19 @@ export const loader = async (args: Route.LoaderArgs) => {
     trpcServer(args.request).loader.getAllBooks.query(),
   ]);
   return { myUserInfo, allBooks };
+};
+
+export const links: LinksFunction = () => {
+  return [
+    {
+      rel: "stylesheet",
+      href: globalStyle,
+    },
+    {
+      rel: "stylesheet",
+      href: merriweatherStyle,
+    },
+  ];
 };
 
 export function Layout({ children }: { children: ReactNode }) {

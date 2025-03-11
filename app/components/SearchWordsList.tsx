@@ -90,7 +90,9 @@ export const SearchWordsList = () => {
       return (
         <div className="my-6 flex flex-col items-center justify-center">
           <Spinner />
-          <div className="text-small text-foreground-400 mt-2">查询中...</div>
+          <div className="text-small text-foreground-400 mt-2 font-light">
+            查询中...
+          </div>
         </div>
       );
     }
