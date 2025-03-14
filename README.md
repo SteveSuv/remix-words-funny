@@ -11,7 +11,7 @@ A fullstack English words study website built with [remix-t3-stack](https://gith
 - type safe form with `zod` by `useZodForm`
 - no need to export `action` in routes, just call `trpcClient.action` to mutate anywhere
 - request with permission control by `trpc middlewares`
-- deploy by `docker`
+- deploy by `docker` or `pm2`
 - support dark mode by `useAppTheme`
 - use `drizzle` to keep type safe with `postgresql` db
 - toast request error automatically
@@ -64,7 +64,7 @@ docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/
 - run command `pnpm db:push` to sync db structs and drizzle schema
 - download csv data file: https://mypikpak.com/s/VOEs95bTB0KGAg75t0Nrs-oOo1
 - use your favorite db tool like [TablePlus](https://tableplus.com/) to connect the postgres db
-- insert db data by import csv files to tables. Notice! you should first import `Book`, then `Word`, then others, because tables have some relations.
+- insert db data by import csv files to tables. Notice! you should first import `Book`, then `Word`, then others, because tables have some relations
 - run `pnpm db:task`, if print `total words count: 152543` means the postgres db is running ok
 
 4. init email server (optional, if you don't want to send login verify code)
@@ -88,13 +88,13 @@ pnpm start
 
 # how to deploy
 
-deploy by docker
+- deploy by docker
 
 ```
 pnpm run deploy
 ```
 
-deploy by pm2
+- deploy by pm2
 
 ```
 # push files to server
@@ -110,4 +110,4 @@ ssh root@HOST "cd ~/remix-words-funny && pm2 start npm -- start"
 - when you dev local, you should run `docker stop wordsfunny-app` first to stop container to avoid port 3001 occupation
 - words resource [repo](https://github.com/kajweb/dict)
 - more features will be added gradually
-- a more simply `remix-t3-stack` project for beginners is here: [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
+- a more simple `remix-t3-stack` project for beginners is here: [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
