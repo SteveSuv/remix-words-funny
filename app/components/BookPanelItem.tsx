@@ -51,7 +51,6 @@ export const BookPanelItem = ({ item }: { item: IBookItem }) => {
               src={`/books/${item.slug}.webp`}
               height={60}
               width={60 * ratio}
-              loading="lazy"
             />
             <div className="flex flex-col">
               <div className="w-[200px] truncate">{item.name}</div>
