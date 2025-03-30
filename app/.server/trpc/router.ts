@@ -13,7 +13,7 @@ import { getWordSentences } from "./loader/getWordSentences";
 import { getWordSynonyms } from "./loader/getWordSynonyms";
 import { getWordTranslations } from "./loader/getWordTranslations";
 import { getIsWordDone } from "./loader/getIsWordDone";
-import { getIsBookStar } from "./loader/getIsBookStar";
+import { getStarBooks } from "./loader/getStarBooks";
 import { getDoneWordsOfBook } from "./loader/getDoneWordsOfBook";
 import { getUnDoneWordsOfBook } from "./loader/getUnDoneWordsOfBook";
 import { getStudyCalendar } from "./loader/getStudyCalendar";
@@ -49,7 +49,7 @@ export const appRouter = t.router({
     getWordTranslations,
     getWordsOfBook,
     getIsWordDone,
-    getIsBookStar,
+    getStarBooks,
     getDoneWordsOfBook,
     getUnDoneWordsOfBook,
     getStudyCalendar,

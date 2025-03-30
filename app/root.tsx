@@ -18,11 +18,12 @@ import globalStyle from "~/global.css?url";
 import merriweatherStyle from "@fontsource/merriweather/latin-400?url";
 
 export const loader = async (args: Route.LoaderArgs) => {
-  const [{ myUserInfo }, { allBooks }] = await Promise.all([
+  const [{ myUserInfo }, { allBooks }, { starBooks }] = await Promise.all([
     trpcServer(args.request).loader.getMyUserInfo.query(),
     trpcServer(args.request).loader.getAllBooks.query(),
+    trpcServer(args.request).loader.getStarBooks.query(),
   ]);
-  return { myUserInfo, allBooks };
+  return { myUserInfo, allBooks, starBooks };
 };
 
 export const links: LinksFunction = () => {
@@ -80,14 +81,14 @@ const queryClient = new QueryClient({
 });
 
 export default function App({
-  loaderData: { myUserInfo, allBooks },
+  loaderData: { myUserInfo, allBooks, starBooks },
 }: Route.ComponentProps) {
   return (
     <NextThemesProvider attribute="class" defaultTheme="light">
       <HeroUIProvider>
         <QueryClientProvider client={queryClient}>
-          <AppLayout allBooks={allBooks}>
-            <Outlet context={{ myUserInfo, allBooks }} />
+          <AppLayout allBooks={allBooks} starBooks={starBooks}>
+            <Outlet context={{ myUserInfo }} />
           </AppLayout>
           <GlobalComponents />
         </QueryClientProvider>

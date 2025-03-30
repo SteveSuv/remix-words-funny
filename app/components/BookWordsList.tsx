@@ -7,7 +7,7 @@ import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { WordListIem } from "~/components/WordListIem";
 import { useEffect, useRef } from "react";
-import { usedebounceSearchWord } from "~/hooks/usedebounceSearchWord";
+import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { listTabAtom, ListTabType } from "./ListTabs";
 import { useAtomValue } from "jotai";
@@ -17,7 +17,7 @@ const pageSize = 20;
 
 export const BookWordsList = () => {
   const { bookSlug = "" } = useParams<IPageWordsParams>();
-  const { searchWord } = usedebounceSearchWord();
+  const { searchWord } = useDebounceSearchWord();
   const { isLogin } = useMyUserInfo();
   const listTab = useAtomValue(listTabAtom);
 
@@ -171,10 +171,7 @@ export const BookWordsList = () => {
   };
 
   return (
-    <div
-      className="h-[calc(100vh-75px)] w-[calc(100vw-700px)] overflow-y-scroll"
-      ref={rootRef}
-    >
+    <div className="h-[calc(100vh-75px)] overflow-y-scroll" ref={rootRef}>
       <div ref={topRef} />
       {renderContent()}
     </div>

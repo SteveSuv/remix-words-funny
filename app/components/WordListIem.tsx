@@ -24,7 +24,7 @@ export const WordListIem = ({ item }: { item: IWordItem }) => {
   const renderAction = () => {
     if (!isLogin) return null;
 
-    if (getIsWordDoneQuery.isLoading) {
+    if (getIsWordDoneQuery.isFetching) {
       return (
         <Button
           variant="light"

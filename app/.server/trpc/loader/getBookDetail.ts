@@ -19,6 +19,5 @@ export const getBookDetail = p.public
   )
   .query(async ({ input: { bookSlug } }) => {
     const [bookDetail] = await prepare.execute({ bookSlug });
-
     return { bookDetail };
   });
