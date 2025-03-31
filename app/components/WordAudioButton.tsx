@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { LuIcon } from "./LuIcon";
 import { PauseCircle, PlayCircle } from "lucide-react";
 import { useAtomValue } from "jotai";
-import { wordDetailSlugAtom } from "./WordDetailPanel";
+import { wordDetailSlugAtom } from "~/common/store";
 
 export const WordAudioButton = ({ word }: { word: string }) => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);

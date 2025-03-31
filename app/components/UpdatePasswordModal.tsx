@@ -8,8 +8,7 @@ import {
   Button,
   Link,
 } from "@heroui/react";
-import { atom, useAtom, useSetAtom } from "jotai";
-import { isSignInModalOpenAtom } from "./SignInModal";
+import { useAtom, useSetAtom } from "jotai";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { updatePasswordForm } from "~/common/formSchema";
@@ -17,8 +16,10 @@ import toast from "react-hot-toast";
 import { SendVerifyCodeButton } from "./SendVerifyCodeButton";
 import { PasswordInput } from "./PasswordInput";
 import { useUpdatePasswordMutation } from "~/hooks/request/mutation/useUpdatePasswordMutation";
-
-export const isUpdatePasswordModalOpenAtom = atom(false);
+import {
+  isSignInModalOpenAtom,
+  isUpdatePasswordModalOpenAtom,
+} from "~/common/store";
 
 export const UpdatePasswordModal = () => {
   const [isUpdatePasswordModalOpen, setIsUpdatePasswordModalOpen] = useAtom(

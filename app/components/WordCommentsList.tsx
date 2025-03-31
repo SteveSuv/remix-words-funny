@@ -1,15 +1,12 @@
-import { Button, Divider, Spinner } from "@heroui/react";
 import { useAtomValue } from "jotai";
-import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { SkeletonBox } from "./SkeletonBox";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { UserAvatar } from "./UserAvatar";
-import dayjs from "dayjs";
 import { trpcClient } from "~/common/trpc";
 import { LuIcon } from "./LuIcon";
-import { SearchX, Sofa, ThumbsUp } from "lucide-react";
+import { Sofa } from "lucide-react";
 import { WordCommentItem } from "./WordCommentItem";
+import { wordDetailSlugAtom } from "~/common/store";
 
 const pageSize = 20;
 
@@ -26,7 +23,7 @@ export const WordCommentsList = () => {
       });
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.wordComments.length === 0) {
         return undefined;
       }

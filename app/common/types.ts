@@ -30,3 +30,9 @@ export type IWordItem = {
   Book?: typeof schema.Book.$inferSelect;
   Word: typeof schema.Word.$inferSelect;
 };
+
+export enum ListTabType {
+  ALL = "ALL",
+  DONE = "DONE",
+  UNDONE = "UNDONE",
+}

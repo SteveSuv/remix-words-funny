@@ -1,6 +1,6 @@
 import { Button } from "@heroui/react";
 import { useSetAtom } from "jotai";
-import { isSignInModalOpenAtom } from "./SignInModal";
+import { isSignInModalOpenAtom } from "~/common/store";
 
 export const SignInButton = () => {
   const setIsSignInModalOpen = useSetAtom(isSignInModalOpenAtom);

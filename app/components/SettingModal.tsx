@@ -9,11 +9,10 @@ import {
   ModalFooter,
 } from "@heroui/react";
 import { SignOutButton } from "./SignOutButton";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useAppTheme } from "~/hooks/useAppTheme";
 import { GithubButton } from "./GithubButton";
-
-export const isSettingModalOpenAtom = atom(false);
+import { isSettingModalOpenAtom } from "~/common/store";
 
 export const SettingModal = () => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useAtom(

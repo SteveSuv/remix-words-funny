@@ -26,7 +26,7 @@ export const SearchWordsList = () => {
       });
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.wordsOfKeyword.length === 0) {
         return undefined;
       }

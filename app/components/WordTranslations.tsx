@@ -1,9 +1,9 @@
 import { Divider, Chip } from "@heroui/react";
 import { useAtomValue } from "jotai";
-import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { LinkWord } from "./LinkWord";
 import { SkeletonBox } from "./SkeletonBox";
 import { useGetWordTranslationsQuery } from "~/hooks/request/query/useGetWordTranslationsQuery";
+import { wordDetailSlugAtom } from "~/common/store";
 
 export const WordTranslations = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);

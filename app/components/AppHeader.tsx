@@ -3,12 +3,13 @@ import { SettingButton } from "./SettingButton";
 import { SignInButton } from "./SignInButton";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { useSetAtom } from "jotai";
-import { isProfileModalOpenAtom } from "./ProfileModal";
 import { Button } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
 import { Moon, Sun } from "lucide-react";
 import { useAppTheme } from "~/hooks/useAppTheme";
 import { GithubIconButton } from "./GithubIconButton";
+import { isProfileModalOpenAtom } from "~/common/store";
+import { CloseMenuButton } from "./CloseMenuButton";
 
 export const AppHeader = () => {
   const { myUserInfo } = useMyUserInfo();
@@ -17,7 +18,7 @@ export const AppHeader = () => {
   const setIsProfileModalOpen = useSetAtom(isProfileModalOpenAtom);
 
   return (
-    <div className="border-foreground-100 h-[75px] w-[350px] border-b px-4">
+    <div className="border-foreground-100 h-[75px] border-b px-4">
       {myUserInfo ? (
         <div className="flex h-full items-center justify-between">
           <div
@@ -33,7 +34,10 @@ export const AppHeader = () => {
               <div className="text-foreground-400 text-xs">今日已学习0小时</div>
             </div>
           </div>
-          <SettingButton />
+          <div className="flex items-center gap-1">
+            <SettingButton />
+            <CloseMenuButton />
+          </div>
         </div>
       ) : (
         <div className="flex h-full items-center justify-between">
@@ -43,6 +47,7 @@ export const AppHeader = () => {
             <Button variant="light" isIconOnly onPress={toggleTheme}>
               <LuIcon icon={isDarkMode ? Moon : Sun} />
             </Button>
+            <CloseMenuButton />
           </div>
         </div>
       )}

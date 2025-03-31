@@ -49,7 +49,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="study english words so funny" />
+        <meta name="description" content="study English words so funny" />
         <meta name="keywords" content="english,words,study" />
         <meta name="author" content="https://github.com/SteveSuv" />
         <meta

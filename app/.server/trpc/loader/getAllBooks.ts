@@ -16,7 +16,7 @@ const prepare = db
   .groupBy(Book.id)
   .prepare("prepare");
 
-export const getAllBooks = p.public.query(async ({ ctx: { userId } }) => {
+export const getAllBooks = p.public.query(async () => {
   const allBooks = await prepare.execute();
   return { allBooks };
 });

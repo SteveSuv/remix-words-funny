@@ -1,14 +1,8 @@
 import { Tab, Tabs } from "@heroui/react";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
+import { listTabAtom } from "~/common/store";
+import { ListTabType } from "~/common/types";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-
-export enum ListTabType {
-  ALL = "ALL",
-  DONE = "DONE",
-  UNDONE = "UNDONE",
-}
-
-export const listTabAtom = atom(ListTabType.ALL);
 
 export const ListTabs = () => {
   const [listTab, setListTab] = useAtom(listTabAtom);

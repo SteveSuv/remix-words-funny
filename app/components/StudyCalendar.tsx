@@ -3,9 +3,9 @@ import { useAtomValue } from "jotai";
 import { Activity, ActivityCalendar } from "react-activity-calendar";
 import { useGetStudyCalendarQuery } from "~/hooks/request/query/useGetStudyCalendarQuery";
 import { useAppTheme } from "~/hooks/useAppTheme";
-import { isProfileModalOpenAtom } from "./ProfileModal";
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import { isProfileModalOpenAtom } from "~/common/store";
 
 const getCalendarData = (
   studyCalendar: {

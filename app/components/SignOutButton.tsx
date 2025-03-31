@@ -9,11 +9,11 @@ import {
 } from "@heroui/react";
 import { useRevalidator } from "react-router";
 import toast from "react-hot-toast";
-import { isSettingModalOpenAtom } from "./SettingModal";
 import { useSetAtom } from "jotai";
 import { useSignOutMutation } from "~/hooks/request/mutation/useSignOutMutation";
 import { LuIcon } from "./LuIcon";
 import { LogOut } from "lucide-react";
+import { isSettingModalOpenAtom } from "~/common/store";
 
 export const SignOutButton = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

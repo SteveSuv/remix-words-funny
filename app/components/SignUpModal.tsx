@@ -8,8 +8,7 @@ import {
   Button,
   Link,
 } from "@heroui/react";
-import { atom, useAtom, useSetAtom } from "jotai";
-import { isSignInModalOpenAtom } from "./SignInModal";
+import { useAtom, useSetAtom } from "jotai";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { signUpForm } from "~/common/formSchema";
@@ -20,8 +19,7 @@ import { Dices } from "lucide-react";
 import { Chance } from "chance";
 import { PasswordInput } from "./PasswordInput";
 import { useSignUpMutation } from "~/hooks/request/mutation/useSignUpMutation";
-
-export const isSignUpModalOpenAtom = atom(false);
+import { isSignInModalOpenAtom, isSignUpModalOpenAtom } from "~/common/store";
 
 export const SignUpModal = () => {
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useAtom(
@@ -69,7 +67,7 @@ export const SignUpModal = () => {
                       variant="light"
                       size="sm"
                       isIconOnly
-                      onPress={(e) => {
+                      onPress={() => {
                         form.setValue(
                           "name",
                           Chance().name().replace(/\s/g, "").slice(0, 16),

@@ -2,14 +2,17 @@ import { Button, Image } from "@heroui/react";
 import { href, Link, useParams, useRevalidator } from "react-router";
 import { useSetAtom } from "jotai";
 import { clsx } from "~/common/clsx";
-import { searchWordAtom } from "./SearchBar";
-import { wordDetailSlugAtom } from "./WordDetailPanel";
 import { LuIcon } from "./LuIcon";
 import { Star } from "lucide-react";
 import { useStarBookMutation } from "~/hooks/request/mutation/useStarBookMutation";
 import { useUnStarBookMutation } from "~/hooks/request/mutation/useUnStarBookMutation";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { IBookItem } from "~/common/types";
+import {
+  isBooksPanelDrawerOpenAtom,
+  searchWordAtom,
+  wordDetailSlugAtom,
+} from "~/common/store";
 
 const ratio = 251 / 388;
 
@@ -23,6 +26,7 @@ export const BookPanelItem = ({
   const { bookSlug = "" } = useParams<{ bookSlug: string }>();
   const setSearchWord = useSetAtom(searchWordAtom);
   const setWordDetailSlug = useSetAtom(wordDetailSlugAtom);
+  const setIsBooksPanelDrawerOpen = useSetAtom(isBooksPanelDrawerOpenAtom);
   const { revalidate } = useRevalidator();
   const { isLogin } = useMyUserInfo();
 
@@ -41,6 +45,7 @@ export const BookPanelItem = ({
         onClick={() => {
           setSearchWord("");
           setWordDetailSlug("");
+          setIsBooksPanelDrawerOpen(false);
         }}
       >
         <div className="flex items-center gap-4">

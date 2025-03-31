@@ -1,6 +1,6 @@
 import { Spinner } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
-import { atom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { SearchX } from "lucide-react";
 import { WordTranslations } from "./WordTranslations";
 import { WordSynonyms } from "./WordSynonyms";
@@ -9,16 +9,22 @@ import { WordPhrases } from "./WordPhrases";
 import { WordSentences } from "./WordSentences";
 import { useGetWordDetailQuery } from "~/hooks/request/query/useGetWordDetailQuery";
 import { href, Link } from "react-router";
-import { searchWordAtom } from "./SearchBar";
 import { WordAudioButton } from "./WordAudioButton";
 import { WordCommentForm } from "./WordCommentForm";
 import { WordCommentsList } from "./WordCommentsList";
-
-export const wordDetailSlugAtom = atom("");
+import {
+  isWordDetailPanelDrawerOpenAtom,
+  searchWordAtom,
+  wordDetailSlugAtom,
+} from "~/common/store";
+import { CloseWordDetailDrawerButton } from "./CloseWordDetailDrawerButton";
 
 export const WordDetailPanel = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
   const setSearchWord = useSetAtom(searchWordAtom);
+  const setIsWordDetailPanelDrawerOpen = useSetAtom(
+    isWordDetailPanelDrawerOpenAtom,
+  );
 
   const getWordDetailQuery = useGetWordDetailQuery({
     wordSlug: wordDetailSlug,
@@ -28,7 +34,7 @@ export const WordDetailPanel = () => {
 
   if (getWordDetailQuery.isFetching) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center">
+      <div className="flex h-full flex-col items-center justify-center">
         <Spinner size="lg" />
         <div className="text-foreground-400 mt-4 font-light">查询中...</div>
       </div>
@@ -37,7 +43,7 @@ export const WordDetailPanel = () => {
 
   if (!wordDetail)
     return (
-      <div className="flex h-screen flex-col items-center justify-center">
+      <div className="flex h-full flex-col items-center justify-center">
         <LuIcon size={100} className="text-foreground-300" icon={SearchX} />
         <div className="text-foreground-400 mt-2">请选择查询词</div>
       </div>
@@ -51,12 +57,16 @@ export const WordDetailPanel = () => {
 
     return (
       <>
-        <div className="font-Merriweather text-4xl">{word}</div>
+        <div className="flex items-center justify-between">
+          <div className="font-Merriweather text-4xl">{word}</div>
+          <CloseWordDetailDrawerButton />
+        </div>
 
         <Link
           to={href("/:bookSlug/words", { bookSlug })}
           onClick={() => {
             setSearchWord("");
+            setIsWordDetailPanelDrawerOpen(false);
           }}
           className="text-foreground-400 hover:underline"
         >

@@ -1,6 +1,5 @@
 import { Divider, Textarea, Button } from "@heroui/react";
-import { useAtomValue } from "jotai";
-import { wordDetailSlugAtom } from "./WordDetailPanel";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useSendCommentMutation } from "~/hooks/request/mutation/useSendCommentMutation";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { useZodForm } from "~/hooks/useZodForm";
@@ -9,9 +8,16 @@ import toast from "react-hot-toast";
 import { FormFieldError } from "./FormFieldError";
 import { useQueryClient } from "@tanstack/react-query";
 import { clsx } from "~/common/clsx";
+import {
+  isWordDetailPanelDrawerOpenAtom,
+  wordDetailSlugAtom,
+} from "~/common/store";
 
 export const WordCommentForm = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
+  const setIsWordDetailPanelDrawerOpen = useSetAtom(
+    isWordDetailPanelDrawerOpenAtom,
+  );
   const { isLogin } = useMyUserInfo();
   const { form } = useZodForm(commentForm);
   const queryClient = useQueryClient();
@@ -30,6 +36,7 @@ export const WordCommentForm = () => {
           await queryClient.invalidateQueries({
             queryKey: ["getWordComments", wordDetailSlug],
           });
+          setIsWordDetailPanelDrawerOpen(false);
           toast.success("评论成功");
           form.reset();
         })}

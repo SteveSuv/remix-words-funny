@@ -9,9 +9,7 @@ import {
   Button,
   Link,
 } from "@heroui/react";
-import { atom, useAtom, useSetAtom } from "jotai";
-import { isSignUpModalOpenAtom } from "./SignUpModal";
-import { isUpdatePasswordModalOpenAtom } from "./UpdatePasswordModal";
+import { useAtom, useSetAtom } from "jotai";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { signInForm } from "~/common/formSchema";
@@ -19,8 +17,11 @@ import toast from "react-hot-toast";
 import { PasswordInput } from "./PasswordInput";
 import { useRevalidator } from "react-router";
 import { useSignInMutation } from "~/hooks/request/mutation/useSignInMutation";
-
-export const isSignInModalOpenAtom = atom(false);
+import {
+  isSignInModalOpenAtom,
+  isSignUpModalOpenAtom,
+  isUpdatePasswordModalOpenAtom,
+} from "~/common/store";
 
 export const SignInModal = () => {
   const [isSignInModalOpen, setIsSignInModalOpen] = useAtom(

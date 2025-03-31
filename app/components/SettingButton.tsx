@@ -2,7 +2,7 @@ import { Button } from "@heroui/react";
 import { LuIcon } from "./LuIcon";
 import { Settings } from "lucide-react";
 import { useSetAtom } from "jotai";
-import { isSettingModalOpenAtom } from "./SettingModal";
+import { isSettingModalOpenAtom } from "~/common/store";
 
 export const SettingButton = () => {
   const setIsSettingModalOpen = useSetAtom(isSettingModalOpenAtom);

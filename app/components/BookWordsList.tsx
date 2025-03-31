@@ -9,9 +9,9 @@ import { WordListIem } from "~/components/WordListIem";
 import { useEffect, useRef } from "react";
 import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-import { listTabAtom, ListTabType } from "./ListTabs";
 import { useAtomValue } from "jotai";
-import { IPageWordsParams } from "~/common/types";
+import { IPageWordsParams, ListTabType } from "~/common/types";
+import { listTabAtom } from "~/common/store";
 
 const pageSize = 20;
 
@@ -31,7 +31,7 @@ export const BookWordsList = () => {
       });
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.wordsOfBook.length === 0) {
         return undefined;
       }
@@ -53,7 +53,7 @@ export const BookWordsList = () => {
       });
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.doneWordsOfBook.length === 0) {
         return undefined;
       }
@@ -76,7 +76,7 @@ export const BookWordsList = () => {
       });
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.unDoneWordsOfBook.length === 0) {
         return undefined;
       }
