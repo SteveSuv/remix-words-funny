@@ -7,12 +7,12 @@ import {
   ModalFooter,
   Button,
   Link,
+  addToast,
 } from "@heroui/react";
 import { useAtom, useSetAtom } from "jotai";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { updatePasswordForm } from "~/common/formSchema";
-import toast from "react-hot-toast";
 import { SendVerifyCodeButton } from "./SendVerifyCodeButton";
 import { PasswordInput } from "./PasswordInput";
 import { useUpdatePasswordMutation } from "~/hooks/request/mutation/useUpdatePasswordMutation";
@@ -45,7 +45,7 @@ export const UpdatePasswordModal = () => {
             <form
               onSubmit={form.handleSubmit(async (data) => {
                 await updatePasswordMutation.mutateAsync(data);
-                toast.success("密码重设成功");
+                addToast({ title: "密码重设成功", color: "success" });
                 onClose();
                 setIsSignInModalOpen(true);
               })}

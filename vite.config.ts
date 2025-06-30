@@ -24,11 +24,9 @@ export default defineConfig({
               "zod",
               "tailwind-merge",
             ];
-
             for (const name of names) {
               if (id.includes(name)) return `vendor-${name}`;
             }
-
             return null;
           }
         },

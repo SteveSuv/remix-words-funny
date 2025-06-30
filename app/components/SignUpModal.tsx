@@ -7,12 +7,12 @@ import {
   ModalFooter,
   Button,
   Link,
+  addToast,
 } from "@heroui/react";
 import { useAtom, useSetAtom } from "jotai";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { signUpForm } from "~/common/formSchema";
-import toast from "react-hot-toast";
 import { SendVerifyCodeButton } from "./SendVerifyCodeButton";
 import { LuIcon } from "./LuIcon";
 import { Dices } from "lucide-react";
@@ -46,7 +46,7 @@ export const SignUpModal = () => {
             <form
               onSubmit={form.handleSubmit(async (data) => {
                 await signUpMutation.mutateAsync(data);
-                toast.success("注册成功");
+                addToast({ title: "注册成功", color: "success" });
                 onClose();
                 setIsSignInModalOpen(true);
               })}

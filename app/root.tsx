@@ -1,4 +1,5 @@
 import {
+  isRouteErrorResponse,
   Links,
   LinksFunction,
   Meta,
@@ -10,21 +11,20 @@ import { ReactNode } from "react";
 import { AppLayout } from "~/components/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpcServer } from "~/common/trpc";
-import { HeroUIProvider } from "@heroui/react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Code,
+  Divider,
+  HeroUIProvider,
+  ToastProvider,
+} from "@heroui/react";
 import { GlobalComponents } from "~/components/GlobalComponents";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { Route } from "./+types/root";
-import globalStyle from "~/global.css?url";
+import globalStyle from "~/styles/global.css?url";
 import merriweatherStyle from "@fontsource/merriweather/latin-400?url";
-
-export const loader = async (args: Route.LoaderArgs) => {
-  const [{ myUserInfo }, { allBooks }, { starBooks }] = await Promise.all([
-    trpcServer(args.request).loader.getMyUserInfo.query(),
-    trpcServer(args.request).loader.getAllBooks.query(),
-    trpcServer(args.request).loader.getStarBooks.query(),
-  ]);
-  return { myUserInfo, allBooks, starBooks };
-};
 
 export const links: LinksFunction = () => {
   return [
@@ -37,6 +37,15 @@ export const links: LinksFunction = () => {
       href: merriweatherStyle,
     },
   ];
+};
+
+export const loader = async (args: Route.LoaderArgs) => {
+  const [{ myUserInfo }, { allBooks }, { starBooks }] = await Promise.all([
+    trpcServer(args.request).loader.getMyUserInfo.query(),
+    trpcServer(args.request).loader.getAllBooks.query(),
+    trpcServer(args.request).loader.getStarBooks.query(),
+  ]);
+  return { myUserInfo, allBooks, starBooks };
 };
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -72,10 +81,11 @@ export function Layout({ children }: { children: ReactNode }) {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5,
+      staleTime: 1000 * 60 * 5, // 5min
     },
   },
 });
@@ -86,6 +96,7 @@ export default function App({
   return (
     <NextThemesProvider attribute="class" defaultTheme="light">
       <HeroUIProvider>
+        <ToastProvider placement="top-center" toastProps={{ timeout: 2000 }} />
         <QueryClientProvider client={queryClient}>
           <AppLayout allBooks={allBooks} starBooks={starBooks}>
             <Outlet context={{ myUserInfo }} />
@@ -94,5 +105,39 @@ export default function App({
         </QueryClientProvider>
       </HeroUIProvider>
     </NextThemesProvider>
+  );
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  let message = "服务器出错了";
+  let details = "很抱歉，服务器遇到问题，暂时无法处理您的请求。请稍后再试。";
+  let stack: string | undefined;
+
+  if (isRouteErrorResponse(error)) {
+    message = error.status === 404 ? "页面不存在" : "出错了";
+    details =
+      error.status === 404
+        ? "您访问的页面不存在，可能是链接已过期或地址有误。请检查网址，或返回首页继续浏览。"
+        : error.statusText || details;
+  } else if (import.meta.env.DEV && error && error instanceof Error) {
+    details = error.message;
+    stack = error.stack;
+  }
+
+  return (
+    <main className="flex h-screen w-screen flex-col items-center justify-center gap-8">
+      <Card className="w-[90%] xl:w-1/2">
+        <CardHeader>{message}</CardHeader>
+        <Divider />
+        <CardBody className="flex flex-col gap-4">
+          <div>{details}</div>
+          {!!stack && (
+            <Code color="danger" className="w-full overflow-x-auto p-4">
+              <pre>{stack}</pre>
+            </Code>
+          )}
+        </CardBody>
+      </Card>
+    </main>
   );
 }

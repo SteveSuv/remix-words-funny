@@ -1,4 +1,3 @@
-import { Toaster } from "./Toaster";
 import { ProgressBar } from "./ProgressBar";
 import { SignInModal } from "./SignInModal";
 import { SignUpModal } from "./SignUpModal";
@@ -11,7 +10,6 @@ export const GlobalComponents = () => {
   return (
     <>
       <ReactQueryDevtools />
-      <Toaster />
       <ProgressBar />
       <SignInModal />
       <SignUpModal />

@@ -8,12 +8,12 @@ import {
   ModalFooter,
   Button,
   Link,
+  addToast,
 } from "@heroui/react";
 import { useAtom, useSetAtom } from "jotai";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { signInForm } from "~/common/formSchema";
-import toast from "react-hot-toast";
 import { PasswordInput } from "./PasswordInput";
 import { useRevalidator } from "react-router";
 import { useSignInMutation } from "~/hooks/request/mutation/useSignInMutation";
@@ -54,7 +54,7 @@ export const SignInModal = () => {
             <form
               onSubmit={form.handleSubmit(async (data) => {
                 await signInMutation.mutateAsync(data);
-                toast.success("登录成功");
+                addToast({ title: "登录成功", color: "success" });
                 onClose();
                 revalidate();
               })}

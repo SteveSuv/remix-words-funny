@@ -6,9 +6,9 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  addToast,
 } from "@heroui/react";
 import { useRevalidator } from "react-router";
-import toast from "react-hot-toast";
 import { useSetAtom } from "jotai";
 import { useSignOutMutation } from "~/hooks/request/mutation/useSignOutMutation";
 import { LuIcon } from "./LuIcon";
@@ -52,7 +52,7 @@ export const SignOutButton = () => {
                       onClose();
                       setIsSettingModalOpen(false);
                       revalidate();
-                      toast.success("已登出");
+                      addToast({ title: "已登出", color: "success" });
                     }}
                   >
                     确认

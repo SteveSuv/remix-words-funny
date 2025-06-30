@@ -1,6 +1,5 @@
-import { Link } from "@heroui/react";
+import { Link, addToast } from "@heroui/react";
 import { UseFormReturn } from "react-hook-form";
-import toast from "react-hot-toast";
 import { useCountdown } from "usehooks-ts";
 import { useSendVerifyCodeMutation } from "~/hooks/request/mutation/useSendVerifyCodeMutation";
 
@@ -45,7 +44,7 @@ export const SendVerifyCodeButton = ({
       onPress={async () => {
         await sendVerifyCodeMutation.mutateAsync();
         Countdown.startCountdown();
-        toast.success("验证码已发送至邮箱");
+        addToast({ title: "验证码已发送至邮箱", color: "success" });
       }}
     >
       发送邮箱验证码

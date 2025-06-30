@@ -74,7 +74,7 @@ export const WordListIem = ({ item }: { item: IWordItem }) => {
       }}
     >
       <div className="flex flex-col justify-center gap-1">
-        <div className="font-Merriweather text-4xl">{word}</div>
+        <div className="font-merriweathers text-4xl">{word}</div>
         {!!bookName && (
           <small className="text-foreground-400">{bookName}</small>
         )}

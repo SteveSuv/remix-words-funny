@@ -58,7 +58,7 @@ export const WordDetailPanel = () => {
     return (
       <>
         <div className="flex items-center justify-between">
-          <div className="font-Merriweather text-4xl">{word}</div>
+          <div className="font-merriweathers text-4xl">{word}</div>
           <CloseWordDetailDrawerButton />
         </div>
 
@@ -81,7 +81,7 @@ export const WordDetailPanel = () => {
         )}
 
         {!!remember && (
-          <div className="border-primary bg-primary-50 box-content border p-2">
+          <div className="border-primary bg-primary-50 box-content rounded-lg border p-2">
             {remember}
           </div>
         )}

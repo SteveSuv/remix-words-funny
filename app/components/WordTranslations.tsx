@@ -31,7 +31,7 @@ export const WordTranslations = () => {
           return (
             <div key={i} className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <Chip radius="none" size="sm" variant="flat" color="primary">
+                <Chip radius="sm" size="sm" variant="flat" color="primary">
                   {e.pos || "unknown"}
                 </Chip>
                 <div>{e.transCn}</div>

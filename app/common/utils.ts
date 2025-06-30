@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
-import toast from "react-hot-toast";
+import { addToast } from "@heroui/react";
 
 export const OnTRPCError = (error: Error) => {
-  toast.error((error as TRPCError).message);
+  addToast({ title: (error as TRPCError).message, color: "danger" });
 };

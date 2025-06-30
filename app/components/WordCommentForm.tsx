@@ -1,13 +1,11 @@
-import { Divider, Textarea, Button } from "@heroui/react";
+import { Divider, Textarea, Button, addToast, cn } from "@heroui/react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useSendCommentMutation } from "~/hooks/request/mutation/useSendCommentMutation";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { useZodForm } from "~/hooks/useZodForm";
 import { commentForm } from "~/common/formSchema";
-import toast from "react-hot-toast";
 import { FormFieldError } from "./FormFieldError";
 import { useQueryClient } from "@tanstack/react-query";
-import { clsx } from "~/common/clsx";
 import {
   isWordDetailPanelDrawerOpenAtom,
   wordDetailSlugAtom,
@@ -37,12 +35,12 @@ export const WordCommentForm = () => {
             queryKey: ["getWordComments", wordDetailSlug],
           });
           setIsWordDetailPanelDrawerOpen(false);
-          toast.success("评论成功");
+          addToast({ title: "评论成功", color: "success" });
           form.reset();
         })}
       >
         <div
-          className={clsx(
+          className={cn(
             "flex flex-col gap-2",
             !isLogin && "cursor-not-allowed",
           )}

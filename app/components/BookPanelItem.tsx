@@ -1,7 +1,6 @@
-import { Button, Image } from "@heroui/react";
+import { Button, Image, cn } from "@heroui/react";
 import { href, Link, useParams, useRevalidator } from "react-router";
 import { useSetAtom } from "jotai";
-import { clsx } from "~/common/clsx";
 import { LuIcon } from "./LuIcon";
 import { Star } from "lucide-react";
 import { useStarBookMutation } from "~/hooks/request/mutation/useStarBookMutation";
@@ -38,7 +37,7 @@ export const BookPanelItem = ({
   return (
     <Link to={href("/:bookSlug/words", { bookSlug: item.slug })}>
       <div
-        className={clsx(
+        className={cn(
           "group border-foreground-100 hover:bg-primary-50 flex h-20 items-center justify-between border-b px-4",
           isActive && "border-b-primary bg-primary-50",
         )}
@@ -50,6 +49,7 @@ export const BookPanelItem = ({
       >
         <div className="flex items-center gap-4">
           <Image
+            radius="none"
             alt={item.slug}
             src={`/books/${item.slug}.webp`}
             height={60}
@@ -75,7 +75,7 @@ export const BookPanelItem = ({
             }}
           >
             <LuIcon
-              className={clsx(
+              className={cn(
                 "text-foreground-500",
                 isBookStar && "fill-warning",
               )}
