@@ -24,16 +24,14 @@ export const ListTabs = () => {
         setListTab(key as ListTabType);
       }}
     >
-      {tabs.map(({ key, label, disabled }) => {
-        return (
-          <Tab
-            key={key}
-            title={label}
-            isDisabled={disabled}
-            titleValue={disabled ? "请先登录" : ""}
-          />
-        );
-      })}
+      {tabs.map(({ key, label, disabled }) => (
+        <Tab
+          key={key}
+          title={label}
+          isDisabled={disabled}
+          titleValue={disabled ? "请先登录" : ""}
+        />
+      ))}
     </Tabs>
   );
 };

@@ -18,7 +18,7 @@ export const UserAvatar = ({
       <BoringAvatar
         square
         size={size}
-        name={name || myUserInfo?.name}
+        name={name || myUserInfo?.name!}
         variant="beam"
       />
     );

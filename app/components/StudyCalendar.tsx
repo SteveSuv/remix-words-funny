@@ -26,7 +26,9 @@ const getCalendarData = (
   while (currentDate.isBefore(end.add(1, "day"))) {
     const date = currentDate.format("YYYY-MM-DD");
     const activity: Activity = { date, count: 0, level: 0 };
-    const count = _studyCalendar.filter((e) => e.updatedAt === date).length;
+    const count = _studyCalendar.filter(
+      ({ updatedAt }) => updatedAt === date,
+    ).length;
     if (count > 0) {
       const level = Math.min(Math.ceil(count / 10), 4);
       activity.count = count;

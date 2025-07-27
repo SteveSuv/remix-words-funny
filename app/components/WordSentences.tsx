@@ -13,27 +13,21 @@ export const WordSentences = () => {
   });
   const { wordSentences = [] } = getWordSentencesQuery.data || {};
 
-  if (getWordSentencesQuery.isFetching) {
-    return <SkeletonBox />;
-  }
+  if (getWordSentencesQuery.isFetching) return <SkeletonBox />;
 
-  if (wordSentences.length === 0) {
-    return null;
-  }
+  if (wordSentences.length === 0) return null;
 
   return (
     <div>
       <Divider />
       <div className="my-4 text-xl font-semibold">句子</div>
       <div className="flex flex-col gap-2">
-        {wordSentences.map((e, i) => {
-          return (
-            <div key={i} className="flex flex-col gap-2">
-              <LinkWord word={e.content} />
-              <div>{e.transCn}</div>
-            </div>
-          );
-        })}
+        {wordSentences.map(({ id, content, transCn }) => (
+          <div key={id} className="flex flex-col gap-2">
+            <LinkWord word={content} />
+            <div>{transCn}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

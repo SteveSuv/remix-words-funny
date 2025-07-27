@@ -35,32 +35,30 @@ export const SignOutButton = () => {
         backdrop="blur"
       >
         <ModalContent>
-          {(onClose) => {
-            return (
-              <>
-                <ModalHeader>请注意</ModalHeader>
-                <ModalBody>确认登出账号吗？</ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="flat" onPress={onClose}>
-                    取消
-                  </Button>
-                  <Button
-                    color="primary"
-                    isLoading={signOutMutation.isPending}
-                    onPress={async () => {
-                      await signOutMutation.mutateAsync();
-                      onClose();
-                      setIsSettingModalOpen(false);
-                      revalidate();
-                      addToast({ title: "已登出", color: "success" });
-                    }}
-                  >
-                    确认
-                  </Button>
-                </ModalFooter>
-              </>
-            );
-          }}
+          {(onClose) => (
+            <>
+              <ModalHeader>请注意</ModalHeader>
+              <ModalBody>确认登出账号吗？</ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="flat" onPress={onClose}>
+                  取消
+                </Button>
+                <Button
+                  color="primary"
+                  isLoading={signOutMutation.isPending}
+                  onPress={async () => {
+                    await signOutMutation.mutateAsync();
+                    onClose();
+                    setIsSettingModalOpen(false);
+                    revalidate();
+                    addToast({ title: "已登出", color: "success" });
+                  }}
+                >
+                  确认
+                </Button>
+              </ModalFooter>
+            </>
+          )}
         </ModalContent>
       </Modal>
     </>

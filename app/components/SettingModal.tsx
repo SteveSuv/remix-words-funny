@@ -28,35 +28,33 @@ export const SettingModal = () => {
       backdrop="blur"
     >
       <ModalContent>
-        {(onClose) => {
-          return (
-            <>
-              <ModalHeader>设置</ModalHeader>
-              <ModalBody>
-                <Listbox aria-label="settings">
-                  <ListboxItem
-                    onPress={() => {
-                      toggleTheme();
-                      onClose();
-                    }}
-                    key="darkmode"
-                    endContent={
-                      <Switch
-                        isSelected={isDarkMode}
-                        onValueChange={toggleTheme}
-                      />
-                    }
-                  >
-                    夜间模式
-                  </ListboxItem>
-                </Listbox>
-                <SignOutButton />
-                <GithubButton />
-              </ModalBody>
-              <ModalFooter />
-            </>
-          );
-        }}
+        {(onClose) => (
+          <>
+            <ModalHeader>设置</ModalHeader>
+            <ModalBody>
+              <Listbox aria-label="settings">
+                <ListboxItem
+                  onPress={() => {
+                    toggleTheme();
+                    onClose();
+                  }}
+                  key="darkmode"
+                  endContent={
+                    <Switch
+                      isSelected={isDarkMode}
+                      onValueChange={toggleTheme}
+                    />
+                  }
+                >
+                  夜间模式
+                </ListboxItem>
+              </Listbox>
+              <SignOutButton />
+              <GithubButton />
+            </ModalBody>
+            <ModalFooter />
+          </>
+        )}
       </ModalContent>
     </Modal>
   );

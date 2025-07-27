@@ -49,85 +49,81 @@ export const SignInModal = () => {
       onClose={form.reset}
     >
       <ModalContent>
-        {(onClose) => {
-          return (
-            <form
-              onSubmit={form.handleSubmit(async (data) => {
-                await signInMutation.mutateAsync(data);
-                addToast({ title: "登录成功", color: "success" });
-                onClose();
-                revalidate();
-              })}
-            >
-              <ModalHeader>登录账号</ModalHeader>
-              <ModalBody>
-                <Input
-                  {...form.register("email")}
-                  autoFocus
-                  label="邮箱"
-                  type="email"
-                  placeholder="请输入邮箱"
-                  variant="bordered"
-                />
-                <FormFieldError
-                  message={form.formState.errors.email?.message}
-                />
-                <PasswordInput {...form.register("password")} />
-                <FormFieldError
-                  message={form.formState.errors.password?.message}
-                />
-                <div className="flex justify-between px-1 py-2">
-                  <Checkbox
-                    {...form.register("keepAlive")}
-                    classNames={{
-                      label: "text-small",
+        {(onClose) => (
+          <form
+            onSubmit={form.handleSubmit(async (data) => {
+              await signInMutation.mutateAsync(data);
+              addToast({ title: "登录成功", color: "success" });
+              onClose();
+              revalidate();
+            })}
+          >
+            <ModalHeader>登录账号</ModalHeader>
+            <ModalBody>
+              <Input
+                {...form.register("email")}
+                autoFocus
+                label="邮箱"
+                type="email"
+                placeholder="请输入邮箱"
+                variant="bordered"
+              />
+              <FormFieldError message={form.formState.errors.email?.message} />
+              <PasswordInput {...form.register("password")} />
+              <FormFieldError
+                message={form.formState.errors.password?.message}
+              />
+              <div className="flex justify-between px-1 py-2">
+                <Checkbox
+                  {...form.register("keepAlive")}
+                  classNames={{
+                    label: "text-small",
+                  }}
+                >
+                  七天免登录
+                </Checkbox>
+                <div className="flex items-center gap-2">
+                  <Link
+                    color="primary"
+                    size="sm"
+                    className="cursor-pointer underline-offset-2 hover:underline"
+                    onPress={() => {
+                      onClose();
+                      setIsSignUpModalOpen(true);
                     }}
                   >
-                    七天免登录
-                  </Checkbox>
-                  <div className="flex items-center gap-2">
-                    <Link
-                      color="primary"
-                      size="sm"
-                      className="cursor-pointer underline-offset-2 hover:underline"
-                      onPress={() => {
-                        onClose();
-                        setIsSignUpModalOpen(true);
-                      }}
-                    >
-                      注册新账号
-                    </Link>
-                    <Link
-                      color="primary"
-                      size="sm"
-                      className="cursor-pointer underline-offset-2 hover:underline"
-                      onPress={() => {
-                        onClose();
-                        setIsUpdatePasswordModalOpen(true);
-                      }}
-                    >
-                      重设密码
-                    </Link>
-                  </div>
+                    注册新账号
+                  </Link>
+                  <Link
+                    color="primary"
+                    size="sm"
+                    className="cursor-pointer underline-offset-2 hover:underline"
+                    onPress={() => {
+                      onClose();
+                      setIsUpdatePasswordModalOpen(true);
+                    }}
+                  >
+                    重设密码
+                  </Link>
                 </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  取消
-                </Button>
-                <Button
-                  color="primary"
-                  type="submit"
-                  isLoading={
-                    form.formState.isSubmitting || signInMutation.isPending
-                  }
-                >
-                  提交
-                </Button>
-              </ModalFooter>
-            </form>
-          );
-        }}
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="danger" variant="flat" onPress={onClose}>
+                取消
+              </Button>
+              <Button
+                color="primary"
+                type="submit"
+                isLoading={
+                  form.formState.isSubmitting || signInMutation.isPending
+                }
+              >
+                提交
+              </Button>
+            </ModalFooter>
+          </form>
+        )}
       </ModalContent>
     </Modal>
   );

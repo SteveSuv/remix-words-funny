@@ -38,7 +38,7 @@ export const BookWordsList = () => {
       return lastPageParam + 1;
     },
     select(data) {
-      return data.pages.map((e) => e.wordsOfBook);
+      return data.pages.map(({ wordsOfBook }) => wordsOfBook);
     },
     enabled: !!bookSlug && !searchWord && listTab === ListTabType.ALL,
   });
@@ -60,7 +60,7 @@ export const BookWordsList = () => {
       return lastPageParam + 1;
     },
     select(data) {
-      return data.pages.map((e) => e.doneWordsOfBook);
+      return data.pages.map(({ doneWordsOfBook }) => doneWordsOfBook);
     },
     enabled:
       isLogin && !!bookSlug && !searchWord && listTab === ListTabType.DONE,
@@ -83,7 +83,7 @@ export const BookWordsList = () => {
       return lastPageParam + 1;
     },
     select(data) {
-      return data.pages.map((e) => e.unDoneWordsOfBook);
+      return data.pages.map(({ unDoneWordsOfBook }) => unDoneWordsOfBook);
     },
     enabled:
       isLogin && !!bookSlug && !searchWord && listTab === ListTabType.UNDONE,

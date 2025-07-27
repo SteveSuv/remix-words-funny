@@ -14,26 +14,24 @@ export const LinkWord = ({ word }: { word: string }) => {
 
   return (
     <div className="flex flex-wrap items-center gap-1">
-      {word.split(" ").map((item, index) => {
-        return (
-          <div
-            className="text-primary cursor-pointer hover:underline"
-            key={index}
-            onClick={() => {
-              setSearchWord(
-                item
-                  .trim()
-                  .toLowerCase()
-                  .match(/[a-z]+/i)?.[0] || "",
-              );
-              setIsWordDetailPanelDrawerOpen(false);
-              setIsSearchBarOpenAtom(true);
-            }}
-          >
-            {item}
-          </div>
-        );
-      })}
+      {word.split(" ").map((item, index) => (
+        <div
+          className="text-primary cursor-pointer hover:underline"
+          key={index}
+          onClick={() => {
+            setSearchWord(
+              item
+                .trim()
+                .toLowerCase()
+                .match(/[a-z]+/i)?.[0] || "",
+            );
+            setIsWordDetailPanelDrawerOpen(false);
+            setIsSearchBarOpenAtom(true);
+          }}
+        >
+          {item}
+        </div>
+      ))}
     </div>
   );
 };

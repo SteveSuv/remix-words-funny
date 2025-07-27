@@ -14,32 +14,26 @@ export const WordSynonyms = () => {
 
   const { wordSynonyms = [] } = getWordSynonymsQuery.data || {};
 
-  if (getWordSynonymsQuery.isFetching) {
-    return <SkeletonBox />;
-  }
+  if (getWordSynonymsQuery.isFetching) return <SkeletonBox />;
 
-  if (wordSynonyms.length === 0) {
-    return null;
-  }
+  if (wordSynonyms.length === 0) return null;
 
   return (
     <div>
       <Divider />
       <div className="my-4 text-xl font-semibold">同义词</div>
       <div className="flex flex-col gap-2">
-        {wordSynonyms.map((e, i) => {
-          return (
-            <div key={i} className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <Chip radius="sm" size="sm" variant="flat" color="primary">
-                  {e.pos || "unknown"}
-                </Chip>
-                <LinkWord word={e.content} />
-              </div>
-              <div>{e.transCn}</div>
+        {wordSynonyms.map(({ id, pos, content, transCn }) => (
+          <div key={id} className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <Chip radius="sm" size="sm" variant="flat" color="primary">
+                {pos || "unknown"}
+              </Chip>
+              <LinkWord word={content} />
             </div>
-          );
-        })}
+            <div>{transCn}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

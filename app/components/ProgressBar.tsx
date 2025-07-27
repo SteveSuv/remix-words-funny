@@ -4,18 +4,17 @@ import { useNavigation } from "react-router";
 export const ProgressBar = () => {
   const { state } = useNavigation();
 
-  const getValue = () => {
-    if (state === "submitting") return 50;
-    if (state === "loading") return 100;
-    return 0;
-  };
-
-  const value = getValue();
+  const value =
+    {
+      idle: 0,
+      submitting: 50,
+      loading: 100,
+    }[state] || 0;
 
   return (
     <Progress
       aria-label="Loading..."
-      style={{ opacity: !!value ? 1 : 0 }}
+      style={{ opacity: Number(value) }}
       className="fixed inset-0 z-50 h-[2px]"
       value={value}
     />

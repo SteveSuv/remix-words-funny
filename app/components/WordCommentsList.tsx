@@ -30,7 +30,7 @@ export const WordCommentsList = () => {
       return lastPageParam + 1;
     },
     select(data) {
-      return data.pages.map((e) => e.wordComments);
+      return data.pages.map(({ wordComments }) => wordComments);
     },
     enabled: !!wordDetailSlug,
   });

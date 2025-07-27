@@ -16,9 +16,7 @@ export default function PageWords() {
     <div className="flex w-full flex-col">
       <div className="sticky top-0 left-0 z-10 p-4">
         {isSearchBarOpen ? (
-          <div>
-            <SearchBar />
-          </div>
+          <SearchBar />
         ) : (
           <div className="flex items-center justify-between">
             <OpenMenuButton />

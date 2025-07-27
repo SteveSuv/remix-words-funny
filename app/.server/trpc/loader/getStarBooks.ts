@@ -14,5 +14,5 @@ const prepare = db
 export const getStarBooks = p.public.query(async ({ ctx: { userId } }) => {
   if (!userId) return { starBooks: [] };
   const starBooks = await prepare.execute({ userId });
-  return { starBooks: starBooks.map((e) => e.bookSlug) };
+  return { starBooks: starBooks.map(({ bookSlug }) => bookSlug) };
 });

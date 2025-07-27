@@ -33,7 +33,7 @@ export const SearchWordsList = () => {
       return lastPageParam + 1;
     },
     select(data) {
-      return data.pages.map((e) => e.wordsOfKeyword);
+      return data.pages.map(({ wordsOfKeyword }) => wordsOfKeyword);
     },
     enabled: !!searchWord,
   });

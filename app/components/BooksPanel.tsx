@@ -9,21 +9,19 @@ export const BooksPanel = ({
   starBooks: string[];
 }) => {
   const booksList = [
-    ...allBooks.filter((e) => starBooks.includes(e.slug)),
-    ...allBooks.filter((e) => !starBooks.includes(e.slug)),
+    ...allBooks.filter(({ slug }) => starBooks.includes(slug)),
+    ...allBooks.filter(({ slug }) => !starBooks.includes(slug)),
   ];
 
   return (
     <>
-      {booksList.map((e) => {
-        return (
-          <BookPanelItem
-            key={e.id}
-            item={e}
-            isBookStar={starBooks.includes(e.slug)}
-          />
-        );
-      })}
+      {booksList.map((e) => (
+        <BookPanelItem
+          key={e.id}
+          item={e}
+          isBookStar={starBooks.includes(e.slug)}
+        />
+      ))}
     </>
   );
 };
