@@ -15,14 +15,14 @@
     "deploy": "sh deploy.sh"
   },
   "dependencies": {
-    "@fontsource/merriweather": "^5.2.9",
+    "@fontsource/merriweather": "^5.2.10",
     "@heroui/react": "2.8.3",
     "@hookform/resolvers": "^5.2.1",
     "@react-router/fs-routes": "^7.8.2",
     "@react-router/node": "^7.8.2",
     "@react-router/serve": "^7.8.2",
     "@tanstack/react-query": "^5.87.1",
-    "@tanstack/react-query-devtools": "^5.87.1",
+    "@tanstack/react-query-devtools": "^5.87.3",
     "@trpc/client": "^11.5.1",
     "@trpc/server": "^11.5.1",
     "boring-avatars": "^2.0.1",
@@ -33,7 +33,7 @@
     "drizzle-orm": "^0.44.3",
     "framer-motion": "^12.23.12",
     "isbot": "^5.1.30",
-    "jotai": "^2.13.1",
+    "jotai": "^2.14.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.542.0",
     "next-themes": "^0.4.6",
@@ -51,7 +51,6 @@
   },
   "devDependencies": {
     "@react-router/dev": "^7.8.2",
-    "@tailwindcss/postcss": "^4.1.13",
     "@tailwindcss/vite": "^4.1.13",
     "@types/chance": "^1.1.7",
     "@types/jsonwebtoken": "^9.0.10",
@@ -65,7 +64,7 @@
     "tailwindcss": "^4.1.13",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "vite": "^7.1.4",
+    "vite": "^7.1.5",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-tsconfig-paths": "^5.1.4"
   },
