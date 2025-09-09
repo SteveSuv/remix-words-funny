@@ -1,18 +1,18 @@
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
   Listbox,
   ListboxItem,
-  Switch,
+  Modal,
+  ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
+  Switch,
 } from "@heroui/react";
-import { SignOutButton } from "./SignOutButton";
 import { useAtom } from "jotai";
+import { isSettingModalOpenAtom } from "~/common/store";
 import { useAppTheme } from "~/hooks/useAppTheme";
 import { GithubButton } from "./GithubButton";
-import { isSettingModalOpenAtom } from "~/common/store";
+import { SignOutButton } from "./SignOutButton";
 
 export const SettingModal = () => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useAtom(

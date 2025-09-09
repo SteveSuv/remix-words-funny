@@ -1,7 +1,7 @@
 import { Button, Input, InputProps } from "@heroui/react";
-import { LuIcon } from "./LuIcon";
-import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { LuIcon } from "./LuIcon";
 
 export const PasswordInput = (props: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);

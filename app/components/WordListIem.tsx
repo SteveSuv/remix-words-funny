@@ -1,15 +1,15 @@
-import { DoneWordButton } from "./DoneWordButton";
-import { UnDoneWordButton } from "./UnDoneWordButton";
-import { useSetAtom } from "jotai";
-import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { Button } from "@heroui/react";
-import { useGetIsWordDoneQuery } from "~/hooks/request/query/useGetIsWordDoneQuery";
-import { IWordItem } from "~/common/types";
+import { useSetAtom } from "jotai";
 import {
   isWordDetailPanelDrawerOpenAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
+import { IWordItem } from "~/common/types";
+import { useGetIsWordDoneQuery } from "~/hooks/request/query/useGetIsWordDoneQuery";
 import { useMobile } from "~/hooks/useMobile";
+import { useMyUserInfo } from "~/hooks/useMyUserInfo";
+import { DoneWordButton } from "./DoneWordButton";
+import { UnDoneWordButton } from "./UnDoneWordButton";
 
 export const WordListIem = ({ item }: { item: IWordItem }) => {
   const setWordDetailSlug = useSetAtom(wordDetailSlugAtom);

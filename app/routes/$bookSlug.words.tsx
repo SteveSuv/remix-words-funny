@@ -1,12 +1,12 @@
-import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
-import { SearchWordsList } from "~/components/SearchWordsList";
-import { BookWordsList } from "~/components/BookWordsList";
-import { SearchBar } from "~/components/SearchBar";
-import { ListTabs } from "~/components/ListTabs";
-import { OpenMenuButton } from "~/components/OpenMenuButton";
-import { SearchButton } from "~/components/SearchButton";
 import { useAtomValue } from "jotai";
 import { isSearchBarOpenAtom } from "~/common/store";
+import { BookWordsList } from "~/components/BookWordsList";
+import { ListTabs } from "~/components/ListTabs";
+import { OpenMenuButton } from "~/components/OpenMenuButton";
+import { SearchBar } from "~/components/SearchBar";
+import { SearchButton } from "~/components/SearchButton";
+import { SearchWordsList } from "~/components/SearchWordsList";
+import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
 
 export default function PageWords() {
   const { searchWord } = useDebounceSearchWord();

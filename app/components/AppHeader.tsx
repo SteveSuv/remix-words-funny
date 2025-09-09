@@ -1,15 +1,15 @@
-import { UserAvatar } from "./UserAvatar";
+import { Button } from "@heroui/react";
+import { useSetAtom } from "jotai";
+import { Moon, Sun } from "lucide-react";
+import { isProfileModalOpenAtom } from "~/common/store";
+import { useAppTheme } from "~/hooks/useAppTheme";
+import { useMyUserInfo } from "~/hooks/useMyUserInfo";
+import { CloseMenuButton } from "./CloseMenuButton";
+import { GithubIconButton } from "./GithubIconButton";
+import { LuIcon } from "./LuIcon";
 import { SettingButton } from "./SettingButton";
 import { SignInButton } from "./SignInButton";
-import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-import { useSetAtom } from "jotai";
-import { Button } from "@heroui/react";
-import { LuIcon } from "./LuIcon";
-import { Moon, Sun } from "lucide-react";
-import { useAppTheme } from "~/hooks/useAppTheme";
-import { GithubIconButton } from "./GithubIconButton";
-import { isProfileModalOpenAtom } from "~/common/store";
-import { CloseMenuButton } from "./CloseMenuButton";
+import { UserAvatar } from "./UserAvatar";
 
 export const AppHeader = () => {
   const { myUserInfo } = useMyUserInfo();

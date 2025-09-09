@@ -1,11 +1,11 @@
 import { Button } from "@heroui/react";
 import { ThumbsUp } from "lucide-react";
-import { LuIcon } from "./LuIcon";
+import { useUnVotePostMutation } from "~/hooks/request/mutation/useUnVotePostMutation";
+import { useVotePostMutation } from "~/hooks/request/mutation/useVotePostMutation";
+import { useGetIsPostVoteQuery } from "~/hooks/request/query/useGetIsPostVoteQuery";
 import { useGetPostVoteQuery } from "~/hooks/request/query/useGetPostVoteQuery";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-import { useVotePostMutation } from "~/hooks/request/mutation/useVotePostMutation";
-import { useUnVotePostMutation } from "~/hooks/request/mutation/useUnVotePostMutation";
-import { useGetIsPostVoteQuery } from "~/hooks/request/query/useGetIsPostVoteQuery";
+import { LuIcon } from "./LuIcon";
 
 export const CommentVoteButton = ({ postId }: { postId: number }) => {
   const { isLogin } = useMyUserInfo();

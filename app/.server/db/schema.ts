@@ -1,205 +1,167 @@
 import { relations } from "drizzle-orm";
 import {
+  AnyPgColumn,
   integer,
   pgTable,
   primaryKey,
   serial,
+  text,
   timestamp,
   varchar,
-  text,
-  AnyPgColumn,
 } from "drizzle-orm/pg-core";
+
+const timestamps = {
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .$onUpdateFn(() => new Date()),
+};
 
 // tables
 export const User = pgTable("User", {
-  id: serial("id").primaryKey(),
-  name: varchar("name").notNull().unique(),
-  email: varchar("email").notNull().unique(),
-  password: varchar("password").notNull(),
-  avatar: varchar("avatar"),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  id: serial().primaryKey(),
+  name: varchar().notNull().unique(),
+  email: varchar().notNull().unique(),
+  password: varchar().notNull(),
+  avatar: varchar(),
+  ...timestamps,
 });
 
 export const Post = pgTable("Post", {
-  id: serial("id").primaryKey(),
-  content: text("content").notNull(),
-  userId: integer("userId")
+  id: serial().primaryKey(),
+  content: text().notNull(),
+  userId: integer()
     .notNull()
     .references(() => User.id),
-  wordSlug: varchar("wordSlug")
+  wordSlug: varchar()
     .notNull()
     .references(() => Word.slug),
-  parentPostId: integer("parentPostId").references((): AnyPgColumn => Post.id),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  parentPostId: integer().references((): AnyPgColumn => Post.id),
+  ...timestamps,
 });
 
 export const Verify = pgTable("Verify", {
-  id: serial("id").primaryKey(),
-  email: varchar("email").notNull().unique(),
-  code: varchar("code"),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  id: serial().primaryKey(),
+  email: varchar().notNull().unique(),
+  code: varchar(),
+  ...timestamps,
 });
 
 export const Book = pgTable("Book", {
-  id: serial("id").primaryKey(),
-  slug: varchar("slug").notNull().unique(),
-  name: varchar("name").notNull(),
-  cover: varchar("cover").notNull(),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  id: serial().primaryKey(),
+  slug: varchar().notNull().unique(),
+  name: varchar().notNull(),
+  cover: varchar().notNull(),
+  ...timestamps,
 });
 
 export const Word = pgTable("Word", {
-  id: serial("id").primaryKey(),
-  bookSlug: varchar("bookSlug")
+  id: serial().primaryKey(),
+  bookSlug: varchar()
     .notNull()
     .references(() => Book.slug),
-  slug: varchar("slug").notNull().unique(),
-  word: varchar("word").notNull(),
-  usPronounce: varchar("usPronounce").notNull(),
-  ukPronounce: varchar("ukPronounce").notNull(),
-  remember: varchar("remember").notNull(),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  slug: varchar().notNull().unique(),
+  word: varchar().notNull(),
+  usPronounce: varchar().notNull(),
+  ukPronounce: varchar().notNull(),
+  remember: varchar().notNull(),
+  ...timestamps,
 });
 
 export const Cognate = pgTable("Cognate", {
-  id: serial("id").primaryKey(),
-  wordSlug: varchar("wordSlug")
+  id: serial().primaryKey(),
+  wordSlug: varchar()
     .notNull()
     .references(() => Word.slug),
-  pos: varchar("pos").notNull(),
-  content: varchar("content").notNull(),
-  transCn: varchar("transCn").notNull(),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  pos: varchar().notNull(),
+  content: varchar().notNull(),
+  transCn: varchar().notNull(),
+  ...timestamps,
 });
 
 export const Phrase = pgTable("Phrase", {
-  id: serial("id").primaryKey(),
-  wordSlug: varchar("wordSlug")
+  id: serial().primaryKey(),
+  wordSlug: varchar()
     .notNull()
     .references(() => Word.slug),
-  content: varchar("content").notNull(),
-  transCn: varchar("transCn").notNull(),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  content: varchar().notNull(),
+  transCn: varchar().notNull(),
+  ...timestamps,
 });
 
 export const Sentence = pgTable("Sentence", {
-  id: serial("id").primaryKey(),
-  wordSlug: varchar("wordSlug")
+  id: serial().primaryKey(),
+  wordSlug: varchar()
     .notNull()
     .references(() => Word.slug),
-  content: varchar("content").notNull(),
-  transCn: varchar("transCn").notNull(),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  content: varchar().notNull(),
+  transCn: varchar().notNull(),
+  ...timestamps,
 });
 
 export const Synonym = pgTable("Synonym", {
-  id: serial("id").primaryKey(),
-  wordSlug: varchar("wordSlug")
+  id: serial().primaryKey(),
+  wordSlug: varchar()
     .notNull()
     .references(() => Word.slug),
-  pos: varchar("pos").notNull(),
-  content: varchar("content").notNull(),
-  transCn: varchar("transCn").notNull(),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  pos: varchar().notNull(),
+  content: varchar().notNull(),
+  transCn: varchar().notNull(),
+  ...timestamps,
 });
 
 export const Translation = pgTable("Translation", {
-  id: serial("id").primaryKey(),
-  wordSlug: varchar("wordSlug")
+  id: serial().primaryKey(),
+  wordSlug: varchar()
     .notNull()
     .references(() => Word.slug),
-  pos: varchar("pos").notNull(),
-  transCn: varchar("transCn").notNull(),
-  transEn: varchar("transEn").notNull(),
-  createdAt: timestamp("createdAt").notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt")
-    .notNull()
-    .$onUpdateFn(() => new Date()),
+  pos: varchar().notNull(),
+  transCn: varchar().notNull(),
+  transEn: varchar().notNull(),
+  ...timestamps,
 });
 
 // many-to-many tables
 export const UsersToBooks = pgTable(
   "UsersToBooks",
   {
-    userId: integer("userId")
+    userId: integer()
       .notNull()
       .references(() => User.id),
-    bookSlug: varchar("bookSlug")
+    bookSlug: varchar()
       .notNull()
       .references(() => Book.slug),
-    createdAt: timestamp("createdAt").notNull().defaultNow(),
-    updatedAt: timestamp("updatedAt")
-      .notNull()
-      .$onUpdateFn(() => new Date()),
+    ...timestamps,
   },
-  (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.bookSlug] }),
-  }),
+  (t) => [primaryKey({ columns: [t.userId, t.bookSlug] })],
 );
 
 export const UsersToWords = pgTable(
   "UsersToWords",
   {
-    userId: integer("userId")
+    userId: integer()
       .notNull()
       .references(() => User.id),
-    wordSlug: varchar("wordSlug")
+    wordSlug: varchar()
       .notNull()
       .references(() => Word.slug),
-    createdAt: timestamp("createdAt").notNull().defaultNow(),
-    updatedAt: timestamp("updatedAt")
-      .notNull()
-      .$onUpdateFn(() => new Date()),
+    ...timestamps,
   },
-  (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.wordSlug] }),
-  }),
+  (t) => [primaryKey({ columns: [t.userId, t.wordSlug] })],
 );
 
 export const UsersToPostsVote = pgTable(
   "UsersToPostsVote",
   {
-    userId: integer("userId")
+    userId: integer()
       .notNull()
       .references(() => User.id),
-    postId: integer("postId")
+    postId: integer()
       .notNull()
       .references(() => Post.id),
-    createdAt: timestamp("createdAt").notNull().defaultNow(),
-    updatedAt: timestamp("updatedAt")
-      .notNull()
-      .$onUpdateFn(() => new Date()),
+    ...timestamps,
   },
-  (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.postId] }),
-  }),
+  (t) => [primaryKey({ columns: [t.userId, t.postId] })],
 );
 
 // table relations

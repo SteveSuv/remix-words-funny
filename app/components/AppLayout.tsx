@@ -1,15 +1,15 @@
-import { ReactNode } from "react";
-import { BooksPanel } from "./BooksPanel";
-import { WordDetailPanel } from "./WordDetailPanel";
-import { AppHeader } from "./AppHeader";
-import { IBookItem } from "~/common/types";
 import { Drawer, DrawerContent } from "@heroui/react";
 import { useAtom } from "jotai";
+import { ReactNode } from "react";
 import {
   isBooksPanelDrawerOpenAtom,
   isWordDetailPanelDrawerOpenAtom,
 } from "~/common/store";
+import { IBookItem } from "~/common/types";
 import { useMobile } from "~/hooks/useMobile";
+import { AppHeader } from "./AppHeader";
+import { BooksPanel } from "./BooksPanel";
+import { WordDetailPanel } from "./WordDetailPanel";
 
 export const AppLayout = ({
   allBooks,

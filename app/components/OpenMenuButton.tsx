@@ -1,8 +1,8 @@
 import { Button } from "@heroui/react";
-import { LuIcon } from "~/components/LuIcon";
-import { Menu } from "lucide-react";
 import { useSetAtom } from "jotai";
+import { Menu } from "lucide-react";
 import { isBooksPanelDrawerOpenAtom } from "~/common/store";
+import { LuIcon } from "~/components/LuIcon";
 
 export const OpenMenuButton = () => {
   const setIsBooksPanelDrawerOpen = useSetAtom(isBooksPanelDrawerOpenAtom);

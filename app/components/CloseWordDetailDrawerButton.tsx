@@ -1,8 +1,8 @@
 import { Button } from "@heroui/react";
-import { LuIcon } from "~/components/LuIcon";
-import { X } from "lucide-react";
 import { useSetAtom } from "jotai";
+import { X } from "lucide-react";
 import { isWordDetailPanelDrawerOpenAtom } from "~/common/store";
+import { LuIcon } from "~/components/LuIcon";
 
 export const CloseWordDetailDrawerButton = () => {
   const setIsWordDetailPanelDrawerOpen = useSetAtom(

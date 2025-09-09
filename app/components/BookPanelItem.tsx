@@ -1,17 +1,17 @@
-import { Button, Image, cn } from "@heroui/react";
-import { href, Link, useParams, useRevalidator } from "react-router";
+import { Button, cn, Image } from "@heroui/react";
 import { useSetAtom } from "jotai";
-import { LuIcon } from "./LuIcon";
 import { Star } from "lucide-react";
-import { useStarBookMutation } from "~/hooks/request/mutation/useStarBookMutation";
-import { useUnStarBookMutation } from "~/hooks/request/mutation/useUnStarBookMutation";
-import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-import { IBookItem } from "~/common/types";
+import { href, Link, useParams, useRevalidator } from "react-router";
 import {
   isBooksPanelDrawerOpenAtom,
   searchWordAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
+import { IBookItem } from "~/common/types";
+import { useStarBookMutation } from "~/hooks/request/mutation/useStarBookMutation";
+import { useUnStarBookMutation } from "~/hooks/request/mutation/useUnStarBookMutation";
+import { useMyUserInfo } from "~/hooks/useMyUserInfo";
+import { LuIcon } from "./LuIcon";
 
 const ratio = 251 / 388;
 

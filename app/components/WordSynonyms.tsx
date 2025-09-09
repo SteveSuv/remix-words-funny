@@ -1,9 +1,9 @@
-import { Divider, Chip } from "@heroui/react";
+import { Chip, Divider } from "@heroui/react";
 import { useAtomValue } from "jotai";
+import { wordDetailSlugAtom } from "~/common/store";
+import { useGetWordSynonymsQuery } from "~/hooks/request/query/useGetWordSynonymsQuery";
 import { LinkWord } from "./LinkWord";
 import { SkeletonBox } from "./SkeletonBox";
-import { useGetWordSynonymsQuery } from "~/hooks/request/query/useGetWordSynonymsQuery";
-import { wordDetailSlugAtom } from "~/common/store";
 
 export const WordSynonyms = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);

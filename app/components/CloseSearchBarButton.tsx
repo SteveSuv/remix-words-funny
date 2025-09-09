@@ -1,8 +1,8 @@
 import { Button } from "@heroui/react";
-import { LuIcon } from "~/components/LuIcon";
-import { X } from "lucide-react";
 import { useSetAtom } from "jotai";
+import { X } from "lucide-react";
 import { isSearchBarOpenAtom, searchWordAtom } from "~/common/store";
+import { LuIcon } from "~/components/LuIcon";
 
 export const CloseSearchBarButton = () => {
   const setIsSearchBarOpenAtom = useSetAtom(isSearchBarOpenAtom);

@@ -1,15 +1,15 @@
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
 } from "@heroui/react";
 import { useAtom } from "jotai";
-import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-import { UserAvatar } from "./UserAvatar";
-import { StudyCalendar } from "./StudyCalendar";
 import { isProfileModalOpenAtom } from "~/common/store";
+import { useMyUserInfo } from "~/hooks/useMyUserInfo";
+import { StudyCalendar } from "./StudyCalendar";
+import { UserAvatar } from "./UserAvatar";
 
 export const ProfileModal = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useAtom(

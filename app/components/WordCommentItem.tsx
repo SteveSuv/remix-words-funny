@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
-import { UserAvatar } from "./UserAvatar";
-import { ICommentItem } from "~/common/types";
 import { Divider } from "@heroui/react";
+import dayjs from "dayjs";
+import { ICommentItem } from "~/common/types";
 import { CommentVoteButton } from "./CommentVoteButton";
+import { UserAvatar } from "./UserAvatar";
 
 export const WordCommentItem = ({
   comment: {

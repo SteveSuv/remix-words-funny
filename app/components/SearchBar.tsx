@@ -1,9 +1,9 @@
 import { Input } from "@heroui/react";
-import { LuIcon } from "./LuIcon";
-import { Search } from "lucide-react";
 import { useAtom } from "jotai";
+import { Search } from "lucide-react";
 import { searchWordAtom } from "~/common/store";
 import { CloseSearchBarButton } from "./CloseSearchBarButton";
+import { LuIcon } from "./LuIcon";
 
 export const SearchBar = () => {
   const [searchWord, setSearchWord] = useAtom(searchWordAtom);

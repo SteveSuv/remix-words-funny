@@ -1,14 +1,14 @@
 import { Spinner } from "@heroui/react";
-import { SearchX } from "lucide-react";
-import { trpcClient } from "~/common/trpc";
-import { LuIcon } from "~/components/LuIcon";
-import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { WordListIem } from "~/components/WordListIem";
+import { SearchX } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useParams } from "react-router";
+import { trpcClient } from "~/common/trpc";
 import { IPageWordsParams } from "~/common/types";
+import { LuIcon } from "~/components/LuIcon";
+import { WordListIem } from "~/components/WordListIem";
+import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
 
 export const SearchWordsList = () => {
   const { bookSlug = "" } = useParams<IPageWordsParams>();

@@ -1,23 +1,23 @@
 import { Spinner } from "@heroui/react";
-import { LuIcon } from "./LuIcon";
 import { useAtomValue, useSetAtom } from "jotai";
 import { SearchX } from "lucide-react";
-import { WordTranslations } from "./WordTranslations";
-import { WordSynonyms } from "./WordSynonyms";
-import { WordCognates } from "./WordCognates";
-import { WordPhrases } from "./WordPhrases";
-import { WordSentences } from "./WordSentences";
-import { useGetWordDetailQuery } from "~/hooks/request/query/useGetWordDetailQuery";
 import { href, Link } from "react-router";
-import { WordAudioButton } from "./WordAudioButton";
-import { WordCommentForm } from "./WordCommentForm";
-import { WordCommentsList } from "./WordCommentsList";
 import {
   isWordDetailPanelDrawerOpenAtom,
   searchWordAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
+import { useGetWordDetailQuery } from "~/hooks/request/query/useGetWordDetailQuery";
 import { CloseWordDetailDrawerButton } from "./CloseWordDetailDrawerButton";
+import { LuIcon } from "./LuIcon";
+import { WordAudioButton } from "./WordAudioButton";
+import { WordCognates } from "./WordCognates";
+import { WordCommentForm } from "./WordCommentForm";
+import { WordCommentsList } from "./WordCommentsList";
+import { WordPhrases } from "./WordPhrases";
+import { WordSentences } from "./WordSentences";
+import { WordSynonyms } from "./WordSynonyms";
+import { WordTranslations } from "./WordTranslations";
 
 export const WordDetailPanel = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);

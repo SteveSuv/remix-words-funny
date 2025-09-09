@@ -1,5 +1,5 @@
-import { LuIcon } from "~/components/LuIcon";
 import { SearchX } from "lucide-react";
+import { LuIcon } from "~/components/LuIcon";
 
 export default function PageNotFound() {
   return (

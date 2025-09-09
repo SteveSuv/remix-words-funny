@@ -1,12 +1,12 @@
-import { useAtomValue } from "jotai";
-import { SkeletonBox } from "./SkeletonBox";
-import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+import { Sofa } from "lucide-react";
+import useInfiniteScroll from "react-infinite-scroll-hook";
+import { wordDetailSlugAtom } from "~/common/store";
 import { trpcClient } from "~/common/trpc";
 import { LuIcon } from "./LuIcon";
-import { Sofa } from "lucide-react";
+import { SkeletonBox } from "./SkeletonBox";
 import { WordCommentItem } from "./WordCommentItem";
-import { wordDetailSlugAtom } from "~/common/store";
 
 const pageSize = 20;
 

@@ -1,6 +1,6 @@
 import { createTRPCClient, httpLink } from "@trpc/client";
 import SuperJSON from "superjson";
-import { AppRouter } from "~/.server/trpc/router";
+import { AppRouter } from "~/.server/router";
 import { TRPC_URL } from "./constants";
 
 // use trpcServer to fetch in server environment, like in loader, for passing cookies to trpc endpoint
