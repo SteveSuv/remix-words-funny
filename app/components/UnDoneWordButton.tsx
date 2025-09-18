@@ -1,6 +1,7 @@
 import { Button } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { Check } from "lucide-react";
-import { useUnDoneWordMutation } from "~/hooks/request/mutation/useUnDoneWordMutation";
+import { trpcClient } from "~/common/trpc";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { LuIcon } from "./LuIcon";
 
@@ -12,7 +13,9 @@ export const UnDoneWordButton = ({
   onPress?: Function;
 }) => {
   const { isLogin } = useMyUserInfo();
-  const unDoneWordMutation = useUnDoneWordMutation({ wordSlug });
+  const unDoneWordMutation = useMutation(
+    trpcClient.action.unDoneWord.mutationOptions(),
+  );
 
   return (
     <Button
@@ -24,7 +27,7 @@ export const UnDoneWordButton = ({
       title={!isLogin ? "请先登录" : ""}
       isLoading={unDoneWordMutation.isPending}
       onPress={async () => {
-        await unDoneWordMutation.mutateAsync();
+        await unDoneWordMutation.mutateAsync({ wordSlug });
         await onPress?.();
       }}
     >

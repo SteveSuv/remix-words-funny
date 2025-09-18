@@ -10,6 +10,7 @@ import {
   ModalHeader,
   addToast,
 } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
 import { useRevalidator } from "react-router";
 import { signInForm } from "~/common/formSchema";
@@ -18,7 +19,7 @@ import {
   isSignUpModalOpenAtom,
   isUpdatePasswordModalOpenAtom,
 } from "~/common/store";
-import { useSignInMutation } from "~/hooks/request/mutation/useSignInMutation";
+import { trpcClient } from "~/common/trpc";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { PasswordInput } from "./PasswordInput";
@@ -38,7 +39,9 @@ export const SignInModal = () => {
   });
   const { revalidate } = useRevalidator();
 
-  const signInMutation = useSignInMutation();
+  const signInMutation = useMutation(
+    trpcClient.action.signIn.mutationOptions(),
+  );
 
   return (
     <Modal

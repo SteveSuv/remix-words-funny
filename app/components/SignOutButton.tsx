@@ -8,11 +8,12 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { LogOut } from "lucide-react";
 import { useRevalidator } from "react-router";
 import { isSettingModalOpenAtom } from "~/common/store";
-import { useSignOutMutation } from "~/hooks/request/mutation/useSignOutMutation";
+import { trpcClient } from "~/common/trpc";
 import { LuIcon } from "./LuIcon";
 
 export const SignOutButton = () => {
@@ -20,7 +21,9 @@ export const SignOutButton = () => {
   const { revalidate } = useRevalidator();
   const setIsSettingModalOpen = useSetAtom(isSettingModalOpenAtom);
 
-  const signOutMutation = useSignOutMutation();
+  const signOutMutation = useMutation(
+    trpcClient.action.signOut.mutationOptions(),
+  );
 
   return (
     <>

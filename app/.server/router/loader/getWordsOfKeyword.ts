@@ -3,6 +3,7 @@ import { z } from "zod";
 import { p } from "~/.server/common/trpc";
 import { db } from "~/.server/db";
 import { Book, Word } from "~/.server/db/schema";
+import { PAGE_SIZE } from "~/common/constants";
 
 const prepare = db
   .select()
@@ -17,16 +18,17 @@ export const getWordsOfKeyword = p.public
   .input(
     z.object({
       keyword: z.string(),
-      offset: z.number().int().default(0),
-      limit: z.number().int().default(20),
+      cursor: z.number().int().default(0),
     }),
   )
-  .query(async ({ input: { keyword, offset, limit } }) => {
+  .query(async ({ input: { keyword, cursor } }) => {
     const wordsOfKeyword = await prepare.execute({
       keyword: `%${keyword.trim().toLowerCase()}%`,
-      offset,
-      limit,
+      offset: PAGE_SIZE * cursor,
+      limit: PAGE_SIZE,
     });
 
-    return { wordsOfKeyword };
+    const nextCursor = wordsOfKeyword.length ? cursor + 1 : undefined;
+
+    return { wordsOfKeyword, nextCursor };
   });

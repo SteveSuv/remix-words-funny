@@ -13,81 +13,52 @@ import { WordListIem } from "~/components/WordListIem";
 import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 
-const pageSize = 20;
-
 export const BookWordsList = () => {
   const { bookSlug = "" } = useParams<IPageWordsParams>();
   const { searchWord } = useDebounceSearchWord();
   const { isLogin } = useMyUserInfo();
   const listTab = useAtomValue(listTabAtom);
 
-  const getWordsOfBookQuery = useInfiniteQuery({
-    queryKey: ["getWordsOfBook", bookSlug],
-    queryFn: async ({ pageParam }) => {
-      return trpcClient.loader.getWordsOfBook.query({
+  const getWordsOfBookQuery = useInfiniteQuery(
+    trpcClient.loader.getWordsOfBook.infiniteQueryOptions(
+      {
         bookSlug,
-        offset: pageSize * pageParam,
-        limit: pageSize,
-      });
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, _, lastPageParam) => {
-      if (lastPage.wordsOfBook.length === 0) {
-        return undefined;
-      }
-      return lastPageParam + 1;
-    },
-    select(data) {
-      return data.pages.map(({ wordsOfBook }) => wordsOfBook);
-    },
-    enabled: !!bookSlug && !searchWord && listTab === ListTabType.ALL,
-  });
+      },
+      {
+        getNextPageParam: ({ nextCursor }) => nextCursor,
+        enabled: !!bookSlug && !searchWord && listTab === ListTabType.ALL,
+      },
+    ),
+  );
 
-  const getDoneWordsOfBookQuery = useInfiniteQuery({
-    queryKey: ["getDoneWordsOfBook", bookSlug, listTab],
-    queryFn: async ({ pageParam }) => {
-      return trpcClient.loader.getDoneWordsOfBook.query({
+  const getDoneWordsOfBookQuery = useInfiniteQuery(
+    trpcClient.loader.getDoneWordsOfBook.infiniteQueryOptions(
+      {
         bookSlug,
-        offset: pageSize * pageParam,
-        limit: pageSize,
-      });
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, _, lastPageParam) => {
-      if (lastPage.doneWordsOfBook.length === 0) {
-        return undefined;
-      }
-      return lastPageParam + 1;
-    },
-    select(data) {
-      return data.pages.map(({ doneWordsOfBook }) => doneWordsOfBook);
-    },
-    enabled:
-      isLogin && !!bookSlug && !searchWord && listTab === ListTabType.DONE,
-  });
+      },
+      {
+        getNextPageParam: ({ nextCursor }) => nextCursor,
+        enabled:
+          isLogin && !!bookSlug && !searchWord && listTab === ListTabType.DONE,
+      },
+    ),
+  );
 
-  const getUnDoneWordsOfBook = useInfiniteQuery({
-    queryKey: ["getUnDoneWordsOfBook", bookSlug, listTab],
-    queryFn: async ({ pageParam }) => {
-      return trpcClient.loader.getUnDoneWordsOfBook.query({
+  const getUnDoneWordsOfBook = useInfiniteQuery(
+    trpcClient.loader.getUnDoneWordsOfBook.infiniteQueryOptions(
+      {
         bookSlug,
-        offset: pageSize * pageParam,
-        limit: pageSize,
-      });
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, _, lastPageParam) => {
-      if (lastPage.unDoneWordsOfBook.length === 0) {
-        return undefined;
-      }
-      return lastPageParam + 1;
-    },
-    select(data) {
-      return data.pages.map(({ unDoneWordsOfBook }) => unDoneWordsOfBook);
-    },
-    enabled:
-      isLogin && !!bookSlug && !searchWord && listTab === ListTabType.UNDONE,
-  });
+      },
+      {
+        getNextPageParam: ({ nextCursor }) => nextCursor,
+        enabled:
+          isLogin &&
+          !!bookSlug &&
+          !searchWord &&
+          listTab === ListTabType.UNDONE,
+      },
+    ),
+  );
 
   const wordsQueryMap = {
     [ListTabType.ALL]: getWordsOfBookQuery,
@@ -95,7 +66,21 @@ export const BookWordsList = () => {
     [ListTabType.UNDONE]: getUnDoneWordsOfBook,
   };
 
+  const wordsQueryDataMap = {
+    [ListTabType.ALL]:
+      getWordsOfBookQuery.data?.pages.map((e) => e.wordsOfBook).flat(2) || [],
+    [ListTabType.DONE]:
+      getDoneWordsOfBookQuery.data?.pages
+        .map((e) => e.doneWordsOfBook)
+        .flat(2) || [],
+    [ListTabType.UNDONE]:
+      getUnDoneWordsOfBook.data?.pages
+        .map((e) => e.unDoneWordsOfBook)
+        .flat(2) || [],
+  };
+
   const wordsQuery = wordsQueryMap[listTab];
+  const wordsQueryData = wordsQueryDataMap[listTab];
 
   useEffect(() => {
     wordsQuery.refetch();
@@ -109,9 +94,7 @@ export const BookWordsList = () => {
     rootMargin: "0px 0px 200px 0px",
   });
 
-  const showWordsList = wordsQuery.data || [];
-  const allWords = showWordsList.flat(2);
-  const totalCount = allWords.length;
+  const totalCount = wordsQueryData.length;
 
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -120,7 +103,7 @@ export const BookWordsList = () => {
   }, [bookSlug, topRef]);
 
   const renderContent = () => {
-    if (allWords.length === 0) {
+    if (wordsQueryData.length === 0) {
       if (wordsQuery.isFetching) {
         return (
           <div className="flex h-full flex-col items-center justify-center">
@@ -140,7 +123,7 @@ export const BookWordsList = () => {
 
     return (
       <div className="flex flex-col">
-        {allWords.map((item, index) => {
+        {wordsQueryData.map((item, index) => {
           return <WordListIem item={item} key={index} />;
         })}
         {renderEnd()}

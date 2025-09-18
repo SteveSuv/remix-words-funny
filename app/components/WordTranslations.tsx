@@ -1,16 +1,22 @@
 import { Chip, Divider } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "~/common/store";
-import { useGetWordTranslationsQuery } from "~/hooks/request/query/useGetWordTranslationsQuery";
+import { trpcClient } from "~/common/trpc";
 import { LinkWord } from "./LinkWord";
 import { SkeletonBox } from "./SkeletonBox";
 
 export const WordTranslations = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
 
-  const getWordTranslationsQuery = useGetWordTranslationsQuery({
-    wordSlug: wordDetailSlug,
-  });
+  const getWordTranslationsQuery = useQuery(
+    trpcClient.loader.getWordTranslations.queryOptions(
+      {
+        wordSlug: wordDetailSlug,
+      },
+      { enabled: !!wordDetailSlug },
+    ),
+  );
 
   const { wordTranslations = [] } = getWordTranslationsQuery.data || {};
 

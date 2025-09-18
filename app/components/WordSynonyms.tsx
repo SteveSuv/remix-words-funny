@@ -1,16 +1,22 @@
 import { Chip, Divider } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "~/common/store";
-import { useGetWordSynonymsQuery } from "~/hooks/request/query/useGetWordSynonymsQuery";
+import { trpcClient } from "~/common/trpc";
 import { LinkWord } from "./LinkWord";
 import { SkeletonBox } from "./SkeletonBox";
 
 export const WordSynonyms = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
 
-  const getWordSynonymsQuery = useGetWordSynonymsQuery({
-    wordSlug: wordDetailSlug,
-  });
+  const getWordSynonymsQuery = useQuery(
+    trpcClient.loader.getWordSynonyms.queryOptions(
+      {
+        wordSlug: wordDetailSlug,
+      },
+      { enabled: !!wordDetailSlug },
+    ),
+  );
 
   const { wordSynonyms = [] } = getWordSynonymsQuery.data || {};
 

@@ -15,28 +15,17 @@ export const SearchWordsList = () => {
 
   const { searchWord } = useDebounceSearchWord();
 
-  const getWordsOfKeywordQuery = useInfiniteQuery({
-    queryKey: ["getWordsOfKeyword", bookSlug, searchWord],
-    queryFn: async ({ pageParam }) => {
-      const pageSize = 20;
-      return trpcClient.loader.getWordsOfKeyword.query({
+  const getWordsOfKeywordQuery = useInfiniteQuery(
+    trpcClient.loader.getWordsOfKeyword.infiniteQueryOptions(
+      {
         keyword: searchWord,
-        offset: pageSize * pageParam,
-        limit: pageSize,
-      });
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, _, lastPageParam) => {
-      if (lastPage.wordsOfKeyword.length === 0) {
-        return undefined;
-      }
-      return lastPageParam + 1;
-    },
-    select(data) {
-      return data.pages.map(({ wordsOfKeyword }) => wordsOfKeyword);
-    },
-    enabled: !!searchWord,
-  });
+      },
+      {
+        getNextPageParam: ({ nextCursor }) => nextCursor,
+        enabled: !!searchWord,
+      },
+    ),
+  );
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: getWordsOfKeywordQuery.isFetching,
@@ -46,8 +35,9 @@ export const SearchWordsList = () => {
     rootMargin: "0px 0px 200px 0px",
   });
 
-  const showWordsList = getWordsOfKeywordQuery.data || [];
-  const allWords = showWordsList.flat(2);
+  const allWords =
+    getWordsOfKeywordQuery.data?.pages.map((e) => e.wordsOfKeyword).flat(2) ||
+    [];
   const totalCount = allWords.length;
 
   const topRef = useRef<HTMLDivElement>(null);

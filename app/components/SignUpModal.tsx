@@ -9,12 +9,13 @@ import {
   ModalHeader,
   addToast,
 } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { Chance } from "chance";
 import { useAtom, useSetAtom } from "jotai";
 import { Dices } from "lucide-react";
 import { signUpForm } from "~/common/formSchema";
 import { isSignInModalOpenAtom, isSignUpModalOpenAtom } from "~/common/store";
-import { useSignUpMutation } from "~/hooks/request/mutation/useSignUpMutation";
+import { trpcClient } from "~/common/trpc";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { LuIcon } from "./LuIcon";
@@ -30,7 +31,9 @@ export const SignUpModal = () => {
 
   const { form } = useZodForm(signUpForm);
 
-  const signUpMutation = useSignUpMutation();
+  const signUpMutation = useMutation(
+    trpcClient.action.signUp.mutationOptions(),
+  );
 
   return (
     <Modal

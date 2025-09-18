@@ -9,13 +9,14 @@ import {
   ModalHeader,
   addToast,
 } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
 import { updatePasswordForm } from "~/common/formSchema";
 import {
   isSignInModalOpenAtom,
   isUpdatePasswordModalOpenAtom,
 } from "~/common/store";
-import { useUpdatePasswordMutation } from "~/hooks/request/mutation/useUpdatePasswordMutation";
+import { trpcClient } from "~/common/trpc";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
 import { PasswordInput } from "./PasswordInput";
@@ -29,7 +30,9 @@ export const UpdatePasswordModal = () => {
 
   const { form } = useZodForm(updatePasswordForm);
 
-  const updatePasswordMutation = useUpdatePasswordMutation();
+  const updatePasswordMutation = useMutation(
+    trpcClient.action.updatePassword.mutationOptions(),
+  );
 
   return (
     <Modal

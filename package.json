@@ -22,7 +22,7 @@
     ]
   },
   "dependencies": {
-    "@fontsource/merriweather": "^5.2.10",
+    "@fontsource/merriweather": "^5.2.11",
     "@heroui/react": "2.8.4",
     "@hookform/resolvers": "^5.2.2",
     "@react-router/fs-routes": "^7.9.1",
@@ -32,13 +32,14 @@
     "@tanstack/react-query-devtools": "^5.89.0",
     "@trpc/client": "^11.5.1",
     "@trpc/server": "^11.5.1",
+    "@trpc/tanstack-react-query": "^11.5.1",
     "boring-avatars": "^2.0.1",
     "chance": "^1.1.13",
     "cookie": "^1.0.2",
     "cross-env": "^10.0.0",
     "dayjs": "^1.11.18",
     "drizzle-orm": "^0.44.5",
-    "framer-motion": "^12.23.13",
+    "framer-motion": "^12.23.15",
     "isbot": "^5.1.30",
     "jotai": "^2.14.0",
     "jsonwebtoken": "^9.0.2",
@@ -54,7 +55,7 @@
     "react-router": "^7.9.1",
     "superjson": "^2.2.2",
     "usehooks-ts": "^3.1.1",
-    "zod": "^4.1.8"
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@react-router/dev": "^7.9.1",
@@ -67,13 +68,13 @@
     "@types/react-dom": "^19.1.9",
     "drizzle-kit": "^0.31.4",
     "prettier": "^3.6.2",
-    "prettier-plugin-organize-imports": "^4.2.0",
+    "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-packagejson": "^2.5.19",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.13",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "vite": "^7.1.5",
+    "vite": "^7.1.6",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-tsconfig-paths": "^5.1.4"
   }

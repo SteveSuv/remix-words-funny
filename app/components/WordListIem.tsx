@@ -1,11 +1,12 @@
 import { Button } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import {
   isWordDetailPanelDrawerOpenAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
+import { trpcClient } from "~/common/trpc";
 import { IWordItem } from "~/common/types";
-import { useGetIsWordDoneQuery } from "~/hooks/request/query/useGetIsWordDoneQuery";
 import { useMobile } from "~/hooks/useMobile";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { DoneWordButton } from "./DoneWordButton";
@@ -25,7 +26,14 @@ export const WordListIem = ({ item }: { item: IWordItem }) => {
 
   const { isLogin } = useMyUserInfo();
 
-  const getIsWordDoneQuery = useGetIsWordDoneQuery({ wordSlug });
+  const getIsWordDoneQuery = useQuery(
+    trpcClient.loader.getIsWordDone.queryOptions(
+      {
+        wordSlug,
+      },
+      { enabled: !!wordSlug },
+    ),
+  );
 
   const isWordDone = !!getIsWordDoneQuery.data?.isWordDone;
 

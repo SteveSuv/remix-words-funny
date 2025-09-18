@@ -3,6 +3,7 @@ import { z } from "zod";
 import { p } from "~/.server/common/trpc";
 import { db } from "~/.server/db";
 import { Post, User } from "~/.server/db/schema";
+import { PAGE_SIZE } from "~/common/constants";
 
 const prepare = db
   .select()
@@ -18,11 +19,17 @@ export const getWordComments = p.public
   .input(
     z.object({
       wordSlug: z.string(),
-      offset: z.number().int().default(0),
-      limit: z.number().int().default(20),
+      cursor: z.number().int().default(0),
     }),
   )
-  .query(async ({ input: { wordSlug, offset, limit } }) => {
-    const wordComments = await prepare.execute({ wordSlug, offset, limit });
-    return { wordComments };
+  .query(async ({ input: { wordSlug, cursor } }) => {
+    const wordComments = await prepare.execute({
+      wordSlug,
+      offset: PAGE_SIZE * cursor,
+      limit: PAGE_SIZE,
+    });
+
+    const nextCursor = wordComments.length ? cursor + 1 : undefined;
+
+    return { wordComments, nextCursor };
   });

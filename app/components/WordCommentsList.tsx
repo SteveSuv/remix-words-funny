@@ -8,32 +8,20 @@ import { LuIcon } from "./LuIcon";
 import { SkeletonBox } from "./SkeletonBox";
 import { WordCommentItem } from "./WordCommentItem";
 
-const pageSize = 20;
-
 export const WordCommentsList = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
 
-  const getWordCommentsQuery = useInfiniteQuery({
-    queryKey: ["getWordComments", wordDetailSlug],
-    queryFn: async ({ pageParam }) => {
-      return trpcClient.loader.getWordComments.query({
+  const getWordCommentsQuery = useInfiniteQuery(
+    trpcClient.loader.getWordComments.infiniteQueryOptions(
+      {
         wordSlug: wordDetailSlug,
-        offset: pageSize * pageParam,
-        limit: pageSize,
-      });
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, _, lastPageParam) => {
-      if (lastPage.wordComments.length === 0) {
-        return undefined;
-      }
-      return lastPageParam + 1;
-    },
-    select(data) {
-      return data.pages.map(({ wordComments }) => wordComments);
-    },
-    enabled: !!wordDetailSlug,
-  });
+      },
+      {
+        getNextPageParam: ({ nextCursor }) => nextCursor,
+        enabled: !!wordDetailSlug,
+      },
+    ),
+  );
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: getWordCommentsQuery.isFetching,
@@ -43,8 +31,8 @@ export const WordCommentsList = () => {
     rootMargin: "0px 0px 100px 0px",
   });
 
-  const showCommentsList = getWordCommentsQuery.data || [];
-  const allComments = showCommentsList.flat(2);
+  const allComments =
+    getWordCommentsQuery.data?.pages.map((e) => e.wordComments).flat(2) || [];
 
   const totalCount = allComments.length;
 

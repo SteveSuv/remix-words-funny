@@ -8,7 +8,7 @@ import {
   HeroUIProvider,
   ToastProvider,
 } from "@heroui/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ReactNode } from "react";
 import {
@@ -20,6 +20,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { queryClient } from "~/common/queryClient";
 import { trpcServer } from "~/common/trpc";
 import { AppLayout } from "~/components/AppLayout";
 import { GlobalComponents } from "~/components/GlobalComponents";
@@ -77,18 +78,6 @@ export function Layout({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 5, // 5min
-    },
-  },
-});
 
 export default function App({
   loaderData: { myUserInfo, allBooks, starBooks },

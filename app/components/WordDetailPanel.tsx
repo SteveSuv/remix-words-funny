@@ -1,4 +1,5 @@
 import { Spinner } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useAtomValue, useSetAtom } from "jotai";
 import { SearchX } from "lucide-react";
 import { href, Link } from "react-router";
@@ -7,7 +8,7 @@ import {
   searchWordAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
-import { useGetWordDetailQuery } from "~/hooks/request/query/useGetWordDetailQuery";
+import { trpcClient } from "~/common/trpc";
 import { CloseWordDetailDrawerButton } from "./CloseWordDetailDrawerButton";
 import { LuIcon } from "./LuIcon";
 import { WordAudioButton } from "./WordAudioButton";
@@ -26,9 +27,14 @@ export const WordDetailPanel = () => {
     isWordDetailPanelDrawerOpenAtom,
   );
 
-  const getWordDetailQuery = useGetWordDetailQuery({
-    wordSlug: wordDetailSlug,
-  });
+  const getWordDetailQuery = useQuery(
+    trpcClient.loader.getWordDetail.queryOptions(
+      {
+        wordSlug: wordDetailSlug,
+      },
+      { enabled: !!wordDetailSlug },
+    ),
+  );
 
   const { wordDetail } = getWordDetailQuery?.data || {};
 

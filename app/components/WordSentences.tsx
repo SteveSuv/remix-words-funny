@@ -1,16 +1,23 @@
 import { Divider } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "~/common/store";
-import { useGetWordSentencesQuery } from "~/hooks/request/query/useGetWordSentencesQuery";
+import { trpcClient } from "~/common/trpc";
 import { LinkWord } from "./LinkWord";
 import { SkeletonBox } from "./SkeletonBox";
 
 export const WordSentences = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
 
-  const getWordSentencesQuery = useGetWordSentencesQuery({
-    wordSlug: wordDetailSlug,
-  });
+  const getWordSentencesQuery = useQuery(
+    trpcClient.loader.getWordSentences.queryOptions(
+      {
+        wordSlug: wordDetailSlug,
+      },
+      { enabled: !!wordDetailSlug },
+    ),
+  );
+
   const { wordSentences = [] } = getWordSentencesQuery.data || {};
 
   if (getWordSentencesQuery.isFetching) return <SkeletonBox />;

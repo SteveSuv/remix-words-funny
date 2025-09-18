@@ -1,7 +1,8 @@
 import { Link, addToast } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { UseFormReturn } from "react-hook-form";
 import { useCountdown } from "usehooks-ts";
-import { useSendVerifyCodeMutation } from "~/hooks/request/mutation/useSendVerifyCodeMutation";
+import { trpcClient } from "~/common/trpc";
 
 export const SendVerifyCodeButton = ({
   form,
@@ -14,7 +15,9 @@ export const SendVerifyCodeButton = ({
 
   const showCountDown = count > 0 && count < 60;
 
-  const sendVerifyCodeMutation = useSendVerifyCodeMutation({ email });
+  const sendVerifyCodeMutation = useMutation(
+    trpcClient.action.sendVerifyCode.mutationOptions(),
+  );
 
   if (showCountDown) {
     return (
@@ -42,7 +45,7 @@ export const SendVerifyCodeButton = ({
       isDisabled={!!form.formState.errors.email || !email}
       className="cursor-pointer underline-offset-2 hover:underline"
       onPress={async () => {
-        await sendVerifyCodeMutation.mutateAsync();
+        await sendVerifyCodeMutation.mutateAsync({ email });
         Countdown.startCountdown();
         addToast({ title: "验证码已发送至邮箱", color: "success" });
       }}

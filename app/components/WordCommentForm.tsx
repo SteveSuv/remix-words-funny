@@ -1,12 +1,12 @@
 import { Button, Divider, Textarea, addToast, cn } from "@heroui/react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue, useSetAtom } from "jotai";
 import { commentForm } from "~/common/formSchema";
 import {
   isWordDetailPanelDrawerOpenAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
-import { useSendCommentMutation } from "~/hooks/request/mutation/useSendCommentMutation";
+import { trpcClient } from "~/common/trpc";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { useZodForm } from "~/hooks/useZodForm";
 import { FormFieldError } from "./FormFieldError";
@@ -20,9 +20,9 @@ export const WordCommentForm = () => {
   const { form } = useZodForm(commentForm);
   const queryClient = useQueryClient();
 
-  const sendCommentMutation = useSendCommentMutation({
-    wordSlug: wordDetailSlug,
-  });
+  const sendCommentMutation = useMutation(
+    trpcClient.action.sendComment.mutationOptions(),
+  );
 
   return (
     <div>
@@ -30,7 +30,10 @@ export const WordCommentForm = () => {
       <div className="my-4 text-xl font-semibold">评论区</div>
       <form
         onSubmit={form.handleSubmit(async ({ comment: content }) => {
-          await sendCommentMutation.mutateAsync({ content });
+          await sendCommentMutation.mutateAsync({
+            wordSlug: wordDetailSlug,
+            content,
+          });
           await queryClient.invalidateQueries({
             queryKey: ["getWordComments", wordDetailSlug],
           });

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { p } from "~/.server/common/trpc";
 import { db } from "~/.server/db";
 import { Book, UsersToWords, Word } from "~/.server/db/schema";
+import { PAGE_SIZE } from "~/common/constants";
 
 const prepare = db
   .select({ Word })
@@ -24,17 +25,18 @@ export const getDoneWordsOfBook = p.auth
   .input(
     z.object({
       bookSlug: z.string(),
-      offset: z.number().int().default(0),
-      limit: z.number().int().default(20),
+      cursor: z.number().int().default(0),
     }),
   )
-  .query(async ({ ctx: { userId }, input: { bookSlug, offset, limit } }) => {
+  .query(async ({ ctx: { userId }, input: { bookSlug, cursor } }) => {
     const doneWordsOfBook = await prepare.execute({
       bookSlug,
       userId,
-      limit,
-      offset,
+      offset: PAGE_SIZE * cursor,
+      limit: PAGE_SIZE,
     });
 
-    return { doneWordsOfBook };
+    const nextCursor = doneWordsOfBook.length ? cursor + 1 : undefined;
+
+    return { doneWordsOfBook, nextCursor };
   });

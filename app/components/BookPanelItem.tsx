@@ -1,4 +1,5 @@
 import { Button, cn, Image } from "@heroui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { Star } from "lucide-react";
 import { href, Link, useParams, useRevalidator } from "react-router";
@@ -7,9 +8,8 @@ import {
   searchWordAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
+import { trpcClient } from "~/common/trpc";
 import { IBookItem } from "~/common/types";
-import { useStarBookMutation } from "~/hooks/request/mutation/useStarBookMutation";
-import { useUnStarBookMutation } from "~/hooks/request/mutation/useUnStarBookMutation";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { LuIcon } from "./LuIcon";
 
@@ -31,8 +31,12 @@ export const BookPanelItem = ({
 
   const isActive = bookSlug === item.slug;
 
-  const starBookMutation = useStarBookMutation({ bookSlug: item.slug });
-  const unStarBookMutation = useUnStarBookMutation({ bookSlug: item.slug });
+  const starBookMutation = useMutation(
+    trpcClient.action.starBook.mutationOptions(),
+  );
+  const unStarBookMutation = useMutation(
+    trpcClient.action.unStarBook.mutationOptions(),
+  );
 
   return (
     <Link to={href("/:bookSlug/words", { bookSlug: item.slug })}>
@@ -67,9 +71,9 @@ export const BookPanelItem = ({
             variant="light"
             onPress={async () => {
               if (isBookStar) {
-                await unStarBookMutation.mutateAsync();
+                await unStarBookMutation.mutateAsync({ bookSlug: item.slug });
               } else {
-                await starBookMutation.mutateAsync();
+                await starBookMutation.mutateAsync({ bookSlug: item.slug });
               }
               revalidate();
             }}

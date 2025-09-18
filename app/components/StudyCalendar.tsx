@@ -1,10 +1,11 @@
 import { Tooltip } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { Activity, ActivityCalendar } from "react-activity-calendar";
 import { isProfileModalOpenAtom } from "~/common/store";
-import { useGetStudyCalendarQuery } from "~/hooks/request/query/useGetStudyCalendarQuery";
+import { trpcClient } from "~/common/trpc";
 import { useAppTheme } from "~/hooks/useAppTheme";
 
 const getCalendarData = (
@@ -46,9 +47,11 @@ export const StudyCalendar = () => {
 
   const isProfileModalOpen = useAtomValue(isProfileModalOpenAtom);
 
-  const getStudyCalendarQuery = useGetStudyCalendarQuery({
-    enabled: isProfileModalOpen,
-  });
+  const getStudyCalendarQuery = useQuery(
+    trpcClient.loader.getStudyCalendar.queryOptions(undefined, {
+      enabled: isProfileModalOpen,
+    }),
+  );
 
   const { studyCalendar = [] } = getStudyCalendarQuery.data || {};
 

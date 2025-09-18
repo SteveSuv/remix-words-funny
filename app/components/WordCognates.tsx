@@ -1,16 +1,20 @@
 import { Chip, Divider } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { wordDetailSlugAtom } from "~/common/store";
-import { useGetWordCognatesQuery } from "~/hooks/request/query/useGetWordCognatesQuery";
+import { trpcClient } from "~/common/trpc";
 import { LinkWord } from "./LinkWord";
 import { SkeletonBox } from "./SkeletonBox";
 
 export const WordCognates = () => {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
 
-  const getWordCognatesQuery = useGetWordCognatesQuery({
-    wordSlug: wordDetailSlug,
-  });
+  const getWordCognatesQuery = useQuery(
+    trpcClient.loader.getWordCognates.queryOptions(
+      { wordSlug: wordDetailSlug },
+      { enabled: !!wordDetailSlug },
+    ),
+  );
 
   const { wordCognates = [] } = getWordCognatesQuery.data || {};
 
