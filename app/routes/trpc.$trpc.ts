@@ -12,10 +12,6 @@ const handleRequest = (args: Route.LoaderArgs | Route.ActionArgs) => {
   });
 };
 
-export const loader = (args: Route.LoaderArgs) => {
-  return handleRequest(args);
-};
+export const loader = (args: Route.LoaderArgs) => handleRequest(args);
 
-export const action = (args: Route.ActionArgs) => {
-  return handleRequest(args);
-};
+export const action = (args: Route.ActionArgs) => handleRequest(args);

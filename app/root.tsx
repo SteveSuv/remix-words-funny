@@ -6,7 +6,6 @@ import {
   Code,
   Divider,
   HeroUIProvider,
-  ToastProvider,
 } from "@heroui/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -85,7 +84,6 @@ export default function App({
   return (
     <NextThemesProvider attribute="class" defaultTheme="light">
       <HeroUIProvider>
-        <ToastProvider placement="top-center" toastProps={{ timeout: 2000 }} />
         <QueryClientProvider client={queryClient}>
           <AppLayout allBooks={allBooks} starBooks={starBooks}>
             <Outlet context={{ myUserInfo }} />
