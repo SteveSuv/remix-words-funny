@@ -60,7 +60,7 @@ export const BookPanelItem = ({
             width={60 * ratio}
           />
           <div className="flex flex-col">
-            <div className="w-[200px] truncate">{item.name}</div>
+            <div className="w-50 truncate">{item.name}</div>
             <small className="text-primary">{item.wordsCount}个单词</small>
           </div>
         </div>

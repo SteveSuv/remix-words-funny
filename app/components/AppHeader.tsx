@@ -18,7 +18,7 @@ export const AppHeader = () => {
   const setIsProfileModalOpen = useSetAtom(isProfileModalOpenAtom);
 
   return (
-    <div className="border-foreground-100 h-[75px] border-b px-4">
+    <div className="border-foreground-100 h-18.75 border-b px-4">
       {myUserInfo ? (
         <div className="flex h-full items-center justify-between">
           <div

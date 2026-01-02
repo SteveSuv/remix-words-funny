@@ -51,7 +51,7 @@ export const AppLayout = ({
         </Drawer>
       )}
 
-      <div className="bg-foreground-50 shadow-small hidden h-screen w-[350px] xl:block">
+      <div className="bg-foreground-50 shadow-small hidden h-screen w-87.5 xl:block">
         <AppHeader />
         <div className="h-[calc(100vh-80px)] overflow-y-scroll">
           <BooksPanel allBooks={allBooks} starBooks={starBooks} />
@@ -80,7 +80,7 @@ export const AppLayout = ({
         </Drawer>
       )}
 
-      <div className="bg-foreground-50 shadow-small z-10 hidden h-screen w-[400px] overflow-y-scroll xl:block">
+      <div className="bg-foreground-50 shadow-small z-10 hidden h-screen w-100 overflow-y-scroll xl:block">
         <WordDetailPanel />
       </div>
     </main>

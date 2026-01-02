@@ -26,7 +26,7 @@ export const WordCommentItem = ({
             </small>
           </div>
 
-          <div className="break-words">{content}</div>
+          <div className="wrap-break-word">{content}</div>
 
           <div className="flex items-center">
             <CommentVoteButton postId={postId} />
