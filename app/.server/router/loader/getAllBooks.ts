@@ -1,5 +1,5 @@
 import { count, eq } from "drizzle-orm";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Book, Word } from "~/.server/db/schema";
 
@@ -13,10 +13,10 @@ const prepare = db
   })
   .from(Book)
   .leftJoin(Word, eq(Word.bookSlug, Book.slug))
-  .groupBy(Book.id)
-  .prepare("prepare");
+  .groupBy(Book.id, Book.slug, Book.cover, Book.name)
+  .prepare("getAllBooks");
 
-export const getAllBooks = p.public.query(async () => {
+export const getAllBooks = p.public.handler(async () => {
   const allBooks = await prepare.execute();
   return { allBooks };
 });

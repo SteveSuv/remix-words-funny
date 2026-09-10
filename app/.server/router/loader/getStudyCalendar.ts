@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { and, eq, gte, lte, sql } from "drizzle-orm";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToWords } from "~/.server/db/schema";
 
@@ -17,10 +17,12 @@ const prepare = db
       lte(UsersToWords.updatedAt, dayjs().add(1, "day").toDate()),
     ),
   )
-  .prepare("prepare");
+  .prepare("getStudyCalendar");
 
-export const getStudyCalendar = p.auth.query(async ({ ctx: { userId } }) => {
-  if (!userId) return { isWordDone: false };
-  const studyCalendar = await prepare.execute({ userId });
-  return { studyCalendar };
-});
+export const getStudyCalendar = p.auth.handler(
+  async ({ context: { userId } }) => {
+    if (!userId) return { isWordDone: false };
+    const studyCalendar = await prepare.execute({ userId });
+    return { studyCalendar };
+  },
+);

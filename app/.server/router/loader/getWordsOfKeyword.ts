@@ -1,6 +1,6 @@
 import { eq, like, sql } from "drizzle-orm";
 import { z } from "zod";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Book, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
@@ -12,7 +12,7 @@ const prepare = db
   .innerJoin(Book, eq(Book.slug, Word.bookSlug))
   .offset(sql.placeholder("offset"))
   .limit(sql.placeholder("limit"))
-  .prepare("prepare");
+  .prepare("getWordsOfKeyword");
 
 export const getWordsOfKeyword = p.public
   .input(
@@ -21,7 +21,7 @@ export const getWordsOfKeyword = p.public
       cursor: z.number().int().default(0),
     }),
   )
-  .query(async ({ input: { keyword, cursor } }) => {
+  .handler(async ({ input: { keyword, cursor } }) => {
     const wordsOfKeyword = await prepare.execute({
       keyword: `%${keyword.trim().toLowerCase()}%`,
       offset: PAGE_SIZE * cursor,

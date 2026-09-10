@@ -1,8 +1,8 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import dayjs from "dayjs";
 import { eq, sql } from "drizzle-orm";
 import { encrypt } from "~/.server/common/crypto";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { User, Verify } from "~/.server/db/schema";
 import { signUpForm } from "~/common/formSchema";
@@ -12,30 +12,29 @@ const prepareGetUserByEmail = db
   .from(User)
   .where(eq(User.email, sql.placeholder("email")))
   .limit(1)
-  .prepare("prepareGetUserByEmail");
+  .prepare("signUp.getUserByEmail");
 
 const prepareGetUserByName = db
   .select()
   .from(User)
   .where(eq(User.name, sql.placeholder("name")))
   .limit(1)
-  .prepare("prepareGetUserByName");
+  .prepare("signUp.getUserByName");
 
 const prepareGetVerifyByEmail = db
   .select()
   .from(Verify)
   .where(eq(Verify.email, sql.placeholder("email")))
   .limit(1)
-  .prepare("prepareGetUserByName");
+  .prepare("signUp.getVerifyByEmail");
 
 export const signUp = p.unAuth
   .input(signUpForm)
-  .mutation(async ({ input: { email, name, password, verifyCode } }) => {
+  .handler(async ({ input: { email, name, password, verifyCode } }) => {
     const [userByEmail] = await prepareGetUserByEmail.execute({ email });
 
     if (userByEmail) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "邮箱已被使用",
       });
     }
@@ -43,8 +42,7 @@ export const signUp = p.unAuth
     const [userByName] = await prepareGetUserByName.execute({ name });
 
     if (userByName) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "昵称已被使用",
       });
     }
@@ -52,15 +50,13 @@ export const signUp = p.unAuth
     const [verify] = await prepareGetVerifyByEmail.execute({ email });
 
     if (!verify) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "请先发送验证码",
       });
     }
 
     if (verify.code !== verifyCode) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "验证码错误",
       });
     }
@@ -68,8 +64,7 @@ export const signUp = p.unAuth
     const diff = dayjs().diff(dayjs(verify.updatedAt), "s");
 
     if (diff > 60) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "验证码已过期",
       });
     }

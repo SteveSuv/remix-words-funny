@@ -1,6 +1,6 @@
 import { and, asc, eq, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
@@ -23,7 +23,7 @@ const prepare = db
   .limit(sql.placeholder("limit"))
   .offset(sql.placeholder("offset"))
   .orderBy(asc(Word.id))
-  .prepare("prepare");
+  .prepare("getUnDoneWordsOfBook");
 
 export const getUnDoneWordsOfBook = p.auth
   .input(
@@ -32,7 +32,7 @@ export const getUnDoneWordsOfBook = p.auth
       cursor: z.number().int().default(0),
     }),
   )
-  .query(async ({ ctx: { userId }, input: { bookSlug, cursor } }) => {
+  .handler(async ({ context: { userId }, input: { bookSlug, cursor } }) => {
     const unDoneWordsOfBook = await prepare.execute({
       bookSlug,
       userId,

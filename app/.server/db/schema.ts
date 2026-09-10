@@ -1,6 +1,5 @@
-import { relations } from "drizzle-orm";
+import { defineRelations } from "drizzle-orm/relations";
 import {
-  AnyPgColumn,
   integer,
   pgTable,
   primaryKey,
@@ -9,6 +8,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
+import type { AnyPgColumn } from "drizzle-orm/pg-core";
 
 const timestamps = {
   createdAt: timestamp().notNull().defaultNow(),
@@ -164,107 +164,81 @@ export const UsersToPostsVote = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.postId] })],
 );
 
-// table relations
-export const UserRelations = relations(User, ({ many }) => ({
-  UsersToBooks: many(UsersToBooks),
-  UsersToWords: many(UsersToWords),
-  UsersToPostsVote: many(UsersToPostsVote),
-  Posts: many(Post),
-}));
-
-export const PostRelations = relations(Post, ({ one, many }) => ({
-  User: one(User, { fields: [Post.userId], references: [User.id] }),
-  Word: one(Word, { fields: [Post.wordSlug], references: [Word.slug] }),
-  UsersToPostsVote: many(UsersToPostsVote),
-  Posts: many(Post),
-}));
-
-export const BookRelations = relations(Book, ({ many }) => ({
-  UsersToBooks: many(UsersToBooks),
-  Words: many(Word),
-}));
-
-export const WordRelations = relations(Word, ({ one, many }) => ({
-  Book: one(Book, {
-    fields: [Word.bookSlug],
-    references: [Book.slug],
-  }),
-  UsersToWords: many(UsersToWords),
-  Cognates: many(Cognate),
-  Phrases: many(Phrase),
-  Sentences: many(Sentence),
-  Synonyms: many(Synonym),
-  Translations: many(Translation),
-  Posts: many(Post),
-}));
-
-export const CognateRelations = relations(Cognate, ({ one }) => ({
-  Word: one(Word, {
-    fields: [Cognate.wordSlug],
-    references: [Word.slug],
-  }),
-}));
-
-export const PhraseRelations = relations(Phrase, ({ one }) => ({
-  Word: one(Word, {
-    fields: [Phrase.wordSlug],
-    references: [Word.slug],
-  }),
-}));
-
-export const SentenceRelations = relations(Sentence, ({ one }) => ({
-  Word: one(Word, {
-    fields: [Sentence.wordSlug],
-    references: [Word.slug],
-  }),
-}));
-
-export const SynonymRelations = relations(Synonym, ({ one }) => ({
-  Word: one(Word, {
-    fields: [Synonym.wordSlug],
-    references: [Word.slug],
-  }),
-}));
-
-export const TranslationRelations = relations(Translation, ({ one }) => ({
-  Word: one(Word, {
-    fields: [Translation.wordSlug],
-    references: [Word.slug],
-  }),
-}));
-
-export const UsersToBooksRelations = relations(UsersToBooks, ({ one }) => ({
-  book: one(Book, {
-    fields: [UsersToBooks.bookSlug],
-    references: [Book.slug],
-  }),
-  user: one(User, {
-    fields: [UsersToBooks.userId],
-    references: [User.id],
-  }),
-}));
-
-export const UsersToWordsRelations = relations(UsersToWords, ({ one }) => ({
-  word: one(Word, {
-    fields: [UsersToWords.wordSlug],
-    references: [Word.slug],
-  }),
-  user: one(User, {
-    fields: [UsersToWords.userId],
-    references: [User.id],
-  }),
-}));
-
-export const UsersToPostsVoteRelations = relations(
-  UsersToPostsVote,
-  ({ one }) => ({
-    post: one(Post, {
-      fields: [UsersToPostsVote.postId],
-      references: [Post.id],
-    }),
-    user: one(User, {
-      fields: [UsersToPostsVote.userId],
-      references: [User.id],
-    }),
+export const relations = defineRelations(
+  {
+    User,
+    Post,
+    Verify,
+    Book,
+    Word,
+    Cognate,
+    Phrase,
+    Sentence,
+    Synonym,
+    Translation,
+    UsersToBooks,
+    UsersToWords,
+    UsersToPostsVote,
+  },
+  (r) => ({
+    User: {
+      UsersToBooks: r.many.UsersToBooks(),
+      UsersToWords: r.many.UsersToWords(),
+      UsersToPostsVote: r.many.UsersToPostsVote(),
+      Posts: r.many.Post(),
+    },
+    Post: {
+      User: r.one.User({ from: r.Post.userId, to: r.User.id }),
+      Word: r.one.Word({ from: r.Post.wordSlug, to: r.Word.slug }),
+      ParentPost: r.one.Post({
+        from: r.Post.parentPostId,
+        to: r.Post.id,
+        optional: true,
+        alias: "PostReplies",
+      }),
+      Replies: r.many.Post({ alias: "PostReplies" }),
+      UsersToPostsVote: r.many.UsersToPostsVote(),
+    },
+    Book: {
+      UsersToBooks: r.many.UsersToBooks(),
+      Words: r.many.Word(),
+    },
+    Word: {
+      Book: r.one.Book({ from: r.Word.bookSlug, to: r.Book.slug }),
+      UsersToWords: r.many.UsersToWords(),
+      Cognates: r.many.Cognate(),
+      Phrases: r.many.Phrase(),
+      Sentences: r.many.Sentence(),
+      Synonyms: r.many.Synonym(),
+      Translations: r.many.Translation(),
+      Posts: r.many.Post(),
+    },
+    Cognate: {
+      Word: r.one.Word({ from: r.Cognate.wordSlug, to: r.Word.slug }),
+    },
+    Phrase: {
+      Word: r.one.Word({ from: r.Phrase.wordSlug, to: r.Word.slug }),
+    },
+    Sentence: {
+      Word: r.one.Word({ from: r.Sentence.wordSlug, to: r.Word.slug }),
+    },
+    Synonym: {
+      Word: r.one.Word({ from: r.Synonym.wordSlug, to: r.Word.slug }),
+    },
+    Translation: {
+      Word: r.one.Word({ from: r.Translation.wordSlug, to: r.Word.slug }),
+    },
+    UsersToBooks: {
+      Book: r.one.Book({ from: r.UsersToBooks.bookSlug, to: r.Book.slug }),
+      User: r.one.User({ from: r.UsersToBooks.userId, to: r.User.id }),
+    },
+    UsersToWords: {
+      Word: r.one.Word({ from: r.UsersToWords.wordSlug, to: r.Word.slug }),
+      User: r.one.User({ from: r.UsersToWords.userId, to: r.User.id }),
+    },
+    UsersToPostsVote: {
+      Post: r.one.Post({ from: r.UsersToPostsVote.postId, to: r.Post.id }),
+      User: r.one.User({ from: r.UsersToPostsVote.userId, to: r.User.id }),
+    },
   }),
 );

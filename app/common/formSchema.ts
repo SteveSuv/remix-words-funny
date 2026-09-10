@@ -1,14 +1,12 @@
 import { z } from "zod";
 
-// basic fields
-export const email = z.string().email("无效的邮箱格式");
+// 基础字段
+export const email = z.email("无效的邮箱格式");
 
 export const password = z
   .string()
   .min(8, "密码长度不能少于8位")
   .max(30, "密码长度不能多于30位");
-
-export const keepAlive = z.boolean();
 
 export const verifyCode = z.string().length(6, "验证码为6位数字");
 
@@ -29,10 +27,10 @@ const updatePasswordFormFields = {
   verifyCode,
 };
 
-// signInForm
-export const signInForm = z.object({ email, password, keepAlive });
+// 登录表单
+export const signInForm = z.object({ email, password });
 
-// signUpForm
+// 注册表单
 export const signUpForm = z
   .object({ ...updatePasswordFormFields, name })
   .refine((data) => data.password === data.password2, {
@@ -40,7 +38,7 @@ export const signUpForm = z
     path: ["password2"],
   });
 
-// updatePasswordForm
+// 重置密码表单
 export const updatePasswordForm = z
   .object(updatePasswordFormFields)
   .refine((data) => data.password === data.password2, {
@@ -48,5 +46,5 @@ export const updatePasswordForm = z
     path: ["password2"],
   });
 
-// commentForm
+// 评论表单
 export const commentForm = z.object({ comment });

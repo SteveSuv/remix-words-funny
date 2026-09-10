@@ -1,11 +1,10 @@
-import { SearchX } from "lucide-react";
-import { LuIcon } from "~/components/LuIcon";
+export function loader() {
+  throw new Response(null, {
+    status: 404,
+    statusText: "Not Found",
+  });
+}
 
 export default function PageNotFound() {
-  return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <LuIcon size={100} className="text-foreground-300" icon={SearchX} />
-      <div className="text-foreground-400 mt-2">页面不存在</div>
-    </div>
-  );
+  return null;
 }

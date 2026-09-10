@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
@@ -12,7 +12,7 @@ const prepare = db
   .offset(sql.placeholder("offset"))
   .limit(sql.placeholder("limit"))
   .orderBy(Word.id)
-  .prepare("prepare");
+  .prepare("getWordsOfBook");
 
 export const getWordsOfBook = p.public
   .input(
@@ -21,7 +21,7 @@ export const getWordsOfBook = p.public
       cursor: z.number().int().default(0),
     }),
   )
-  .query(async ({ input: { bookSlug, cursor } }) => {
+  .handler(async ({ input: { bookSlug, cursor } }) => {
     const wordsOfBook = await prepare.execute({
       bookSlug,
       offset: PAGE_SIZE * cursor,

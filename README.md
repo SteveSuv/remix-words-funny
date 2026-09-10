@@ -1,113 +1,119 @@
-# remix-words-funny
+# WordsFunny
 
-A fullstack English words study website built with [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
+WordsFunny 是一个英语单词学习网站，围绕单词书、单词详情、学习进度和评论互动组织学习流程。帮助用户轻松学单词！
 
-![image](https://github.com/user-attachments/assets/6e57831f-9915-4f6f-9c2f-93040b0dcede)
+## 功能介绍
 
-# features
+- 以单词书为中心组织学习内容，支持浏览单词书、进入词表、收藏常用单词书，并在全部、已掌握、未掌握之间切换学习范围。
+- 提供完整的单词详情页，集中展示音标、发音、记忆提示、释义、短语、例句、同义词和同根词，方便在一个页面完成理解和复习。
+- 支持全站单词搜索，搜索结果会带出所属单词书，适合快速定位陌生词或跨单词书查找相关内容。
+- 登录后可以记录个人学习进度，标记单词掌握状态，并通过个人资料中的学习日历查看近半年的学习情况。
+- 提供账号、评论和主题等基础体验，包括邮箱注册/登录/重设密码、单词评论与点赞、浅色/深色主题，以及桌面端和移动端适配。
 
-- end-to-end type safe by `trpc`
-- get `myUserInfo` anywhere by `useMyUserInfo`
-- type safe form with `zod` by `useZodForm`
-- no need to export `action` in routes, just call `trpcClient.action` to mutate anywhere
-- request with permission control by `trpc middlewares`
-- deploy by `docker` or `pm2`
-- support dark mode by `useAppTheme`
-- use `drizzle` to keep type safe with `postgresql` db
-- toast request error automatically
-- always use latest remix (react-router v7) features
+## 技术栈
 
-# stack
+| 分类       | 技术                                                    |
+| ---------- | ------------------------------------------------------- |
+| 前端       | React, React Router, Vite, HeroUI, Tailwind CSS, Lucide |
+| 请求       | oRPC, TanStack Query                                    |
+| 状态与表单 | Jotai, React Hook Form, Zod                             |
+| 服务端     | oRPC Server, JSON Web Token, Nodemailer                 |
+| 数据库     | PostgreSQL, Drizzle ORM                                 |
 
-- remix (react-router v7)
-- vite
-- trpc
-- tailwindcss
-- heroUI
-- typescript
-- drizzle
-- postgresql
-- jwt
-- jotai
-- pnpm
-- react-hook-form
-- react-query
-- next-themes
-- lucide-icons
-- zod
-- docker
+## 项目结构
 
-# how to dev
-
-1. clone this repository
-
-```
-git clone git@github.com:SteveSuv/remix-words-funny.git
+```text
+app/
+  .server/
+    common/        服务端公共能力
+    db/            数据库连接、表结构和初始化 SQL
+    router/        服务端接口
+    server.ts      /rpc 请求入口
+  common/          公共常量、类型、表单校验和请求客户端
+  components/
+    global/        全局弹窗、设置、个人资料、移动端抽屉
+    layout/        单词书栏、词表栏、单词详情栏
+    common/        通用组件
+  hooks/           业务 hooks
+  routes/          路由文件
+public/
+  books/           单词书封面
+  favicon.svg      网站图标
 ```
 
-2. install packages
+## 开发指南
 
-```
-npm i pnpm -g
-pnpm i
-```
-
-3. init database
-
-- install [docker](https://www.docker.com/get-started/) and start docker service
-- first run command below to create a local postgres container (you can replace the `POSTGRES_PASSWORD_EXAMPLE`):
+### 1. 安装依赖
 
 ```sh
-docker run -d --name postgres -p 5432:5432 -v postgres_data:/var/lib/postgresql/data -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=POSTGRES_PASSWORD_EXAMPLE -e POSTGRES_DB=wordsfunny postgres:16-alpine
+npm install
 ```
 
-- run command `pnpm db:push` to sync db structs and drizzle schema
-- download csv data file: https://mypikpak.com/s/VOEs95bTB0KGAg75t0Nrs-oOo1
-- use your favorite db tool like [TablePlus](https://tableplus.com/) to connect the postgres db
-- insert db data by import csv files to tables. Notice! you should first import `Book`, then `Word`, then others, because tables have some relations
-- run `pnpm db:task`, if print `total words count: 152543` means the postgres db is running ok
+### 2. 准备数据库
 
-4. init email server (optional, if you don't want to send login verify code)
+创建 PostgreSQL 数据库。使用 Docker 时可以直接启动一个本地数据库：
 
-- when you dev local, you can just print the verify code simply
-- when you deploy to prod, you can use some email server saas like [resend](https://resend.com/)
-- or you can enable some email server's SMTP, then add `EMAIL_SERVER_ADDRESS` and `EMAIL_SERVER_PASS` to .env file, like [Netease Email](https://mail.163.com/) or [QQ Email](https://mail.qq.com/)
-
-5. run dev server
-
-```
-pnpm dev
+```sh
+docker run -d \
+  --name wordsfunny-postgres \
+  -p 5432:5432 \
+  -v wordsfunny_postgres_data:/var/lib/postgresql/data \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=your_password \
+  -e POSTGRES_DB=wordsfunny \
+  postgres:16-alpine
 ```
 
-6. build and preview
+### 3. 配置环境变量
 
-```
-pnpm build
-pnpm start
-```
+在项目根目录创建 `.env`：
 
-# how to deploy
-
-- deploy by docker
-
-```
-pnpm run deploy
+```env
+DATABASE_URL="postgresql://postgres:your_password@localhost:5432/wordsfunny"
+JWT_SECRET="replace_with_a_long_random_secret"
+CRYPTO_SECRET="replace_with_a_long_random_secret"
+EMAIL_SERVER_ADDRESS="your_email@163.com"
+EMAIL_SERVER_PASS="your_smtp_authorization_code"
 ```
 
-- deploy by pm2
+`EMAIL_SERVER_ADDRESS` 和 `EMAIL_SERVER_PASS` 可选，是用于发送注册和重设密码验证码。
+当前代码默认使用 `smtp.163.com`，如果使用其他邮件服务，需要同步调整 `app/.server/common/mail.ts`。
 
+### 4. 初始化表结构
+
+```sh
+psql "postgresql://postgres:your_password@localhost:5432/wordsfunny" -f app/.server/db/init.sql
 ```
-# push files to server
-rsync -avz build node_modules package.json .env root@HOST:~/remix-words-funny/
 
-# ssh server and run app
-ssh root@HOST "cd ~/remix-words-funny && pm2 start npm -- start"
+### 5. 导入词库数据
+
+```text
+https://mypikpak.com/s/VOEs95bTB0KGAg75t0Nrs-oOo1
 ```
 
-# notice
+下载数据压缩包，解压后使用 TablePlus、psql 或其他数据库工具导入。导入顺序建议为：
 
-- suggest node version greater than 22
-- when you dev local, you should run `docker stop wordsfunny-app` first to stop container to avoid port 3001 occupation
-- words resource [repo](https://github.com/kajweb/dict)
-- more features will be added gradually
-- a more simple `remix-t3-stack` project for beginners is here: [remix-t3-stack](https://github.com/SteveSuv/remix-t3-stack)
+```text
+Book -> Word -> Translation / Phrase / Sentence / Synonym / Cognate
+```
+
+### 6. 启动项目
+
+本地调试：
+
+```sh
+npm run dev
+```
+
+默认访问地址：
+
+```text
+http://localhost:3001
+```
+
+生产构建与启动：
+
+```sh
+npm run build
+npm run start
+```

@@ -1,6 +1,6 @@
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToWords } from "~/.server/db/schema";
 
@@ -14,11 +14,11 @@ const prepare = db
     ),
   )
   .limit(1)
-  .prepare("prepare");
+  .prepare("getIsWordDone");
 
 export const getIsWordDone = p.public
   .input(z.object({ wordSlug: z.string() }))
-  .query(async ({ ctx: { userId }, input: { wordSlug } }) => {
+  .handler(async ({ context: { userId }, input: { wordSlug } }) => {
     if (!userId) return { isWordDone: false };
 
     const [item] = await prepare.execute({ wordSlug, userId });

@@ -1,4 +1,4 @@
-import { t } from "../common/trpc";
+import { orpc } from "../common/orpc";
 
 // loaders
 import { getAllBooks } from "./loader/getAllBooks";
@@ -35,7 +35,7 @@ import { unVotePost } from "./action/unVotePost";
 import { updatePassword } from "./action/updatePassword";
 import { votePost } from "./action/votePost";
 
-const loader = t.router({
+const loader = orpc.router({
   getMyUserInfo,
   getAllBooks,
   getBookDetail,
@@ -57,7 +57,7 @@ const loader = t.router({
   getIsPostVote,
 });
 
-const action = t.router({
+const action = orpc.router({
   doneWord,
   unDoneWord,
   sendVerifyCode,
@@ -72,9 +72,4 @@ const action = t.router({
   unVotePost,
 });
 
-export const appRouter = t.router({
-  loader,
-  action,
-});
-
-export type AppRouter = typeof appRouter;
+export const router = orpc.router({ loader, action });

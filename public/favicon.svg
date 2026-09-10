@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient
+      id="letter"
+      x1="13"
+      x2="51"
+      y1="18"
+      y2="49"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop stop-color="#ffd76f" />
+      <stop offset=".47" stop-color="#ff3f95" />
+      <stop offset="1" stop-color="#42f2df" />
+    </linearGradient>
+    <linearGradient
+      id="core"
+      x1="14"
+      x2="50"
+      y1="17"
+      y2="47"
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop stop-color="#fff6c7" />
+      <stop offset=".5" stop-color="#ff75b8" />
+      <stop offset="1" stop-color="#b7fff7" />
+    </linearGradient>
+    <filter id="blur-strong" x="-45%" y="-45%" width="190%" height="190%">
+      <feGaussianBlur stdDeviation="3.5" />
+    </filter>
+    <filter id="blur-soft" x="-45%" y="-45%" width="190%" height="190%">
+      <feGaussianBlur stdDeviation="2.2" />
+    </filter>
+    <filter id="tube-shadow" x="-35%" y="-35%" width="170%" height="170%">
+      <feDropShadow
+        dx="0"
+        dy="0"
+        stdDeviation="2.5"
+        flood-color="#ff4fa3"
+        flood-opacity=".75"
+      />
+      <feDropShadow
+        dx="0"
+        dy="0"
+        stdDeviation="3.3"
+        flood-color="#42f2df"
+        flood-opacity=".35"
+      />
+    </filter>
+    <clipPath id="frame">
+      <rect width="64" height="64" rx="14" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="64" height="64" fill="#000" />
+    <path
+      fill="none"
+      stroke="url(#letter)"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-opacity=".28"
+      stroke-width="16"
+      filter="url(#blur-strong)"
+      d="M14 18c2.8 12 4.7 22.5 9 31 4.8-8.2 6.7-20.3 9-31 2.3 10.7 4.2 22.8 9 31 4.3-8.5 6.2-19 9-31"
+    />
+    <path
+      fill="none"
+      stroke="url(#letter)"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-opacity=".65"
+      stroke-width="13"
+      filter="url(#blur-soft)"
+      d="M14 18c2.8 12 4.7 22.5 9 31 4.8-8.2 6.7-20.3 9-31 2.3 10.7 4.2 22.8 9 31 4.3-8.5 6.2-19 9-31"
+    />
+    <path
+      fill="none"
+      stroke="url(#letter)"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="10"
+      filter="url(#tube-shadow)"
+      d="M14 18c2.8 12 4.7 22.5 9 31 4.8-8.2 6.7-20.3 9-31 2.3 10.7 4.2 22.8 9 31 4.3-8.5 6.2-19 9-31"
+    />
+    <path
+      fill="none"
+      stroke="url(#core)"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="5"
+      d="M14 18c2.8 12 4.7 22.5 9 31 4.8-8.2 6.7-20.3 9-31 2.3 10.7 4.2 22.8 9 31 4.3-8.5 6.2-19 9-31"
+    />
+    <path
+      fill="none"
+      stroke="#fff8d5"
+      stroke-linecap="round"
+      stroke-opacity=".78"
+      stroke-width="2"
+      d="M16.5 20.8c1.8 8.2 3.2 15.3 5.4 22.1M33.9 21.6c1.5 7.3 2.9 14.3 5.1 20.7"
+    />
+  </g>
+</svg>

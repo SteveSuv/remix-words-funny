@@ -1,6 +1,6 @@
 import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToPostsVote } from "~/.server/db/schema";
 
@@ -14,7 +14,7 @@ const prepare = db
     ),
   )
   .limit(1)
-  .prepare("prepare");
+  .prepare("getIsPostVote");
 
 export const getIsPostVote = p.public
   .input(
@@ -22,7 +22,7 @@ export const getIsPostVote = p.public
       postId: z.number().int(),
     }),
   )
-  .query(async ({ ctx: { userId }, input: { postId } }) => {
+  .handler(async ({ context: { userId }, input: { postId } }) => {
     if (!userId) return { isPostVote: false };
 
     const [item] = await prepare.execute({ postId, userId });

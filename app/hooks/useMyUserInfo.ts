@@ -1,15 +1,11 @@
-import { useLoaderData, useOutletContext } from "react-router";
-import { IUserInfo } from "~/common/types";
-import { loader } from "~/root";
+import { useQuery } from "@tanstack/react-query";
+import { orpc } from "~/common/orpcClient";
 
-export const useMyUserInfo = () => {
-  const ctx = useOutletContext<{ myUserInfo: IUserInfo } | null>();
-  const rootLoaderData = useLoaderData<typeof loader>() || {};
-
-  // page use ctx, component use rootLoaderData
-  const myUserInfo = ctx ? ctx.myUserInfo : rootLoaderData.myUserInfo;
+export function useMyUserInfo() {
+  const query = useQuery(orpc.loader.getMyUserInfo.queryOptions());
+  const myUserInfo = query.data?.myUserInfo;
   const userId = myUserInfo?.id;
   const isLogin = !!myUserInfo;
 
-  return { myUserInfo, userId, isLogin };
-};
+  return { myUserInfo, userId, isLogin, query };
+}

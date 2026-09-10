@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Book, Word } from "~/.server/db/schema";
 
@@ -10,11 +10,11 @@ const prepare = db
   .where(eq(Word.slug, sql.placeholder("wordSlug")))
   .innerJoin(Book, eq(Book.slug, Word.bookSlug))
   .limit(1)
-  .prepare("prepare");
+  .prepare("getWordDetail");
 
 export const getWordDetail = p.public
   .input(z.object({ wordSlug: z.string() }))
-  .query(async ({ input: { wordSlug } }) => {
+  .handler(async ({ input: { wordSlug } }) => {
     const [wordDetail] = await prepare.execute({ wordSlug });
     return { wordDetail };
   });

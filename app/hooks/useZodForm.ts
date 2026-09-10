@@ -1,15 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, UseFormProps, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { UseFormProps, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
-type IUseZodForm = <T extends z.ZodType<any, any, any>>(
+export function useZodForm<T extends z.ZodType<any, any, any>>(
   schema: T,
   props?: UseFormProps<z.infer<T>>,
-) => {
+): {
   form: UseFormReturn<z.infer<T>>;
-};
-
-export const useZodForm: IUseZodForm = (schema, props) => {
+} {
   type FormType = z.infer<typeof schema>;
 
   const form = useForm<FormType>({
@@ -19,4 +18,4 @@ export const useZodForm: IUseZodForm = (schema, props) => {
   });
 
   return { form };
-};
+}

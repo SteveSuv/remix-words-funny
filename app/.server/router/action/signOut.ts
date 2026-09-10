@@ -1,7 +1,7 @@
-import { Cookies } from "~/.server/common/cookies";
-import { p } from "~/.server/common/trpc";
+import { deleteCookie } from "@orpc/server/helpers";
+import { p } from "~/.server/common/orpc";
 import { JWT_KEY } from "~/common/constants";
 
-export const signOut = p.auth.mutation(({ ctx: { resHeaders } }) => {
-  Cookies.delete(resHeaders, JWT_KEY);
+export const signOut = p.auth.handler(({ context: { resHeaders } }) => {
+  deleteCookie(resHeaders, JWT_KEY);
 });

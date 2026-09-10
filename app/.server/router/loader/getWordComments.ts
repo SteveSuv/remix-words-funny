@@ -1,6 +1,6 @@
 import { desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
-import { p } from "~/.server/common/trpc";
+import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Post, User } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
@@ -13,7 +13,7 @@ const prepare = db
   .offset(sql.placeholder("offset"))
   .limit(sql.placeholder("limit"))
   .orderBy(desc(Post.id))
-  .prepare("prepare");
+  .prepare("getWordComments");
 
 export const getWordComments = p.public
   .input(
@@ -22,7 +22,7 @@ export const getWordComments = p.public
       cursor: z.number().int().default(0),
     }),
   )
-  .query(async ({ input: { wordSlug, cursor } }) => {
+  .handler(async ({ input: { wordSlug, cursor } }) => {
     const wordComments = await prepare.execute({
       wordSlug,
       offset: PAGE_SIZE * cursor,

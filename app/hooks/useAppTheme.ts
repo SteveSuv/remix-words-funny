@@ -1,18 +1,18 @@
-import { useTheme } from "next-themes";
+import { useTheme } from "@heroui/react";
 
 enum Theme {
   LIGHT = "light",
   DARK = "dark",
 }
 
-export const useAppTheme = () => {
-  const { theme, setTheme } = useTheme();
+export function useAppTheme() {
+  const { resolvedTheme, setTheme } = useTheme(Theme.LIGHT);
 
-  const isDarkMode = theme === Theme.DARK;
+  const isDarkMode = resolvedTheme === Theme.DARK;
 
-  const toggleTheme = () => {
+  function toggleTheme() {
     setTheme(isDarkMode ? Theme.LIGHT : Theme.DARK);
-  };
+  }
 
   return { isDarkMode, toggleTheme, setTheme };
-};
+}
