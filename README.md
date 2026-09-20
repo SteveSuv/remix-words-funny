@@ -1,6 +1,6 @@
 # WordsFunny
 
-WordsFunny 是一个英语单词学习网站，围绕单词书、单词详情、学习进度和评论互动组织学习流程。帮助用户轻松学单词！
+WordsFunny 是一个简单、免费、开源的英语单词学习网站，围绕单词书、单词详情、学习进度和评论互动组织学习流程。帮你轻松学单词！[开始学习！](https://wordsfunny.com/)
 
 ![wordsfunny](https://picui.ogmua.cn/s1/2026/09/21/6ab00dd1e2933.webp)
 
