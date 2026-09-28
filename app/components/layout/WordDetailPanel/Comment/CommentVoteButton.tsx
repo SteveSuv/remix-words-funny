@@ -27,15 +27,13 @@ export function CommentVoteButton({ postId }: { postId: number }) {
   );
   const { isPostVote = false } = getIsPostVoteQuery.data || {};
 
-  const votePostMutation = useMutation(orpc.action.votePost.mutationOptions());
-  const unVotePostMutation = useMutation(
-    orpc.action.unVotePost.mutationOptions(),
+  const setPostVoteMutation = useMutation(
+    orpc.action.setPostVote.mutationOptions(),
   );
   const isPending =
     getPostVoteQuery.isFetching ||
     getIsPostVoteQuery.isFetching ||
-    unVotePostMutation.isPending ||
-    votePostMutation.isPending;
+    setPostVoteMutation.isPending;
 
   return (
     <Button
@@ -48,11 +46,10 @@ export function CommentVoteButton({ postId }: { postId: number }) {
           return;
         }
 
-        if (isPostVote) {
-          await unVotePostMutation.mutateAsync({ postId });
-        } else {
-          await votePostMutation.mutateAsync({ postId });
-        }
+        await setPostVoteMutation.mutateAsync({
+          postId,
+          isVoted: !isPostVote,
+        });
 
         await Promise.all([
           getPostVoteQuery.refetch(),

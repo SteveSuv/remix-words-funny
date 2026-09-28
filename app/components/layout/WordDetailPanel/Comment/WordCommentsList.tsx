@@ -38,7 +38,11 @@ export function WordCommentsList() {
 
   function renderContent() {
     if (getWordCommentsQuery.isFetching) {
-      return <Spinner />;
+      return (
+        <div className="flex w-full justify-center py-4">
+          <Spinner />
+        </div>
+      );
     }
 
     if (allComments.length === 0) {

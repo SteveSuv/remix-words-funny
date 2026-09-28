@@ -18,17 +18,15 @@ export function WordMasterButton({
 }) {
   const { isLogin } = useMyUserInfo();
   const setIsSignInModalOpen = useSetAtom(isSignInModalOpenAtom);
-  const doneWordMutation = useMutation(orpc.action.doneWord.mutationOptions());
-  const unDoneWordMutation = useMutation(
-    orpc.action.unDoneWord.mutationOptions(),
+  const setWordDoneMutation = useMutation(
+    orpc.action.setWordDone.mutationOptions(),
   );
-  const isPending = doneWordMutation.isPending || unDoneWordMutation.isPending;
+  const isPending = setWordDoneMutation.isPending;
 
   return (
     <Button
       variant={isDone ? "primary" : "outline"}
       isIconOnly
-      size="sm"
       isDisabled={isPending}
       onPress={async () => {
         if (!isLogin) {
@@ -36,11 +34,10 @@ export function WordMasterButton({
           return;
         }
 
-        if (isDone) {
-          await unDoneWordMutation.mutateAsync({ wordSlug });
-        } else {
-          await doneWordMutation.mutateAsync({ wordSlug });
-        }
+        await setWordDoneMutation.mutateAsync({
+          wordSlug,
+          isDone: !isDone,
+        });
 
         await onChanged?.();
       }}

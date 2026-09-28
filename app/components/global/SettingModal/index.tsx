@@ -16,7 +16,7 @@ function GithubButton() {
       }}
     >
       <LuIcon icon={GitFork} />
-      前往源码
+      访问源码
     </Button>
   );
 }

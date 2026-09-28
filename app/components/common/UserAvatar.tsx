@@ -1,4 +1,4 @@
-import { Avatar } from "@heroui/react";
+import Avatar from "boring-avatars";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 
 export function UserAvatar({
@@ -11,17 +11,6 @@ export function UserAvatar({
   const { myUserInfo } = useMyUserInfo();
 
   const displayName = name || myUserInfo?.name || "";
-  const fallback = displayName.trim().charAt(0).toUpperCase();
-  const avatarSize = size <= 32 ? "sm" : size >= 48 ? "lg" : "md";
 
-  return (
-    <Avatar
-      color="accent"
-      size={avatarSize}
-      variant="soft"
-      className="rounded-xl"
-    >
-      <Avatar.Fallback>{fallback}</Avatar.Fallback>
-    </Avatar>
-  );
+  return <Avatar name={displayName} size={size} title variant="beam" />;
 }

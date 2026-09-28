@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { useMobile } from "~/hooks/useMobile";
 import { Drawer, Surface, useOverlayState } from "@heroui/react";
 import { BooksPanel } from "../layout/BooksPanel";
-import { WordDetailPanel } from "../layout/WordDetailPanel";
+import { LazyWordDetailPanel } from "../layout/WordDetailPanel/LazyWordDetailPanel";
 
 export function MobileDrawers() {
   const [isBooksPanelDrawerOpen, setIsBooksPanelDrawerOpen] = useAtom(
@@ -35,7 +35,7 @@ export function MobileDrawers() {
             <Drawer.Content className="w-82.5" placement="left">
               <Drawer.Dialog className="p-0">
                 <Surface className="flex h-screen flex-col">
-                  <div className="min-h-0 flex-1 overflow-y-auto">
+                  <div className="scrollbar-hidden min-h-0 flex-1 overflow-y-auto">
                     <BooksPanel />
                   </div>
                 </Surface>
@@ -51,8 +51,8 @@ export function MobileDrawers() {
             <Drawer.Content placement="bottom">
               <Drawer.Dialog className="px-0">
                 <Drawer.Handle />
-                <Surface className="h-dvh overflow-y-auto">
-                  <WordDetailPanel />
+                <Surface className="scrollbar-hidden h-dvh overflow-y-auto">
+                  <LazyWordDetailPanel />
                 </Surface>
               </Drawer.Dialog>
             </Drawer.Content>

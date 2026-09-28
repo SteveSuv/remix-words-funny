@@ -21,21 +21,18 @@ export const signIn = p.unAuth
   .handler(async ({ context: { resHeaders }, input: { email, password } }) => {
     const [user] = await prepare.execute({ email });
 
-    // if user not exist, throw error
     if (!user) {
       throw new ORPCError("BAD_REQUEST", {
         message: "用户不存在",
       });
     }
 
-    // if user's password is not correct, throw error
     if (user.password !== encrypt(password)) {
       throw new ORPCError("BAD_REQUEST", {
         message: "密码错误",
       });
     }
 
-    // if user exist, sign jwt token to cookie
     const userId = user.id;
 
     const maxAge = COOKIE_MAX_AGE;

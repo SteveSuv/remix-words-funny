@@ -1,5 +1,15 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
 @theme {
   --font-merriweathers: "Merriweather";
+}
+
+@utility scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

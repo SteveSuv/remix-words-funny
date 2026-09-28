@@ -22,18 +22,15 @@ import { getWordSynonyms } from "./loader/getWordSynonyms";
 import { getWordTranslations } from "./loader/getWordTranslations";
 
 // actions
-import { doneWord } from "./action/doneWord";
 import { sendComment } from "./action/sendComment";
 import { sendVerifyCode } from "./action/sendVerifyCode";
+import { setPostVote } from "./action/setPostVote";
+import { setStarBooks } from "./action/setStarBooks";
+import { setWordDone } from "./action/setWordDone";
 import { signIn } from "./action/signIn";
 import { signOut } from "./action/signOut";
 import { signUp } from "./action/signUp";
-import { starBook } from "./action/starBook";
-import { unDoneWord } from "./action/unDoneWord";
-import { unStarBook } from "./action/unStarBook";
-import { unVotePost } from "./action/unVotePost";
 import { updatePassword } from "./action/updatePassword";
-import { votePost } from "./action/votePost";
 
 const loader = orpc.router({
   getMyUserInfo,
@@ -58,18 +55,15 @@ const loader = orpc.router({
 });
 
 const action = orpc.router({
-  doneWord,
-  unDoneWord,
   sendVerifyCode,
   signIn,
   signOut,
   signUp,
   updatePassword,
-  starBook,
-  unStarBook,
+  setStarBooks,
+  setWordDone,
   sendComment,
-  votePost,
-  unVotePost,
+  setPostVote,
 });
 
 export const router = orpc.router({ loader, action });

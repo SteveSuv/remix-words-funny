@@ -1,9 +1,10 @@
-import { Button, Card, Link, Skeleton } from "@heroui/react";
+import { Button, Card, Link } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue, useSetAtom } from "jotai";
 import { X } from "lucide-react";
 import { href, useNavigate } from "react-router";
 import {
+  isSearchBarOpenAtom,
   isWordDetailPanelDrawerOpenAtom,
   searchWordAtom,
   wordDetailSlugAtom,
@@ -18,10 +19,12 @@ import { WordPhrases } from "./WordPhrases";
 import { WordSentences } from "./WordSentences";
 import { WordSynonyms } from "./WordSynonyms";
 import { WordTranslations } from "./WordTranslations";
+import { WordDetailPanelSkeleton } from "./WordDetailPanelSkeleton";
 
 export function WordDetailPanel() {
   const wordDetailSlug = useAtomValue(wordDetailSlugAtom);
   const setSearchWord = useSetAtom(searchWordAtom);
+  const setIsSearchBarOpen = useSetAtom(isSearchBarOpenAtom);
   const setIsWordDetailPanelDrawerOpen = useSetAtom(
     isWordDetailPanelDrawerOpenAtom,
   );
@@ -39,22 +42,7 @@ export function WordDetailPanel() {
   const { wordDetail } = getWordDetailQuery?.data || {};
 
   if (getWordDetailQuery.isFetching) {
-    return (
-      <div className="space-y-5 p-4">
-        <div className="space-y-3">
-          <Skeleton className="h-12 w-52 rounded-sm" />
-          <Skeleton className="h-4 w-36 rounded-sm" />
-          <Skeleton className="h-9 w-32 rounded-full" />
-        </div>
-        <Skeleton className="h-16 w-full rounded-md" />
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div className="space-y-3" key={index}>
-            <Skeleton className="h-5 w-24 rounded-sm" />
-            <Skeleton className="h-10 w-full rounded-md" />
-          </div>
-        ))}
-      </div>
-    );
+    return <WordDetailPanelSkeleton />;
   }
 
   if (!wordDetail) return <Empty label="请选择查询词" size={84} />;
@@ -85,6 +73,7 @@ export function WordDetailPanel() {
         <Link
           onPress={() => {
             setSearchWord("");
+            setIsSearchBarOpen(false);
             setIsWordDetailPanelDrawerOpen(false);
             navigate(href("/:bookSlug/words", { bookSlug }));
           }}

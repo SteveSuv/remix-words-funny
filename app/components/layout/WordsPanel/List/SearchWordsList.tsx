@@ -92,7 +92,10 @@ export function SearchWordsList() {
   }
 
   return (
-    <div className="min-h-0 flex-1 overflow-y-auto" ref={rootRef}>
+    <div
+      className="scrollbar-hidden min-h-0 flex-1 overflow-y-auto"
+      ref={rootRef}
+    >
       <div ref={topRef} />
       {renderContent()}
     </div>

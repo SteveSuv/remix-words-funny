@@ -4,9 +4,22 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToWords } from "~/.server/db/schema";
 
-export const unDoneWord = p.auth
-  .input(z.object({ wordSlug: z.string() }))
-  .handler(async ({ context: { userId }, input: { wordSlug } }) => {
+export const setWordDone = p.auth
+  .input(
+    z.object({
+      wordSlug: z.string(),
+      isDone: z.boolean(),
+    }),
+  )
+  .handler(async ({ context: { userId }, input: { wordSlug, isDone } }) => {
+    if (isDone) {
+      await db
+        .insert(UsersToWords)
+        .values({ userId: userId!, wordSlug })
+        .onConflictDoNothing();
+      return;
+    }
+
     await db
       .delete(UsersToWords)
       .where(

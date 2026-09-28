@@ -34,7 +34,7 @@ export function WordListIem({ item }: { item: IWordItem }) {
 
   return (
     <div
-      className="border-separator hover:bg-accent-soft box-border flex h-20 cursor-pointer items-center justify-between border-b px-6"
+      className="border-separator hover:bg-accent-soft box-border flex h-20 cursor-pointer items-center justify-between border-b pr-4 pl-6"
       onClick={() => {
         setWordDetailSlug(wordSlug);
         isMobile && setIsWordDetailPanelDrawerOpen(true);
@@ -42,7 +42,7 @@ export function WordListIem({ item }: { item: IWordItem }) {
     >
       <div className="flex flex-col justify-center gap-1">
         <div className="font-merriweathers text-4xl">{word}</div>
-        {!!bookName && <small>{bookName}</small>}
+        {!!bookName && <small className="text-muted">{bookName}</small>}
       </div>
       <WordMasterButton
         isDone={isWordDone}

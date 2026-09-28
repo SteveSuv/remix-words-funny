@@ -5,6 +5,7 @@ export const isBooksPanelDrawerOpenAtom = atom(false);
 export const isWordDetailPanelDrawerOpenAtom = atom(false);
 export const isSearchBarOpenAtom = atom(false);
 export const listTabAtom = atom(ListTabType.ALL);
+export const isManageBooksModalOpenAtom = atom(false);
 export const isProfileModalOpenAtom = atom(false);
 export const searchWordAtom = atom("");
 export const isSettingModalOpenAtom = atom(false);

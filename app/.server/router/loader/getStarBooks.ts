@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToBooks } from "~/.server/db/schema";
@@ -9,12 +9,17 @@ const prepare = db
   })
   .from(UsersToBooks)
   .where(eq(UsersToBooks.userId, sql.placeholder("userId")))
+  .orderBy(asc(UsersToBooks.createdAt), asc(UsersToBooks.bookSlug))
   .prepare("getStarBooks");
+
+export async function getStarBookSlugs(userId: number) {
+  const starBooks = await prepare.execute({ userId });
+  return starBooks.map(({ bookSlug }) => bookSlug);
+}
 
 export const getStarBooks = p.public.handler(
   async ({ context: { userId } }) => {
     if (!userId) return { starBooks: [] };
-    const starBooks = await prepare.execute({ userId });
-    return { starBooks: starBooks.map(({ bookSlug }) => bookSlug) };
+    return { starBooks: await getStarBookSlugs(userId) };
   },
 );
