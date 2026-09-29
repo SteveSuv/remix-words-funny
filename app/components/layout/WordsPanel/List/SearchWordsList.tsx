@@ -67,8 +67,8 @@ export function SearchWordsList() {
 
     return (
       <div className="flex w-full flex-col">
-        {allWords.map((item, index) => {
-          return <WordListIem item={item} key={index} />;
+        {allWords.map((item) => {
+          return <WordListIem item={item} key={item.Word.slug} />;
         })}
         {renderEnd()}
       </div>

@@ -1,11 +1,11 @@
 import { Button, Spinner } from "@heroui/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { Check } from "lucide-react";
 import { orpc } from "~/common/orpcClient";
 import { isSignInModalOpenAtom } from "~/common/store";
-import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { LuIcon } from "~/components/common/LuIcon";
+import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 
 export function WordMasterButton({
   isDone,
@@ -14,9 +14,10 @@ export function WordMasterButton({
 }: {
   isDone: boolean;
   wordSlug: string;
-  onChanged?: () => unknown | Promise<unknown>;
+  onChanged?: (isDone: boolean) => unknown | Promise<unknown>;
 }) {
   const { isLogin } = useMyUserInfo();
+  const queryClient = useQueryClient();
   const setIsSignInModalOpen = useSetAtom(isSignInModalOpenAtom);
   const setWordDoneMutation = useMutation(
     orpc.action.setWordDone.mutationOptions(),
@@ -34,12 +35,29 @@ export function WordMasterButton({
           return;
         }
 
+        const nextIsDone = !isDone;
         await setWordDoneMutation.mutateAsync({
           wordSlug,
-          isDone: !isDone,
+          isDone: nextIsDone,
         });
 
-        await onChanged?.();
+        await onChanged?.(nextIsDone);
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: orpc.loader.getWordsOfBook.key({ type: "infinite" }),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: orpc.loader.getDoneWordsOfBook.key({ type: "infinite" }),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: orpc.loader.getUnDoneWordsOfBook.key({
+              type: "infinite",
+            }),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: orpc.loader.getWordsOfKeyword.key({ type: "infinite" }),
+          }),
+        ]);
       }}
     >
       {isPending ? <Spinner size="sm" /> : <LuIcon icon={Check} />}

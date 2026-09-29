@@ -1,15 +1,27 @@
-import { eq, like, sql } from "drizzle-orm";
+import { and, eq, like, sql } from "drizzle-orm";
 import { z } from "zod";
 import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
-import { Book, Word } from "~/.server/db/schema";
+import { Book, UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
 
 const prepare = db
-  .select()
+  .select({
+    Book,
+    Word,
+    isDone: sql<boolean>`${UsersToWords.userId} is not null`,
+  })
   .from(Word)
-  .where(like(Word.word, sql.placeholder("keyword")))
   .innerJoin(Book, eq(Book.slug, Word.bookSlug))
+  .leftJoin(
+    UsersToWords,
+    and(
+      eq(UsersToWords.wordSlug, Word.slug),
+      eq(UsersToWords.userId, sql.placeholder("userId")),
+    ),
+  )
+  .where(like(Word.word, sql.placeholder("keyword")))
+  .orderBy(Word.id)
   .offset(sql.placeholder("offset"))
   .limit(sql.placeholder("limit"))
   .prepare("getWordsOfKeyword");
@@ -21,14 +33,16 @@ export const getWordsOfKeyword = p.public
       cursor: z.number().int().default(0),
     }),
   )
-  .handler(async ({ input: { keyword, cursor } }) => {
-    const wordsOfKeyword = await prepare.execute({
+  .handler(async ({ context: { userId }, input: { keyword, cursor } }) => {
+    const rows = await prepare.execute({
       keyword: `%${keyword.trim().toLowerCase()}%`,
+      userId: userId ?? 0,
       offset: PAGE_SIZE * cursor,
-      limit: PAGE_SIZE,
+      limit: PAGE_SIZE + 1,
     });
 
-    const nextCursor = wordsOfKeyword.length ? cursor + 1 : undefined;
+    const wordsOfKeyword = rows.slice(0, PAGE_SIZE);
+    const nextCursor = rows.length > PAGE_SIZE ? cursor + 1 : undefined;
 
     return { wordsOfKeyword, nextCursor };
   });

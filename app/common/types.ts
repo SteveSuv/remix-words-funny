@@ -16,6 +16,7 @@ export type ICommentItem = {
 export type IWordItem = {
   Book?: typeof schema.Book.$inferSelect;
   Word: typeof schema.Word.$inferSelect;
+  isDone: boolean;
 };
 
 export enum ListTabType {

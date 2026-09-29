@@ -6,7 +6,10 @@ import { UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
 
 const prepare = db
-  .select({ Word })
+  .select({
+    Word,
+    isDone: sql<boolean>`false`,
+  })
   .from(Word)
   .where(
     and(
@@ -33,14 +36,15 @@ export const getUnDoneWordsOfBook = p.auth
     }),
   )
   .handler(async ({ context: { userId }, input: { bookSlug, cursor } }) => {
-    const unDoneWordsOfBook = await prepare.execute({
+    const rows = await prepare.execute({
       bookSlug,
       userId,
       offset: PAGE_SIZE * cursor,
-      limit: PAGE_SIZE,
+      limit: PAGE_SIZE + 1,
     });
 
-    const nextCursor = unDoneWordsOfBook.length ? cursor + 1 : undefined;
+    const unDoneWordsOfBook = rows.slice(0, PAGE_SIZE);
+    const nextCursor = rows.length > PAGE_SIZE ? cursor + 1 : undefined;
 
     return { unDoneWordsOfBook, nextCursor };
   });

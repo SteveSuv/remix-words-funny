@@ -7,9 +7,9 @@ import { useParams } from "react-router";
 import { listTabAtom } from "~/common/store";
 import { orpc } from "~/common/orpcClient";
 import { ListTabType } from "~/common/types";
+import { Empty } from "~/components/common/Empty";
 import { useDebounceSearchWord } from "~/hooks/useDebounceSearchWord";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
-import { Empty } from "~/components/common/Empty";
 import { WordListIem } from "./WordListIem";
 
 export function BookWordsList() {
@@ -68,14 +68,6 @@ export function BookWordsList() {
 
   const wordsQuery = wordsQueryMap[listTab];
   const wordsQueryData = wordsQueryDataMap[listTab];
-  const isWordsQueryEnabled =
-    !!bookSlug && !searchWord && (listTab === ListTabType.ALL || isLogin);
-
-  useEffect(() => {
-    if (!isWordsQueryEnabled) return;
-
-    wordsQuery.refetch();
-  }, [isWordsQueryEnabled, listTab]);
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: wordsQuery.isFetching,
@@ -135,8 +127,8 @@ export function BookWordsList() {
 
     return (
       <div className="flex flex-col">
-        {wordsQueryData.map((item, index) => {
-          return <WordListIem item={item} key={index} />;
+        {wordsQueryData.map((item) => {
+          return <WordListIem item={item} key={item.Word.slug} />;
         })}
         {renderEnd()}
       </div>

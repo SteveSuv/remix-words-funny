@@ -2,13 +2,15 @@ import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
-import { Book, UsersToWords, Word } from "~/.server/db/schema";
+import { UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
 
 const prepare = db
-  .select({ Word })
+  .select({
+    Word,
+    isDone: sql<boolean>`true`,
+  })
   .from(Word)
-  .innerJoin(Book, eq(Book.slug, Word.bookSlug))
   .innerJoin(UsersToWords, eq(UsersToWords.wordSlug, Word.slug))
   .where(
     and(
@@ -29,14 +31,15 @@ export const getDoneWordsOfBook = p.auth
     }),
   )
   .handler(async ({ context: { userId }, input: { bookSlug, cursor } }) => {
-    const doneWordsOfBook = await prepare.execute({
+    const rows = await prepare.execute({
       bookSlug,
       userId,
       offset: PAGE_SIZE * cursor,
-      limit: PAGE_SIZE,
+      limit: PAGE_SIZE + 1,
     });
 
-    const nextCursor = doneWordsOfBook.length ? cursor + 1 : undefined;
+    const doneWordsOfBook = rows.slice(0, PAGE_SIZE);
+    const nextCursor = rows.length > PAGE_SIZE ? cursor + 1 : undefined;
 
     return { doneWordsOfBook, nextCursor };
   });

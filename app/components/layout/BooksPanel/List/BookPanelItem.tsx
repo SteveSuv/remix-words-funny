@@ -42,8 +42,10 @@ export function BookPanelItem({ item }: { item: IBookItem }) {
         <img
           alt={item.slug}
           className="rounded-sm object-cover"
+          decoding="async"
           src={`/books/${item.slug}.webp`}
           height={56}
+          loading="lazy"
           width={56 * ratio}
         />
         <div className="flex min-w-0 flex-col">

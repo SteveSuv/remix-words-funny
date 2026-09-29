@@ -1,13 +1,23 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
-import { Word } from "~/.server/db/schema";
+import { UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
 
 const prepare = db
-  .select({ Word })
+  .select({
+    Word,
+    isDone: sql<boolean>`${UsersToWords.userId} is not null`,
+  })
   .from(Word)
+  .leftJoin(
+    UsersToWords,
+    and(
+      eq(UsersToWords.wordSlug, Word.slug),
+      eq(UsersToWords.userId, sql.placeholder("userId")),
+    ),
+  )
   .where(eq(Word.bookSlug, sql.placeholder("bookSlug")))
   .offset(sql.placeholder("offset"))
   .limit(sql.placeholder("limit"))
@@ -21,14 +31,16 @@ export const getWordsOfBook = p.public
       cursor: z.number().int().default(0),
     }),
   )
-  .handler(async ({ input: { bookSlug, cursor } }) => {
-    const wordsOfBook = await prepare.execute({
+  .handler(async ({ context: { userId }, input: { bookSlug, cursor } }) => {
+    const rows = await prepare.execute({
       bookSlug,
+      userId: userId ?? 0,
       offset: PAGE_SIZE * cursor,
-      limit: PAGE_SIZE,
+      limit: PAGE_SIZE + 1,
     });
 
-    const nextCursor = wordsOfBook.length ? cursor + 1 : undefined;
+    const wordsOfBook = rows.slice(0, PAGE_SIZE);
+    const nextCursor = rows.length > PAGE_SIZE ? cursor + 1 : undefined;
 
     return { wordsOfBook, nextCursor };
   });

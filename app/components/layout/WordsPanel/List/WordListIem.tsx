@@ -1,10 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
+import { useEffect, useState } from "react";
 import {
   isWordDetailPanelDrawerOpenAtom,
   wordDetailSlugAtom,
 } from "~/common/store";
-import { orpc } from "~/common/orpcClient";
 import type { IWordItem } from "~/common/types";
 import { useMobile } from "~/hooks/useMobile";
 import { WordMasterButton } from "./WordMasterButton";
@@ -19,18 +18,13 @@ export function WordListIem({ item }: { item: IWordItem }) {
   const {
     Book: { name: bookName } = {},
     Word: { slug: wordSlug, word },
+    isDone,
   } = item;
+  const [isWordDone, setIsWordDone] = useState(isDone);
 
-  const getIsWordDoneQuery = useQuery(
-    orpc.loader.getIsWordDone.queryOptions({
-      input: {
-        wordSlug,
-      },
-      enabled: !!wordSlug,
-    }),
-  );
-
-  const isWordDone = !!getIsWordDoneQuery.data?.isWordDone;
+  useEffect(() => {
+    setIsWordDone(isDone);
+  }, [isDone, wordSlug]);
 
   return (
     <div
@@ -47,9 +41,7 @@ export function WordListIem({ item }: { item: IWordItem }) {
       <WordMasterButton
         isDone={isWordDone}
         wordSlug={wordSlug}
-        onChanged={() => {
-          return getIsWordDoneQuery.refetch();
-        }}
+        onChanged={setIsWordDone}
       />
     </div>
   );
