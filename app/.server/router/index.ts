@@ -4,10 +4,8 @@ import { orpc } from "../common/orpc";
 import { getAllBooks } from "./loader/getAllBooks";
 import { getBookDetail } from "./loader/getBookDetail";
 import { getDoneWordsOfBook } from "./loader/getDoneWordsOfBook";
-import { getIsPostVote } from "./loader/getIsPostVote";
 import { getIsWordDone } from "./loader/getIsWordDone";
 import { getMyUserInfo } from "./loader/getMyUserInfo";
-import { getPostVote } from "./loader/getPostVote";
 import { getStarBooks } from "./loader/getStarBooks";
 import { getStudyCalendar } from "./loader/getStudyCalendar";
 import { getUnDoneWordsOfBook } from "./loader/getUnDoneWordsOfBook";
@@ -50,8 +48,6 @@ const loader = orpc.router({
   getUnDoneWordsOfBook,
   getStudyCalendar,
   getWordComments,
-  getPostVote,
-  getIsPostVote,
 });
 
 const action = orpc.router({

@@ -1,9 +1,7 @@
 import { onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 import {
-  RequestCompressionHandlerPlugin,
   RequestHeadersHandlerPlugin,
-  ResponseCompressionHandlerPlugin,
   ResponseHeadersHandlerPlugin,
 } from "@orpc/server/plugins";
 import { RPC_URL } from "~/common/constants";
@@ -13,10 +11,8 @@ import { router } from "./router";
 
 const orpcHandler = new RPCHandler<ServerContext>(router, {
   plugins: [
-    new RequestCompressionHandlerPlugin(),
     new RequestHeadersHandlerPlugin(),
     new ResponseHeadersHandlerPlugin(),
-    new ResponseCompressionHandlerPlugin(),
   ],
   interceptors: [
     onError((error) => {

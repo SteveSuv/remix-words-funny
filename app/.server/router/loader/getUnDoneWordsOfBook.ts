@@ -5,7 +5,7 @@ import { db } from "~/.server/db";
 import { UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
 
-const prepare = db
+const getUnDoneWordsOfBookPrepare = db
   .select({
     Word,
     isDone: sql<boolean>`false`,
@@ -36,7 +36,7 @@ export const getUnDoneWordsOfBook = p.auth
     }),
   )
   .handler(async ({ context: { userId }, input: { bookSlug, cursor } }) => {
-    const rows = await prepare.execute({
+    const rows = await getUnDoneWordsOfBookPrepare.execute({
       bookSlug,
       userId,
       offset: PAGE_SIZE * cursor,

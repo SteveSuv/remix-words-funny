@@ -37,7 +37,7 @@ export function WordCommentsList() {
   const totalCount = allComments.length;
 
   function renderContent() {
-    if (getWordCommentsQuery.isFetching) {
+    if (getWordCommentsQuery.isPending && getWordCommentsQuery.isFetching) {
       return (
         <div className="flex w-full justify-center py-4">
           <Spinner />
@@ -56,8 +56,8 @@ export function WordCommentsList() {
 
     return (
       <div className="flex flex-col gap-2">
-        {allComments.map((comment, index) => {
-          return <WordCommentItem key={index} comment={comment} />;
+        {allComments.map((comment) => {
+          return <WordCommentItem key={comment.Post.id} comment={comment} />;
         })}
         <div ref={sentryRef} className="my-1 text-center text-sm text-muted">
           共 {totalCount} 条评论

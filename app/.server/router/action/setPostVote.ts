@@ -1,8 +1,36 @@
-import { and, eq } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToPostsVote } from "~/.server/db/schema";
+
+const addPostVotePrepare = db
+  .insert(UsersToPostsVote)
+  .values({
+    userId: sql.placeholder("userId"),
+    postId: sql.placeholder("postId"),
+  })
+  .onConflictDoNothing()
+  .prepare("setPostVote.add");
+
+const removePostVotePrepare = db
+  .delete(UsersToPostsVote)
+  .where(
+    and(
+      eq(UsersToPostsVote.userId, sql.placeholder("userId")),
+      eq(UsersToPostsVote.postId, sql.placeholder("postId")),
+    ),
+  )
+  .prepare("setPostVote.remove");
+
+const getPostVoteStatePrepare = db
+  .select({
+    postVotesCount: count(),
+    isPostVote: sql<boolean>`coalesce(bool_or(${UsersToPostsVote.userId} = ${sql.placeholder("userId")}), false)`,
+  })
+  .from(UsersToPostsVote)
+  .where(eq(UsersToPostsVote.postId, sql.placeholder("postId")))
+  .prepare("setPostVote.getState");
 
 export const setPostVote = p.auth
   .input(
@@ -13,19 +41,13 @@ export const setPostVote = p.auth
   )
   .handler(async ({ context: { userId }, input: { postId, isVoted } }) => {
     if (isVoted) {
-      await db
-        .insert(UsersToPostsVote)
-        .values({ userId: userId!, postId })
-        .onConflictDoNothing();
-      return;
+      await addPostVotePrepare.execute({
+        userId,
+        postId,
+      });
+    } else {
+      await removePostVotePrepare.execute({ userId, postId });
     }
-
-    await db
-      .delete(UsersToPostsVote)
-      .where(
-        and(
-          eq(UsersToPostsVote.userId, userId!),
-          eq(UsersToPostsVote.postId, postId),
-        ),
-      );
+    const [state] = await getPostVoteStatePrepare.execute({ userId, postId });
+    return state;
   });

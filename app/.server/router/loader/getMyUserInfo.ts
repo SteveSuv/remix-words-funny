@@ -3,7 +3,7 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { User } from "~/.server/db/schema";
 
-const prepare = db
+const getMyUserInfoPrepare = db
   .select()
   .from(User)
   .where(eq(User.id, sql.placeholder("id")))
@@ -14,7 +14,7 @@ export const getMyUserInfo = p.public.handler(
   async ({ context: { userId } }) => {
     if (!userId) return { myUserInfo: undefined };
 
-    const [myUserInfo] = await prepare.execute({ id: userId });
+    const [myUserInfo] = await getMyUserInfoPrepare.execute({ id: userId });
     return { myUserInfo };
   },
 );

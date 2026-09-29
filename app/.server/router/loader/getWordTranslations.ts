@@ -4,7 +4,7 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Translation } from "~/.server/db/schema";
 
-const prepare = db
+const getWordTranslationsPrepare = db
   .select()
   .from(Translation)
   .where(eq(Translation.wordSlug, sql.placeholder("wordSlug")))
@@ -13,7 +13,7 @@ const prepare = db
 export const getWordTranslations = p.public
   .input(z.object({ wordSlug: z.string() }))
   .handler(async ({ input: { wordSlug } }) => {
-    const wordTranslations = await prepare.execute({
+    const wordTranslations = await getWordTranslationsPrepare.execute({
       wordSlug,
     });
 

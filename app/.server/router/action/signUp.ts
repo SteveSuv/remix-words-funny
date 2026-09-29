@@ -7,31 +7,40 @@ import { db } from "~/.server/db";
 import { User, Verify } from "~/.server/db/schema";
 import { signUpForm } from "~/common/formSchema";
 
-const prepareGetUserByEmail = db
+const signUpGetUserByEmailPrepare = db
   .select()
   .from(User)
   .where(eq(User.email, sql.placeholder("email")))
   .limit(1)
   .prepare("signUp.getUserByEmail");
 
-const prepareGetUserByName = db
+const signUpGetUserByNamePrepare = db
   .select()
   .from(User)
   .where(eq(User.name, sql.placeholder("name")))
   .limit(1)
   .prepare("signUp.getUserByName");
 
-const prepareGetVerifyByEmail = db
+const signUpGetVerifyByEmailPrepare = db
   .select()
   .from(Verify)
   .where(eq(Verify.email, sql.placeholder("email")))
   .limit(1)
   .prepare("signUp.getVerifyByEmail");
 
+const signUpInsertUserPrepare = db
+  .insert(User)
+  .values({
+    name: sql.placeholder("name"),
+    email: sql.placeholder("email"),
+    password: sql.placeholder("password"),
+  })
+  .prepare("signUp.insertUser");
+
 export const signUp = p.unAuth
   .input(signUpForm)
   .handler(async ({ input: { email, name, password, verifyCode } }) => {
-    const [userByEmail] = await prepareGetUserByEmail.execute({ email });
+    const [userByEmail] = await signUpGetUserByEmailPrepare.execute({ email });
 
     if (userByEmail) {
       throw new ORPCError("BAD_REQUEST", {
@@ -39,7 +48,7 @@ export const signUp = p.unAuth
       });
     }
 
-    const [userByName] = await prepareGetUserByName.execute({ name });
+    const [userByName] = await signUpGetUserByNamePrepare.execute({ name });
 
     if (userByName) {
       throw new ORPCError("BAD_REQUEST", {
@@ -47,7 +56,7 @@ export const signUp = p.unAuth
       });
     }
 
-    const [verify] = await prepareGetVerifyByEmail.execute({ email });
+    const [verify] = await signUpGetVerifyByEmailPrepare.execute({ email });
 
     if (!verify) {
       throw new ORPCError("BAD_REQUEST", {
@@ -69,5 +78,9 @@ export const signUp = p.unAuth
       });
     }
 
-    await db.insert(User).values({ name, email, password: encrypt(password) });
+    await signUpInsertUserPrepare.execute({
+      name,
+      email,
+      password: encrypt(password),
+    });
   });

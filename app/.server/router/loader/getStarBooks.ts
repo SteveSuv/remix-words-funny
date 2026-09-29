@@ -3,7 +3,7 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToBooks } from "~/.server/db/schema";
 
-const prepare = db
+const getStarBooksPrepare = db
   .select({
     bookSlug: UsersToBooks.bookSlug,
   })
@@ -13,7 +13,7 @@ const prepare = db
   .prepare("getStarBooks");
 
 export async function getStarBookSlugs(userId: number) {
-  const starBooks = await prepare.execute({ userId });
+  const starBooks = await getStarBooksPrepare.execute({ userId });
   return starBooks.map(({ bookSlug }) => bookSlug);
 }
 

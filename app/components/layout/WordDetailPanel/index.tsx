@@ -41,11 +41,7 @@ export function WordDetailPanel() {
 
   const { wordDetail } = getWordDetailQuery?.data || {};
 
-  if (getWordDetailQuery.isFetching) {
-    return <WordDetailPanelSkeleton />;
-  }
-
-  if (!wordDetail) return <Empty label="请选择查询词" size={84} />;
+  if (!wordDetailSlug) return <Empty label="请选择查询词" size={84} />;
 
   function renderWordDetail() {
     if (!wordDetail) return null;
@@ -102,7 +98,11 @@ export function WordDetailPanel() {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      {renderWordDetail()}
+      {getWordDetailQuery.isPending && getWordDetailQuery.isFetching ? (
+        <WordDetailPanelSkeleton />
+      ) : (
+        renderWordDetail()
+      )}
       <WordTranslations />
       <WordPhrases />
       <WordSentences />

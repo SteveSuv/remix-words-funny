@@ -1,39 +1,55 @@
 import { Button, Spinner } from "@heroui/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { InfiniteData } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { ThumbsUp } from "lucide-react";
 import { orpc } from "~/common/orpcClient";
 import { isSignInModalOpenAtom } from "~/common/store";
 import { useMyUserInfo } from "~/hooks/useMyUserInfo";
 import { LuIcon } from "~/components/common/LuIcon";
+import type { ICommentItem } from "~/common/types";
 
-export function CommentVoteButton({ postId }: { postId: number }) {
+export function CommentVoteButton({
+  postId,
+  postVotesCount,
+  isPostVote,
+}: {
+  postId: number;
+  postVotesCount: number;
+  isPostVote: boolean;
+}) {
   const { isLogin } = useMyUserInfo();
   const setIsSignInModalOpen = useSetAtom(isSignInModalOpenAtom);
 
-  const getPostVoteQuery = useQuery(
-    orpc.loader.getPostVote.queryOptions({
-      input: { postId },
-      enabled: !!postId,
-    }),
-  );
-  const { postVotesCount = 0 } = getPostVoteQuery.data || {};
-
-  const getIsPostVoteQuery = useQuery(
-    orpc.loader.getIsPostVote.queryOptions({
-      input: { postId },
-      enabled: !!postId,
-    }),
-  );
-  const { isPostVote = false } = getIsPostVoteQuery.data || {};
-
+  const queryClient = useQueryClient();
   const setPostVoteMutation = useMutation(
-    orpc.action.setPostVote.mutationOptions(),
+    orpc.action.setPostVote.mutationOptions({
+      onSuccess: (state) => {
+        queryClient.setQueriesData<
+          InfiniteData<{ wordComments: ICommentItem[]; nextCursor?: number }>
+        >(
+          { queryKey: orpc.loader.getWordComments.key({ type: "infinite" }) },
+          (data) =>
+            data && {
+              ...data,
+              pages: data.pages.map((page) => ({
+                ...page,
+                wordComments: page.wordComments.map((comment) =>
+                  comment.Post.id === postId
+                    ? {
+                        ...comment,
+                        postVotesCount: state.postVotesCount,
+                        isPostVote: state.isPostVote,
+                      }
+                    : comment,
+                ),
+              })),
+            },
+        );
+      },
+    }),
   );
-  const isPending =
-    getPostVoteQuery.isFetching ||
-    getIsPostVoteQuery.isFetching ||
-    setPostVoteMutation.isPending;
+  const isPending = setPostVoteMutation.isPending;
 
   return (
     <Button
@@ -50,11 +66,6 @@ export function CommentVoteButton({ postId }: { postId: number }) {
           postId,
           isVoted: !isPostVote,
         });
-
-        await Promise.all([
-          getPostVoteQuery.refetch(),
-          getIsPostVoteQuery.refetch(),
-        ]);
       }}
     >
       {isPending ? (

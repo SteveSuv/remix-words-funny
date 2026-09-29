@@ -4,7 +4,7 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToWords } from "~/.server/db/schema";
 
-const prepare = db
+const getStudyCalendarPrepare = db
   .select({
     wordSlug: UsersToWords.wordSlug,
     updatedAt: UsersToWords.updatedAt,
@@ -22,7 +22,7 @@ const prepare = db
 export const getStudyCalendar = p.auth.handler(
   async ({ context: { userId } }) => {
     if (!userId) return { isWordDone: false };
-    const studyCalendar = await prepare.execute({ userId });
+    const studyCalendar = await getStudyCalendarPrepare.execute({ userId });
     return { studyCalendar };
   },
 );

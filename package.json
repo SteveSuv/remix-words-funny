@@ -33,7 +33,7 @@
     "dayjs": "^1.11.23",
     "drizzle-orm": "^1.0.0-rc.4",
     "isbot": "^5.2.2",
-    "jotai": "^3.0.0",
+    "jotai": "^3.0.1",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.48.0",
     "nodemailer": "^10.0.12",

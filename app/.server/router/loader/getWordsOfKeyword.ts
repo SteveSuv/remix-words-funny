@@ -5,7 +5,7 @@ import { db } from "~/.server/db";
 import { Book, UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
 
-const prepare = db
+const getWordsOfKeywordWithProgressPrepare = db
   .select({
     Book,
     Word,
@@ -24,6 +24,16 @@ const prepare = db
   .orderBy(Word.id)
   .offset(sql.placeholder("offset"))
   .limit(sql.placeholder("limit"))
+  .prepare("getWordsOfKeywordWithProgress");
+
+const getWordsOfKeywordPrepare = db
+  .select({ Book, Word, isDone: sql<boolean>`false` })
+  .from(Word)
+  .innerJoin(Book, eq(Book.slug, Word.bookSlug))
+  .where(like(Word.word, sql.placeholder("keyword")))
+  .orderBy(Word.id)
+  .offset(sql.placeholder("offset"))
+  .limit(sql.placeholder("limit"))
   .prepare("getWordsOfKeyword");
 
 export const getWordsOfKeyword = p.public
@@ -34,7 +44,9 @@ export const getWordsOfKeyword = p.public
     }),
   )
   .handler(async ({ context: { userId }, input: { keyword, cursor } }) => {
-    const rows = await prepare.execute({
+    const rows = await (
+      userId ? getWordsOfKeywordWithProgressPrepare : getWordsOfKeywordPrepare
+    ).execute({
       keyword: `%${keyword.trim().toLowerCase()}%`,
       userId: userId ?? 0,
       offset: PAGE_SIZE * cursor,

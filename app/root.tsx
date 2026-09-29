@@ -12,6 +12,7 @@ import { AppLayout } from "~/components/layout";
 import type { Route } from "./+types/root";
 import "@fontsource/merriweather/latin-400.css";
 import "./global.css";
+import { IS_PROD } from "./common/constants";
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -64,7 +65,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       error.status === 404
         ? "你访问的页面不存在。"
         : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
+  } else if (!IS_PROD && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;
   }

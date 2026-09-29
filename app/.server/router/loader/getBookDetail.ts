@@ -4,7 +4,7 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Book } from "~/.server/db/schema";
 
-const prepare = db
+const getBookDetailPrepare = db
   .select()
   .from(Book)
   .where(eq(Book.slug, sql.placeholder("bookSlug")))
@@ -18,6 +18,6 @@ export const getBookDetail = p.public
     }),
   )
   .handler(async ({ input: { bookSlug } }) => {
-    const [bookDetail] = await prepare.execute({ bookSlug });
+    const [bookDetail] = await getBookDetailPrepare.execute({ bookSlug });
     return { bookDetail };
   });

@@ -8,6 +8,8 @@ export function WordCommentItem({
   comment: {
     User: { name },
     Post: { content, updatedAt, id: postId },
+    postVotesCount,
+    isPostVote,
   },
 }: {
   comment: ICommentItem;
@@ -26,7 +28,11 @@ export function WordCommentItem({
                 </small>
               </div>
             </div>
-            <CommentVoteButton postId={postId} />
+            <CommentVoteButton
+              postId={postId}
+              postVotesCount={postVotesCount}
+              isPostVote={isPostVote}
+            />
           </div>
 
           <Card variant="secondary">

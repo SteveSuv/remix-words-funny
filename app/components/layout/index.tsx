@@ -1,5 +1,5 @@
 import { BooksPanel } from "./BooksPanel";
-import { LazyWordDetailPanel } from "./WordDetailPanel/LazyWordDetailPanel";
+import { WordDetailPanel } from "./WordDetailPanel";
 import { WordsPanel } from "./WordsPanel";
 import { Surface } from "@heroui/react";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </section>
 
         <Surface className="scrollbar-hidden border-separator z-10 hidden h-screen w-100 shrink-0 overflow-y-auto border-l xl:block">
-          <LazyWordDetailPanel />
+          <WordDetailPanel />
         </Surface>
       </main>
     </QueryClientProvider>

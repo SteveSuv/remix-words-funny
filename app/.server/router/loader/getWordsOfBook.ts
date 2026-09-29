@@ -5,7 +5,7 @@ import { db } from "~/.server/db";
 import { UsersToWords, Word } from "~/.server/db/schema";
 import { PAGE_SIZE } from "~/common/constants";
 
-const prepare = db
+const getWordsOfBookWithProgressPrepare = db
   .select({
     Word,
     isDone: sql<boolean>`${UsersToWords.userId} is not null`,
@@ -22,6 +22,15 @@ const prepare = db
   .offset(sql.placeholder("offset"))
   .limit(sql.placeholder("limit"))
   .orderBy(Word.id)
+  .prepare("getWordsOfBookWithProgress");
+
+const getWordsOfBookPrepare = db
+  .select({ Word, isDone: sql<boolean>`false` })
+  .from(Word)
+  .where(eq(Word.bookSlug, sql.placeholder("bookSlug")))
+  .offset(sql.placeholder("offset"))
+  .limit(sql.placeholder("limit"))
+  .orderBy(Word.id)
   .prepare("getWordsOfBook");
 
 export const getWordsOfBook = p.public
@@ -32,7 +41,9 @@ export const getWordsOfBook = p.public
     }),
   )
   .handler(async ({ context: { userId }, input: { bookSlug, cursor } }) => {
-    const rows = await prepare.execute({
+    const rows = await (
+      userId ? getWordsOfBookWithProgressPrepare : getWordsOfBookPrepare
+    ).execute({
       bookSlug,
       userId: userId ?? 0,
       offset: PAGE_SIZE * cursor,

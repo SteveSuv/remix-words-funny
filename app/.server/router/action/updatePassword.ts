@@ -7,17 +7,27 @@ import { db } from "~/.server/db";
 import { User, Verify } from "~/.server/db/schema";
 import { updatePasswordForm } from "~/common/formSchema";
 
-const prepare = db
+const updatePasswordGetVerifyByEmailPrepare = db
   .select()
   .from(Verify)
   .where(eq(Verify.email, sql.placeholder("email")))
   .limit(1)
   .prepare("updatePassword.getVerifyByEmail");
 
+const updateUserPasswordPrepare = db
+  .update(User)
+  .set({
+    password: sql.placeholder("password"),
+  })
+  .where(eq(User.email, sql.placeholder("email")))
+  .prepare("updatePassword.updateUser");
+
 export const updatePassword = p.unAuth
   .input(updatePasswordForm)
   .handler(async ({ input: { email, password, verifyCode } }) => {
-    const [verify] = await prepare.execute({ email });
+    const [verify] = await updatePasswordGetVerifyByEmailPrepare.execute({
+      email,
+    });
 
     if (!verify) {
       throw new ORPCError("BAD_REQUEST", {
@@ -39,8 +49,8 @@ export const updatePassword = p.unAuth
       });
     }
 
-    await db
-      .update(User)
-      .set({ password: encrypt(password) })
-      .where(eq(User.email, email));
+    await updateUserPasswordPrepare.execute({
+      email,
+      password: encrypt(password),
+    });
   });

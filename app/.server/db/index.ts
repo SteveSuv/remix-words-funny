@@ -6,13 +6,7 @@ const globalForDb = globalThis as typeof globalThis & {
   postgresClient?: ReturnType<typeof postgres>;
 };
 
-const client =
-  globalForDb.postgresClient ??
-  postgres(process.env.DATABASE_URL, {
-    max: 5,
-    idle_timeout: 20,
-    connect_timeout: 10,
-  });
+const client = globalForDb.postgresClient ?? postgres(process.env.DATABASE_URL);
 
 globalForDb.postgresClient = client;
 

@@ -4,7 +4,7 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { Synonym } from "~/.server/db/schema";
 
-const prepare = db
+const getWordSynonymsPrepare = db
   .select()
   .from(Synonym)
   .where(eq(Synonym.wordSlug, sql.placeholder("wordSlug")))
@@ -13,7 +13,7 @@ const prepare = db
 export const getWordSynonyms = p.public
   .input(z.object({ wordSlug: z.string() }))
   .handler(async ({ input: { wordSlug } }) => {
-    const wordSynonyms = await prepare.execute({ wordSlug });
+    const wordSynonyms = await getWordSynonymsPrepare.execute({ wordSlug });
 
     return { wordSynonyms };
   });

@@ -9,7 +9,7 @@ import { User } from "~/.server/db/schema";
 import { COOKIE_MAX_AGE, JWT_KEY } from "~/common/constants";
 import { signInForm } from "~/common/formSchema";
 
-const prepare = db
+const signInGetUserByEmailPrepare = db
   .select()
   .from(User)
   .where(eq(User.email, sql.placeholder("email")))
@@ -19,7 +19,7 @@ const prepare = db
 export const signIn = p.unAuth
   .input(signInForm)
   .handler(async ({ context: { resHeaders }, input: { email, password } }) => {
-    const [user] = await prepare.execute({ email });
+    const [user] = await signInGetUserByEmailPrepare.execute({ email });
 
     if (!user) {
       throw new ORPCError("BAD_REQUEST", {

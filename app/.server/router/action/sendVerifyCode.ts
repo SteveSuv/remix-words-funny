@@ -7,12 +7,30 @@ import { Verify } from "~/.server/db/schema";
 import { IS_PROD } from "~/common/constants";
 import { email } from "~/common/formSchema";
 
-const prepare = db
+const sendVerifyCodeGetVerifyByEmailPrepare = db
   .select()
   .from(Verify)
   .where(eq(Verify.email, sql.placeholder("email")))
   .limit(1)
   .prepare("sendVerifyCode.getVerifyByEmail");
+
+const updateVerifyCodePrepare = db
+  .update(Verify)
+  .set({
+    code: sql.placeholder("code"),
+  })
+  .where(eq(Verify.email, sql.placeholder("email")))
+  .returning({ updateAt: Verify.updatedAt })
+  .prepare("sendVerifyCode.update");
+
+const insertVerifyCodePrepare = db
+  .insert(Verify)
+  .values({
+    email: sql.placeholder("email"),
+    code: sql.placeholder("code"),
+  })
+  .returning({ updateAt: Verify.updatedAt })
+  .prepare("sendVerifyCode.insert");
 
 export const sendVerifyCode = p.unAuth
   .input(
@@ -25,19 +43,20 @@ export const sendVerifyCode = p.unAuth
       .toString()
       .padStart(6, "0");
 
-    const [verify] = await prepare.execute({ email });
+    const [verify] = await sendVerifyCodeGetVerifyByEmailPrepare.execute({
+      email,
+    });
 
     if (verify) {
-      await db
-        .update(Verify)
-        .set({ code: verifyCode })
-        .where(eq(Verify.email, email))
-        .returning({ updateAt: Verify.updatedAt });
+      await updateVerifyCodePrepare.execute({
+        email,
+        code: verifyCode,
+      });
     } else {
-      await db
-        .insert(Verify)
-        .values({ email, code: verifyCode })
-        .returning({ updateAt: Verify.updatedAt });
+      await insertVerifyCodePrepare.execute({
+        email,
+        code: verifyCode,
+      });
     }
 
     if (!IS_PROD) {

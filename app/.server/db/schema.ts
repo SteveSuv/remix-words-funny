@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { defineRelations } from "drizzle-orm/relations";
 import {
   integer,
@@ -14,7 +15,7 @@ const timestamps = {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp()
     .notNull()
-    .$onUpdateFn(() => new Date()),
+    .$onUpdateFn(() => sql`now()`),
 };
 
 // tables

@@ -11,6 +11,8 @@ export type IBookItem = {
 export type ICommentItem = {
   User: typeof schema.User.$inferSelect;
   Post: typeof schema.Post.$inferSelect;
+  postVotesCount: number;
+  isPostVote: boolean;
 };
 
 export type IWordItem = {

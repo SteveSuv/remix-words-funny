@@ -4,7 +4,7 @@ import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
 import { UsersToWords } from "~/.server/db/schema";
 
-const prepare = db
+const getIsWordDonePrepare = db
   .select()
   .from(UsersToWords)
   .where(
@@ -21,7 +21,7 @@ export const getIsWordDone = p.public
   .handler(async ({ context: { userId }, input: { wordSlug } }) => {
     if (!userId) return { isWordDone: false };
 
-    const [item] = await prepare.execute({ wordSlug, userId });
+    const [item] = await getIsWordDonePrepare.execute({ wordSlug, userId });
 
     return { isWordDone: !!item };
   });
