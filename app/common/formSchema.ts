@@ -8,7 +8,7 @@ export const password = z
   .min(8, "密码长度不能少于8位")
   .max(30, "密码长度不能多于30位");
 
-export const verifyCode = z.string().length(6, "验证码为6位数字");
+export const verifyCode = z.string().regex(/^\d{6}$/, "验证码为6位数字");
 
 export const name = z
   .string()

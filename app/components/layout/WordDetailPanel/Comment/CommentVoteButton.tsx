@@ -25,6 +25,15 @@ export function CommentVoteButton({
   const setPostVoteMutation = useMutation(
     orpc.action.setPostVote.mutationOptions({
       onSuccess: (state) => {
+        const updateComment = (comment: ICommentItem): ICommentItem =>
+          comment.Post.id === postId
+            ? {
+                ...comment,
+                postVotesCount: state.postVotesCount,
+                isPostVote: state.isPostVote,
+              }
+            : { ...comment, replies: comment.replies.map(updateComment) };
+
         queryClient.setQueriesData<
           InfiniteData<{ wordComments: ICommentItem[]; nextCursor?: number }>
         >(
@@ -34,15 +43,21 @@ export function CommentVoteButton({
               ...data,
               pages: data.pages.map((page) => ({
                 ...page,
-                wordComments: page.wordComments.map((comment) =>
-                  comment.Post.id === postId
-                    ? {
-                        ...comment,
-                        postVotesCount: state.postVotesCount,
-                        isPostVote: state.isPostVote,
-                      }
-                    : comment,
-                ),
+                wordComments: page.wordComments.map(updateComment),
+              })),
+            },
+        );
+
+        queryClient.setQueriesData<
+          InfiniteData<{ replies: ICommentItem[]; nextCursor?: number }>
+        >(
+          { queryKey: orpc.loader.getPostReplies.key({ type: "infinite" }) },
+          (data) =>
+            data && {
+              ...data,
+              pages: data.pages.map((page) => ({
+                ...page,
+                replies: page.replies.map(updateComment),
               })),
             },
         );

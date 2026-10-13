@@ -6,6 +6,8 @@ import { getBookDetail } from "./loader/getBookDetail";
 import { getDoneWordsOfBook } from "./loader/getDoneWordsOfBook";
 import { getIsWordDone } from "./loader/getIsWordDone";
 import { getMyUserInfo } from "./loader/getMyUserInfo";
+import { getNotices } from "./loader/getNotices";
+import { getPostReplies } from "./loader/getPostReplies";
 import { getStarBooks } from "./loader/getStarBooks";
 import { getStudyCalendar } from "./loader/getStudyCalendar";
 import { getUnDoneWordsOfBook } from "./loader/getUnDoneWordsOfBook";
@@ -21,8 +23,10 @@ import { getWordTranslations } from "./loader/getWordTranslations";
 
 // actions
 import { sendComment } from "./action/sendComment";
+import { markNoticesRead } from "./action/markNoticesRead";
 import { sendVerifyCode } from "./action/sendVerifyCode";
 import { setPostVote } from "./action/setPostVote";
+import { updateComment } from "./action/updateComment";
 import { setStarBooks } from "./action/setStarBooks";
 import { setWordDone } from "./action/setWordDone";
 import { signIn } from "./action/signIn";
@@ -48,6 +52,8 @@ const loader = orpc.router({
   getUnDoneWordsOfBook,
   getStudyCalendar,
   getWordComments,
+  getPostReplies,
+  getNotices,
 });
 
 const action = orpc.router({
@@ -60,6 +66,8 @@ const action = orpc.router({
   setWordDone,
   sendComment,
   setPostVote,
+  updateComment,
+  markNoticesRead,
 });
 
 export const router = orpc.router({ loader, action });

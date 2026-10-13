@@ -29,7 +29,7 @@ export function SendVerifyCodeButton({ form }: { form: UseFormReturn<any> }) {
   ) {
     return (
       <Button variant="outline" fullWidth isDisabled>
-        正在发送验证码...
+        发送中…
       </Button>
     );
   }

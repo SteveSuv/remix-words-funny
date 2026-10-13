@@ -1,8 +1,7 @@
-import { Spinner } from "@heroui/react";
+import { Button, Spinner } from "@heroui/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { Sofa } from "lucide-react";
-import useInfiniteScroll from "react-infinite-scroll-hook";
 import { wordDetailSlugAtom } from "~/common/store";
 import { orpc } from "~/common/orpcClient";
 import { LuIcon } from "~/components/common/LuIcon";
@@ -17,24 +16,14 @@ export function WordCommentsList() {
         wordSlug: wordDetailSlug,
         cursor,
       }),
-      initialPageParam: undefined,
+      initialPageParam: 0,
       getNextPageParam: ({ nextCursor }) => nextCursor,
       enabled: !!wordDetailSlug,
     }),
   );
 
-  const [sentryRef, { rootRef }] = useInfiniteScroll({
-    loading: getWordCommentsQuery.isFetching,
-    hasNextPage: getWordCommentsQuery.hasNextPage,
-    onLoadMore: getWordCommentsQuery.fetchNextPage,
-    disabled: !!getWordCommentsQuery.error,
-    rootMargin: "0px 0px 100px 0px",
-  });
-
   const allComments =
     getWordCommentsQuery.data?.pages.map((e) => e.wordComments).flat(2) || [];
-
-  const totalCount = allComments.length;
 
   function renderContent() {
     if (getWordCommentsQuery.isPending && getWordCommentsQuery.isFetching) {
@@ -49,7 +38,7 @@ export function WordCommentsList() {
       return (
         <div className="mb-4 flex flex-col items-center justify-center gap-2 text-muted opacity-50">
           <LuIcon icon={Sofa} size={50} />
-          <small>抢沙发</small>
+          <small>暂无评论</small>
         </div>
       );
     }
@@ -59,16 +48,23 @@ export function WordCommentsList() {
         {allComments.map((comment) => {
           return <WordCommentItem key={comment.Post.id} comment={comment} />;
         })}
-        <div ref={sentryRef} className="my-1 text-center text-sm text-muted">
-          共 {totalCount} 条评论
-        </div>
+        {getWordCommentsQuery.hasNextPage && (
+          <Button
+            fullWidth
+            variant="outline"
+            isDisabled={getWordCommentsQuery.isFetchingNextPage}
+            onPress={() => void getWordCommentsQuery.fetchNextPage()}
+          >
+            {getWordCommentsQuery.isFetchingNextPage ? (
+              <Spinner size="sm" />
+            ) : (
+              "加载更多评论"
+            )}
+          </Button>
+        )}
       </div>
     );
   }
 
-  return (
-    <div className="mt-4 flex flex-col" ref={rootRef}>
-      {renderContent()}
-    </div>
-  );
+  return <div className="mt-4 flex flex-col">{renderContent()}</div>;
 }

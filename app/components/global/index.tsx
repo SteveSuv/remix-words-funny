@@ -3,6 +3,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAppTheme } from "~/hooks/useAppTheme";
 import { ManageBooksModal } from "./ManageBooksModal";
 import { MobileDrawers } from "./MobileDrawers";
+import { NoticeModal } from "./NoticeModal";
 import { ProfileModal } from "./ProfileModal";
 import { SettingModal } from "./SettingModal";
 import { SignInModal } from "./SignInModal";
@@ -20,6 +21,7 @@ export function GlobalComponents() {
       <SignUpModal />
       <UpdatePasswordModal />
       <SettingModal />
+      <NoticeModal />
       <ProfileModal />
       <ManageBooksModal />
       <MobileDrawers />

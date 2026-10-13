@@ -8,13 +8,12 @@ const getAllBooksPrepare = db
   .select({
     id: Book.id,
     slug: Book.slug,
-    cover: Book.cover,
     name: Book.name,
     wordsCount: count(Word.id),
   })
   .from(Book)
   .leftJoin(Word, eq(Word.bookSlug, Book.slug))
-  .groupBy(Book.id, Book.slug, Book.cover, Book.name)
+  .groupBy(Book.id, Book.slug, Book.name)
   .prepare("getAllBooks");
 
 const bookCatalogQueryClient = new QueryClient();

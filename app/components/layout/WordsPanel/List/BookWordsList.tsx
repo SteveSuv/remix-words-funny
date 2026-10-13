@@ -122,7 +122,7 @@ export function BookWordsList() {
         );
       }
 
-      return <Empty label="没有找到单词" />;
+      return <Empty label="未找到单词" />;
     }
 
     return (

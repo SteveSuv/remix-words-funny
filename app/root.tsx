@@ -26,7 +26,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="轻松学习英语单词" />
-        <meta name="keywords" content="english,words,study" />
+        <meta name="keywords" content="english,words,study,discuss,IELTS,TOEFL,GRE,SAT,GMAT" />
         <meta name="author" content="https://github.com/SteveSuv" />
         <meta
           name="repository"

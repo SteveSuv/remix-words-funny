@@ -1,6 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import dayjs from "dayjs";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, gt, isNull, sql } from "drizzle-orm";
 import { encrypt } from "~/.server/common/crypto";
 import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
@@ -14,13 +13,33 @@ const updatePasswordGetVerifyByEmailPrepare = db
   .limit(1)
   .prepare("updatePassword.getVerifyByEmail");
 
-const updateUserPasswordPrepare = db
-  .update(User)
-  .set({
-    password: sql.placeholder("password"),
-  })
-  .where(eq(User.email, sql.placeholder("email")))
-  .prepare("updatePassword.updateUser");
+function prepareUpdatePasswordTransactionQueries(
+  tx: Pick<typeof db, "update">,
+) {
+  const consumeVerifyPrepare = tx
+    .update(Verify)
+    .set({ consumedAt: sql`now()` })
+    .where(
+      and(
+        eq(Verify.email, sql.placeholder("email")),
+        eq(Verify.code, sql.placeholder("code")),
+        isNull(Verify.consumedAt),
+        gt(Verify.expiresAt, sql`now()`),
+      ),
+    )
+    .returning({ id: Verify.id })
+    .prepare("updatePassword.consumeVerify");
+
+  const updateUserPasswordPrepare = tx
+    .update(User)
+    .set({
+      password: sql.placeholder("password"),
+    })
+    .where(eq(User.email, sql.placeholder("email")))
+    .prepare("updatePassword.updateUser");
+
+  return { consumeVerifyPrepare, updateUserPasswordPrepare };
+}
 
 export const updatePassword = p.unAuth
   .input(updatePasswordForm)
@@ -35,22 +54,41 @@ export const updatePassword = p.unAuth
       });
     }
 
-    if (verify.code !== verifyCode) {
+    if (verify.consumedAt) {
+      throw new ORPCError("BAD_REQUEST", {
+        message: "验证码已使用",
+      });
+    }
+
+    if (verify.code !== encrypt(verifyCode)) {
       throw new ORPCError("BAD_REQUEST", {
         message: "验证码错误",
       });
     }
 
-    const diff = dayjs().diff(dayjs(verify.updatedAt), "s");
-
-    if (diff > 60) {
+    if (verify.expiresAt.getTime() <= Date.now()) {
       throw new ORPCError("BAD_REQUEST", {
         message: "验证码已过期",
       });
     }
 
-    await updateUserPasswordPrepare.execute({
-      email,
-      password: encrypt(password),
+    await db.transaction(async (tx) => {
+      const { consumeVerifyPrepare, updateUserPasswordPrepare } =
+        prepareUpdatePasswordTransactionQueries(tx);
+      const [consumedVerify] = await consumeVerifyPrepare.execute({
+        email,
+        code: encrypt(verifyCode),
+      });
+
+      if (!consumedVerify) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "验证码已过期或已使用",
+        });
+      }
+
+      await updateUserPasswordPrepare.execute({
+        email,
+        password: encrypt(password),
+      });
     });
   });

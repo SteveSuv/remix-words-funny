@@ -87,7 +87,7 @@ export function WordDetailPanel() {
         {!!remember && (
           <Card
             variant="secondary"
-            className="bg-accent-soft border-accent border"
+            className="rounded-field border border-accent bg-accent-soft"
           >
             <Card.Content>{remember}</Card.Content>
           </Card>

@@ -1,6 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import dayjs from "dayjs";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, gt, isNull, sql } from "drizzle-orm";
 import { encrypt } from "~/.server/common/crypto";
 import { p } from "~/.server/common/orpc";
 import { db } from "~/.server/db";
@@ -28,19 +27,43 @@ const signUpGetVerifyByEmailPrepare = db
   .limit(1)
   .prepare("signUp.getVerifyByEmail");
 
-const signUpInsertUserPrepare = db
-  .insert(User)
-  .values({
-    name: sql.placeholder("name"),
-    email: sql.placeholder("email"),
-    password: sql.placeholder("password"),
-  })
-  .prepare("signUp.insertUser");
+function prepareSignUpTransactionQueries(
+  tx: Pick<typeof db, "insert" | "update">,
+) {
+  const consumeVerifyPrepare = tx
+    .update(Verify)
+    .set({ consumedAt: sql`now()` })
+    .where(
+      and(
+        eq(Verify.email, sql.placeholder("email")),
+        eq(Verify.code, sql.placeholder("code")),
+        isNull(Verify.consumedAt),
+        gt(Verify.expiresAt, sql`now()`),
+      ),
+    )
+    .returning({ id: Verify.id })
+    .prepare("signUp.consumeVerify");
+
+  const insertUserPrepare = tx
+    .insert(User)
+    .values({
+      name: sql.placeholder("name"),
+      email: sql.placeholder("email"),
+      password: sql.placeholder("password"),
+    })
+    .prepare("signUp.insertUser");
+
+  return { consumeVerifyPrepare, insertUserPrepare };
+}
 
 export const signUp = p.unAuth
   .input(signUpForm)
   .handler(async ({ input: { email, name, password, verifyCode } }) => {
-    const [userByEmail] = await signUpGetUserByEmailPrepare.execute({ email });
+    const [[userByEmail], [userByName], [verify]] = await Promise.all([
+      signUpGetUserByEmailPrepare.execute({ email }),
+      signUpGetUserByNamePrepare.execute({ name }),
+      signUpGetVerifyByEmailPrepare.execute({ email }),
+    ]);
 
     if (userByEmail) {
       throw new ORPCError("BAD_REQUEST", {
@@ -48,15 +71,11 @@ export const signUp = p.unAuth
       });
     }
 
-    const [userByName] = await signUpGetUserByNamePrepare.execute({ name });
-
     if (userByName) {
       throw new ORPCError("BAD_REQUEST", {
         message: "昵称已被使用",
       });
     }
-
-    const [verify] = await signUpGetVerifyByEmailPrepare.execute({ email });
 
     if (!verify) {
       throw new ORPCError("BAD_REQUEST", {
@@ -64,23 +83,42 @@ export const signUp = p.unAuth
       });
     }
 
-    if (verify.code !== verifyCode) {
+    if (verify.consumedAt) {
+      throw new ORPCError("BAD_REQUEST", {
+        message: "验证码已使用",
+      });
+    }
+
+    if (verify.code !== encrypt(verifyCode)) {
       throw new ORPCError("BAD_REQUEST", {
         message: "验证码错误",
       });
     }
 
-    const diff = dayjs().diff(dayjs(verify.updatedAt), "s");
-
-    if (diff > 60) {
+    if (verify.expiresAt.getTime() <= Date.now()) {
       throw new ORPCError("BAD_REQUEST", {
         message: "验证码已过期",
       });
     }
 
-    await signUpInsertUserPrepare.execute({
-      name,
-      email,
-      password: encrypt(password),
+    await db.transaction(async (tx) => {
+      const { consumeVerifyPrepare, insertUserPrepare } =
+        prepareSignUpTransactionQueries(tx);
+      const [consumedVerify] = await consumeVerifyPrepare.execute({
+        email,
+        code: encrypt(verifyCode),
+      });
+
+      if (!consumedVerify) {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "验证码已过期或已使用",
+        });
+      }
+
+      await insertUserPrepare.execute({
+        name,
+        email,
+        password: encrypt(password),
+      });
     });
   });

@@ -8,6 +8,8 @@ import {
   text,
   timestamp,
   varchar,
+  boolean,
+  index,
 } from "drizzle-orm/pg-core";
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
 
@@ -28,23 +30,33 @@ export const User = pgTable("User", {
   ...timestamps,
 });
 
-export const Post = pgTable("Post", {
-  id: serial().primaryKey(),
-  content: text().notNull(),
-  userId: integer()
-    .notNull()
-    .references(() => User.id),
-  wordSlug: varchar()
-    .notNull()
-    .references(() => Word.slug),
-  parentPostId: integer().references((): AnyPgColumn => Post.id),
-  ...timestamps,
-});
+export const Post = pgTable(
+  "Post",
+  {
+    id: serial().primaryKey(),
+    content: text().notNull(),
+    userId: integer()
+      .notNull()
+      .references(() => User.id),
+    wordSlug: varchar()
+      .notNull()
+      .references(() => Word.slug),
+    parentPostId: integer().references((): AnyPgColumn => Post.id),
+    replyToUserId: integer().references(() => User.id),
+    ...timestamps,
+  },
+  (table) => [
+    index("Post_wordSlug_id_idx").on(table.wordSlug, table.id.desc()),
+    index("Post_parentPostId_id_idx").on(table.parentPostId, table.id),
+  ],
+);
 
 export const Verify = pgTable("Verify", {
   id: serial().primaryKey(),
   email: varchar().notNull().unique(),
   code: varchar(),
+  expiresAt: timestamp().notNull().defaultNow(),
+  consumedAt: timestamp(),
   ...timestamps,
 });
 
@@ -52,7 +64,6 @@ export const Book = pgTable("Book", {
   id: serial().primaryKey(),
   slug: varchar().notNull().unique(),
   name: varchar().notNull(),
-  cover: varchar().notNull(),
   ...timestamps,
 });
 
@@ -69,58 +80,111 @@ export const Word = pgTable("Word", {
   ...timestamps,
 });
 
-export const Cognate = pgTable("Cognate", {
-  id: serial().primaryKey(),
-  wordSlug: varchar()
-    .notNull()
-    .references(() => Word.slug),
-  pos: varchar().notNull(),
-  content: varchar().notNull(),
-  transCn: varchar().notNull(),
-  ...timestamps,
-});
+export const Cognate = pgTable(
+  "Cognate",
+  {
+    id: serial().primaryKey(),
+    wordSlug: varchar()
+      .notNull()
+      .references(() => Word.slug),
+    pos: varchar().notNull(),
+    content: varchar().notNull(),
+    transCn: varchar().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("Cognate_wordSlug_idx").on(table.wordSlug)],
+);
 
-export const Phrase = pgTable("Phrase", {
-  id: serial().primaryKey(),
-  wordSlug: varchar()
-    .notNull()
-    .references(() => Word.slug),
-  content: varchar().notNull(),
-  transCn: varchar().notNull(),
-  ...timestamps,
-});
+export const Phrase = pgTable(
+  "Phrase",
+  {
+    id: serial().primaryKey(),
+    wordSlug: varchar()
+      .notNull()
+      .references(() => Word.slug),
+    content: varchar().notNull(),
+    transCn: varchar().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("Phrase_wordSlug_idx").on(table.wordSlug)],
+);
 
-export const Sentence = pgTable("Sentence", {
-  id: serial().primaryKey(),
-  wordSlug: varchar()
-    .notNull()
-    .references(() => Word.slug),
-  content: varchar().notNull(),
-  transCn: varchar().notNull(),
-  ...timestamps,
-});
+export const Sentence = pgTable(
+  "Sentence",
+  {
+    id: serial().primaryKey(),
+    wordSlug: varchar()
+      .notNull()
+      .references(() => Word.slug),
+    content: varchar().notNull(),
+    transCn: varchar().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("Sentence_wordSlug_idx").on(table.wordSlug)],
+);
 
-export const Synonym = pgTable("Synonym", {
-  id: serial().primaryKey(),
-  wordSlug: varchar()
-    .notNull()
-    .references(() => Word.slug),
-  pos: varchar().notNull(),
-  content: varchar().notNull(),
-  transCn: varchar().notNull(),
-  ...timestamps,
-});
+export const Synonym = pgTable(
+  "Synonym",
+  {
+    id: serial().primaryKey(),
+    wordSlug: varchar()
+      .notNull()
+      .references(() => Word.slug),
+    pos: varchar().notNull(),
+    content: varchar().notNull(),
+    transCn: varchar().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("Synonym_wordSlug_idx").on(table.wordSlug)],
+);
 
-export const Translation = pgTable("Translation", {
-  id: serial().primaryKey(),
-  wordSlug: varchar()
-    .notNull()
-    .references(() => Word.slug),
-  pos: varchar().notNull(),
-  transCn: varchar().notNull(),
-  transEn: varchar().notNull(),
-  ...timestamps,
-});
+export const Translation = pgTable(
+  "Translation",
+  {
+    id: serial().primaryKey(),
+    wordSlug: varchar()
+      .notNull()
+      .references(() => Word.slug),
+    pos: varchar().notNull(),
+    transCn: varchar().notNull(),
+    transEn: varchar().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("Translation_wordSlug_idx").on(table.wordSlug)],
+);
+
+export const Notice = pgTable(
+  "Notice",
+  {
+    id: serial().primaryKey(),
+    recipientUserId: integer()
+      .notNull()
+      .references(() => User.id),
+    actorUserId: integer()
+      .notNull()
+      .references(() => User.id),
+    type: varchar().notNull(),
+    targetPostId: integer()
+      .notNull()
+      .references(() => Post.id),
+    relatedPostId: integer().references(() => Post.id),
+    isRead: boolean().notNull().default(false),
+    ...timestamps,
+  },
+  (table) => [
+    index("Notice_recipient_createdAt_id_idx").on(
+      table.recipientUserId,
+      table.createdAt.desc(),
+      table.id.desc(),
+    ),
+    index("Notice_recipient_unread_idx")
+      .on(table.recipientUserId)
+      .where(sql`${table.isRead} = false`),
+    index("Notice_actor_target_like_idx")
+      .on(table.actorUserId, table.targetPostId)
+      .where(sql`${table.type} = 'like'`),
+  ],
+);
 
 // many-to-many tables
 export const UsersToBooks = pgTable(
@@ -162,7 +226,10 @@ export const UsersToPostsVote = pgTable(
       .references(() => Post.id),
     ...timestamps,
   },
-  (t) => [primaryKey({ columns: [t.userId, t.postId] })],
+  (t) => [
+    primaryKey({ columns: [t.userId, t.postId] }),
+    index("UsersToPostsVote_postId_userId_idx").on(t.postId, t.userId),
+  ],
 );
 
 export const relations = defineRelations(
@@ -180,6 +247,7 @@ export const relations = defineRelations(
     UsersToBooks,
     UsersToWords,
     UsersToPostsVote,
+    Notice,
   },
   (r) => ({
     User: {
@@ -187,9 +255,16 @@ export const relations = defineRelations(
       UsersToWords: r.many.UsersToWords(),
       UsersToPostsVote: r.many.UsersToPostsVote(),
       Posts: r.many.Post(),
+      PostRepliesToUser: r.many.Post({ alias: "PostReplyToUser" }),
     },
     Post: {
       User: r.one.User({ from: r.Post.userId, to: r.User.id }),
+      ReplyToUser: r.one.User({
+        from: r.Post.replyToUserId,
+        to: r.User.id,
+        optional: true,
+        alias: "PostReplyToUser",
+      }),
       Word: r.one.Word({ from: r.Post.wordSlug, to: r.Word.slug }),
       ParentPost: r.one.Post({
         from: r.Post.parentPostId,
@@ -241,5 +316,6 @@ export const relations = defineRelations(
       Post: r.one.Post({ from: r.UsersToPostsVote.postId, to: r.Post.id }),
       User: r.one.User({ from: r.UsersToPostsVote.userId, to: r.User.id }),
     },
+    Notice: {},
   }),
 );
